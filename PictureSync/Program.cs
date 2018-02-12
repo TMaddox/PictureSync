@@ -35,14 +35,14 @@ namespace PictureSync
             if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage)
             {
                 // Textmessage
-                Trace.WriteLine(GetNowLog() + " Note: " + e.Message.Text);
+                Trace.WriteLine(NowLog+ " Note: " + e.Message.Text);
                 bot.SendTextMessageAsync(e.Message.Chat.Id, "Note accepted");
             }
 
             if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.PhotoMessage)
             {
                 // Picture
-                Trace.WriteLine(GetNowLog() + " Photo incoming from " + e.Message.Chat.Username);
+                Trace.WriteLine(NowLog+ " Photo incoming from " + e.Message.Chat.Username);
                 Download_img(e);
             }
 
@@ -59,13 +59,10 @@ namespace PictureSync
             image.Save(path_photos + e.Message.Chat.Username + @"\" + TimeOfE(e) + ".png"); //Dafuq is da fehler ???
 
             await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
-            Trace.WriteLine(GetNowLog() + " Received photo from " + e.Message.Chat.Username);
+            Trace.WriteLine(NowLog+ " Received photo from " + e.Message.Chat.Username);
         }
 
-        private static string GetNowLog()
-        {
-            return DateTime.Today.ToString("yyyy.MM.dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff", System.Globalization.DateTimeFormatInfo.InvariantInfo);
-        }
+        private static string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
 
         private static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e)
         {
