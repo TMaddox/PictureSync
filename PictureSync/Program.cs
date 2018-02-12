@@ -12,8 +12,10 @@ namespace PictureSync
 {
     class Program
     {
-        private static string path_photos = @"C:\Users\Maddox\Desktop\test\";
-        private static string path_logs = @"C:\Users\Maddox\Desktop\test\";
+        private static string path_photos = @"C:\Users\Maddox\Desktop\test\pic\";
+        private static string path_logs = @"C:\Users\Maddox\Desktop\test\log.txt";
+        private static string path_users = @"C:\Users\Maddox\Desktop\test\users.dat";
+        private static string key = "123456";
 
         static void Main(string[] args)
         {
@@ -32,20 +34,38 @@ namespace PictureSync
 
         private static void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
         {
-            if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage)
+            if (CheckAuth(e))
             {
-                // Textmessage
-                Trace.WriteLine(NowLog+ " Note: " + e.Message.Text);
-                bot.SendTextMessageAsync(e.Message.Chat.Id, "Note accepted");
-            }
+                if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage)
+                {
+                    // Textmessage
+                    Trace.WriteLine(NowLog + " Note: " + e.Message.Text);
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Note accepted");
+                }
 
-            if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.PhotoMessage)
+                if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.PhotoMessage)
+                {
+                    // Picture
+                    Trace.WriteLine(NowLog + " Photo incoming from " + e.Message.Chat.Username);
+                    Download_img(e);
+                }
+            }
+            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + key)
             {
-                // Picture
-                Trace.WriteLine(NowLog+ " Photo incoming from " + e.Message.Chat.Username);
-                Download_img(e);
+                File.AppendAllText(path_users, e.Message.Chat.Username + Environment.NewLine);
+                Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
+                bot.SendTextMessageAsync(e.Message.Chat.Id, "Erfolgreich Authentifiziert.");
             }
+            else
+            {
+                bot.SendTextMessageAsync(e.Message.Chat.Id, "Authorisation failed.");
+            }
+        }
 
+        private static bool CheckAuth(Telegram.Bot.Args.MessageEventArgs e)
+        {
+            List<string> whitelist = File.ReadAllLines(path_users).ToList();
+            return whitelist.Contains(e.Message.Chat.Username);
         }
 
         static private async Task Download_img(Telegram.Bot.Args.MessageEventArgs e)
@@ -63,13 +83,12 @@ namespace PictureSync
         }
 
         private static string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
-
         private static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e) => e.Message.Date.ToString("yyMMdd_HHmmss");
 
         private static void InitiateTracer()
         {
             Trace.Listeners.Clear();
-            var twtl = new TextWriterTraceListener(path_logs + "log.txt")
+            var twtl = new TextWriterTraceListener(path_logs)
             {
                 Name = "TextLogger",
                 TraceOutputOptions = TraceOptions.ThreadId | TraceOptions.DateTime
