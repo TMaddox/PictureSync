@@ -64,10 +64,7 @@ namespace PictureSync
 
         private static string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
 
-        private static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e)
-        {
-            return e.Message.Date.ToString("yyMMdd_HHmmss");
-        }
+        private static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e) => e.Message.Date.ToString("yyMMdd_HHmmss");
 
         private static void InitiateTracer()
         {
