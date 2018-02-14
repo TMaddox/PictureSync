@@ -8,6 +8,7 @@ namespace PictureSync.Logic
 {
     class Config
     {
+        // global static object because only one config is needed
         public static Config config;
 
         private string token;

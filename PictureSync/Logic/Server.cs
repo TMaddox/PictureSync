@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.IO;
 
 namespace PictureSync.Logic
 {
@@ -27,10 +28,23 @@ namespace PictureSync.Logic
 
         public void ReadConfig()
         {
-            Config.config = new Logic.Config
+            //Read from file
+            string[] file = File.ReadAllLines(@"C:\Users\Maddox\Desktop\test\config.dat");
+            List<string> result = new List<string>();
+
+            foreach (string item in file)
             {
-                Path_root = @"C:\Users\Maddox\Desktop\test\",
-                Auth_key = "123456"
+                int pFrom = item.IndexOf("[") + "[".Length;
+                int pTo = item.LastIndexOf("]");
+
+                result.Add(item.Substring(pFrom, pTo - pFrom));
+            }
+
+            Config.config = new Config
+            {
+                Token = result.ElementAt(0),
+                Path_root = result.ElementAt(1),
+                Auth_key = result.ElementAt(2)
             };
         }
     }

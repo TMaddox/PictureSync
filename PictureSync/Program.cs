@@ -16,15 +16,17 @@ namespace PictureSync
         {
             Logic.Server serverlogic = new Logic.Server();
 
+            // Fill config object with configs from file
             serverlogic.ReadConfig();
 
-            Logic.Telegram_Bot bot = new Logic.Telegram_Bot();
+            // Create global telebot
+            Logic.Telegram_Bot.telebot = new Logic.Telegram_Bot();
 
             // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
             serverlogic.InitiateTracer();
 
             // Start bot
-            UI.CL_UI.StartUp(bot);
+            UI.CL_UI.StartUp();
         }
     }
 }

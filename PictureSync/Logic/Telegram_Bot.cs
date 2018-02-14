@@ -14,11 +14,10 @@ namespace PictureSync.Logic
     {
         Logic.Server serverlogic = new Logic.Server();
 
-        private TelegramBotClient bot;
-        public TelegramBotClient Bot
-        {
-            set { bot = value; }
-        }
+        // global static object because only one bot is needed
+        public static Telegram_Bot telebot;
+
+        private TelegramBotClient bot = new TelegramBotClient(Config.config.Token);
 
         // Get the time when message was sent
         public static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e) => e.Message.Date.ToString("yyMMdd_HHmmss");
