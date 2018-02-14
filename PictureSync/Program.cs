@@ -16,6 +16,7 @@ namespace PictureSync
         private static string path_photos = path_root + @"pic\";
         private static string path_logs = path_root + @"log.txt";
         private static string path_users = path_root + @"users.dat";
+        private static string path_config = path_root + @"config.dat";
         public static string key = "123456";
 
         Logic.Server Serverlogic = new Logic.Server();
@@ -29,20 +30,11 @@ namespace PictureSync
 
             Logic.Server serverlogic = new Logic.Server();
 
-            Console.WriteLine("*****************************");
-            Console.WriteLine("*                           *");
-            Console.WriteLine("*     Picture Sync 0.1      *");
-            Console.WriteLine("*                           *");
-            Console.WriteLine("*****************************");
-
-            // Logging
+            // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
             serverlogic.InitiateTracer(path_logs);
 
-            // Initiate eventhandlers
-            bot.Initiate_eventhandlers();
-
             // Start bot
-            bot.Start_bot();
+            UI.CL_UI.StartUp(bot);
         }
     }
 }

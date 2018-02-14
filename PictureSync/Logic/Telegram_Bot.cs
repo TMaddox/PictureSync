@@ -93,20 +93,18 @@ namespace PictureSync.Logic
             }
         }
 
-        public void Initiate_eventhandlers()
+        public void Start_bot()
         {
             bot.OnMessage += Bot_OnMessage;
             bot.OnMessageEdited += Bot_OnMessage;
-        }
-
-        public void Start_bot()
-        {
             bot.StartReceiving();
         }
 
         public void Stop_bot()
         {
             bot.StopReceiving();
+            bot.OnMessage -= Bot_OnMessage;
+            bot.OnMessageEdited -= Bot_OnMessage;
         }
     }
 }
