@@ -23,10 +23,18 @@ namespace PictureSync
 
         static void Main(string[] args)
         {
-            Logic.Telegram_Bot bot = new Logic.Telegram_Bot();
-            bot.BotID = new TelegramBotClient(token);
-            bot.Path_users = path_users;
-            bot.Path_photos = path_photos;
+            Logic.Config config = new Logic.Config
+            {
+                Path_root = @"C:\Users\Maddox\Desktop\test\",
+                Auth_key = "123456"
+            };
+
+            Logic.Telegram_Bot bot = new Logic.Telegram_Bot
+            {
+                BotID = new TelegramBotClient(config.Token),
+                Path_users = path_users,
+                Path_photos = path_photos
+            };
 
             Logic.Server serverlogic = new Logic.Server();
 

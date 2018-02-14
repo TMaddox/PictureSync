@@ -34,15 +34,10 @@ namespace PictureSync.Logic
             set { path_photos = value; }
         }
 
-
+        // Get the time when message was sent
         public static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e) => e.Message.Date.ToString("yyMMdd_HHmmss");
 
-        /// <summary>
-        /// Check if the user is Authorized
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="path_users"></param>
-        /// <returns>Returns if user is autorized</returns>
+        // Check if user is authorized
         public bool CheckAuth(Telegram.Bot.Args.MessageEventArgs e, string path_users)
         {
             List<string> whitelist = File.ReadAllLines(path_users).ToList();
