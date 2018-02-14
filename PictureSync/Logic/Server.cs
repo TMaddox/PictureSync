@@ -7,16 +7,19 @@ using System.Diagnostics;
 
 namespace PictureSync.Logic
 {
-    public class Server
+    class Server
     {
-        /// <summary>
-        /// Initiate logging
-        /// </summary>
-        /// <param name="path_logs"></param>
-        public void InitiateTracer(string path_logs)
+        private Config config;
+        public Config Config
+        {
+            get { return null; }
+            set { config = value; }
+        }
+
+        public void InitiateTracer()
         {
             Trace.Listeners.Clear();
-            var twtl = new TextWriterTraceListener(path_logs)
+            var twtl = new TextWriterTraceListener(config.Path_log)
             {
                 Name = "TextLogger",
                 TraceOutputOptions = TraceOptions.ThreadId | TraceOptions.DateTime

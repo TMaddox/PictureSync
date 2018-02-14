@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace PictureSync.UI
 {
-    public class CL_UI
+    class CL_UI
     {
+        private Logic.Config config;
+        public Logic.Config Config
+        {
+            get { return null; }
+            set { config = value; }
+        }
+
         public static void StartUp(Logic.Telegram_Bot bot)
         {
             Console.WriteLine("*****************************");

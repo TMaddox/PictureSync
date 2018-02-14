@@ -12,13 +12,6 @@ namespace PictureSync
 {
     public class Program
     {
-        private static string path_root = @"C:\Users\Maddox\Desktop\test\";
-        private static string path_photos = path_root + @"pic\";
-        private static string path_logs = path_root + @"log.txt";
-        private static string path_users = path_root + @"users.dat";
-        private static string path_config = path_root + @"config.dat";
-        public static string key = "123456";
-
         Logic.Server Serverlogic = new Logic.Server();
 
         static void Main(string[] args)
@@ -31,15 +24,17 @@ namespace PictureSync
 
             Logic.Telegram_Bot bot = new Logic.Telegram_Bot
             {
-                BotID = new TelegramBotClient(config.Token),
-                Path_users = path_users,
-                Path_photos = path_photos
+                Bot = new TelegramBotClient(config.Token),
+                Config = config
             };
 
-            Logic.Server serverlogic = new Logic.Server();
+            Logic.Server serverlogic = new Logic.Server
+            {
+                Config = config
+            };
 
             // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
-            serverlogic.InitiateTracer(path_logs);
+            serverlogic.InitiateTracer();
 
             // Start bot
             UI.CL_UI.StartUp(bot);

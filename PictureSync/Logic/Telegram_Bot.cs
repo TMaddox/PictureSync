@@ -10,49 +10,43 @@ using System.Drawing;
 
 namespace PictureSync.Logic
 {
-    public class Telegram_Bot
+    class Telegram_Bot
     {
         Logic.Server serverlogic = new Logic.Server();
 
         private TelegramBotClient bot;
-        public TelegramBotClient BotID
+        public TelegramBotClient Bot
         {
             get { return null; }
             set { bot = value; }
         }
 
-        private string path_users;
-        private string path_photos;
-        public string Path_users
+        private Config config;
+        public Config Config
         {
             get { return null; }
-            set { path_users = value; }
-        }
-        public string Path_photos
-        {
-            get { return null; }
-            set { path_photos = value; }
+            set { config = value; }
         }
 
         // Get the time when message was sent
         public static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e) => e.Message.Date.ToString("yyMMdd_HHmmss");
 
         // Check if user is authorized
-        public bool CheckAuth(Telegram.Bot.Args.MessageEventArgs e, string path_users)
+        public bool CheckAuth(Telegram.Bot.Args.MessageEventArgs e)
         {
-            List<string> whitelist = File.ReadAllLines(path_users).ToList();
+            List<string> whitelist = File.ReadAllLines(config.Path_users).ToList();
             return whitelist.Contains(e.Message.Chat.Username);
         }
 
-        public async Task Download_img(Telegram.Bot.Args.MessageEventArgs e, string path_photos)
+        public async Task Download_img(Telegram.Bot.Args.MessageEventArgs e)
         {
             // Create dir for username if not exists
-            Directory.CreateDirectory(path_photos + e.Message.Chat.Username);
+            Directory.CreateDirectory(config.Path_photos + e.Message.Chat.Username);
 
             // Get and save file
             Telegram.Bot.Types.File img = await bot.GetFileAsync(e.Message.Photo[e.Message.Photo.Count() - 1].FileId);
             var image = Bitmap.FromStream(img.FileStream);
-            image.Save(path_photos + e.Message.Chat.Username + @"\" + Logic.Telegram_Bot.TimeOfE(e) + ".png"); //Dafuq is da fehler ???
+            image.Save(config.Path_photos + e.Message.Chat.Username + @"\" + Logic.Telegram_Bot.TimeOfE(e) + ".png"); //Dafuq is da fehler ???
 
             await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
             Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
@@ -60,7 +54,7 @@ namespace PictureSync.Logic
 
         public void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
         {
-            if (CheckAuth(e, path_users))
+            if (CheckAuth(e))
             {
                 if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage)
                 {
@@ -73,12 +67,12 @@ namespace PictureSync.Logic
                 {
                     // Picture
                     Trace.WriteLine(serverlogic.NowLog + " Photo incoming from " + e.Message.Chat.Username);
-                    Download_img(e, path_photos);
+                    Download_img(e);
                 }
             }
-            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + PictureSync.Program.key)
+            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + config.Auth_key)
             {
-                File.AppendAllText(path_users, e.Message.Chat.Username + Environment.NewLine);
+                File.AppendAllText(config.Path_users, e.Message.Chat.Username + Environment.NewLine);
                 Trace.WriteLine(serverlogic.NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
                 bot.SendTextMessageAsync(e.Message.Chat.Id, "Erfolgreich Authentifiziert.");
             }
