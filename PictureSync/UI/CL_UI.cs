@@ -8,13 +8,6 @@ namespace PictureSync.UI
 {
     class CL_UI
     {
-        private Logic.Config config;
-        public Logic.Config Config
-        {
-            get { return null; }
-            set { config = value; }
-        }
-
         public static void StartUp(Logic.Telegram_Bot bot)
         {
             Console.WriteLine("*****************************");
@@ -24,7 +17,7 @@ namespace PictureSync.UI
             Console.WriteLine("*****************************");
             Console.WriteLine("");
             Console.WriteLine("1) start bot");
-            Console.WriteLine("2) edit config");
+            Console.WriteLine("2) show config");
             Console.WriteLine("");
             Console.Write("Option: ");
             string answer = Console.ReadLine();
@@ -34,6 +27,10 @@ namespace PictureSync.UI
                 bot.Start_bot();
                 Console.Clear();
                 Console.ReadLine();
+            }
+            else if (answer == "2")
+            {
+
             }
             else
             {

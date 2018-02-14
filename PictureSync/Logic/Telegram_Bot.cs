@@ -17,15 +17,7 @@ namespace PictureSync.Logic
         private TelegramBotClient bot;
         public TelegramBotClient Bot
         {
-            get { return null; }
             set { bot = value; }
-        }
-
-        private Config config;
-        public Config Config
-        {
-            get { return null; }
-            set { config = value; }
         }
 
         // Get the time when message was sent
@@ -34,19 +26,19 @@ namespace PictureSync.Logic
         // Check if user is authorized
         public bool CheckAuth(Telegram.Bot.Args.MessageEventArgs e)
         {
-            List<string> whitelist = File.ReadAllLines(config.Path_users).ToList();
+            List<string> whitelist = File.ReadAllLines(Config.config.Path_users).ToList();
             return whitelist.Contains(e.Message.Chat.Username);
         }
 
         public async Task Download_img(Telegram.Bot.Args.MessageEventArgs e)
         {
             // Create dir for username if not exists
-            Directory.CreateDirectory(config.Path_photos + e.Message.Chat.Username);
+            Directory.CreateDirectory(Config.config.Path_photos + e.Message.Chat.Username);
 
             // Get and save file
             Telegram.Bot.Types.File img = await bot.GetFileAsync(e.Message.Photo[e.Message.Photo.Count() - 1].FileId);
             var image = Bitmap.FromStream(img.FileStream);
-            image.Save(config.Path_photos + e.Message.Chat.Username + @"\" + Logic.Telegram_Bot.TimeOfE(e) + ".png"); //Dafuq is da fehler ???
+            image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Logic.Telegram_Bot.TimeOfE(e) + ".png"); //Dafuq is da fehler ???
 
             await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
             Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
@@ -70,9 +62,9 @@ namespace PictureSync.Logic
                     Download_img(e);
                 }
             }
-            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + config.Auth_key)
+            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + Config.config.Auth_key)
             {
-                File.AppendAllText(config.Path_users, e.Message.Chat.Username + Environment.NewLine);
+                File.AppendAllText(Config.config.Path_users, e.Message.Chat.Username + Environment.NewLine);
                 Trace.WriteLine(serverlogic.NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
                 bot.SendTextMessageAsync(e.Message.Chat.Id, "Erfolgreich Authentifiziert.");
             }
