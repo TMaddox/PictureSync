@@ -54,7 +54,6 @@
     <Compile Include="Logic\Telegram_Bot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\CL_UI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

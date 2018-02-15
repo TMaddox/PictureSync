@@ -26,10 +26,18 @@ namespace PictureSync.Logic
 
         public string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
 
-        public void ReadConfig()
+        public void Create_files()
+        {
+            if (!File.Exists(Config.config.Path_log))
+                using (StreamWriter sw = File.AppendText(Config.config.Path_log));
+            if (!File.Exists(Config.config.Path_users))
+                using (StreamWriter sw = File.AppendText(Config.config.Path_users));
+        }
+
+        public void ReadConfig(string path)
         {
             //Read from file
-            string[] file = File.ReadAllLines(@"C:\Users\Maddox\Desktop\test\config.dat");
+            string[] file = File.ReadAllLines(path + "config.dat");
             List<string> result = new List<string>();
 
             foreach (string item in file)
@@ -43,9 +51,28 @@ namespace PictureSync.Logic
             Config.config = new Config
             {
                 Token = result.ElementAt(0),
-                Path_root = result.ElementAt(1),
-                Auth_key = result.ElementAt(2)
+                Auth_key = result.ElementAt(1),
+                Path_root = path
             };
+        }
+
+        public void Create_Config(string path)
+        {
+            if (!File.Exists(path + "config.dat"))
+            {
+                using (StreamWriter sw = File.AppendText(path + "config.dat"))
+                {
+                    Console.Write("Token: ");
+                    string token = Console.ReadLine();
+                    sw.WriteLine("Token = [" + token + "]");
+
+                    Console.Write("Auth_key: ");
+                    string auth_key = Console.ReadLine();
+                    sw.WriteLine("Auth_key = [" + auth_key + "]");
+
+                    Console.Clear();
+                }
+            }
         }
     }
 }

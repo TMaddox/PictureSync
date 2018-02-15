@@ -20,9 +20,6 @@ namespace PictureSync.Logic
 
         private TelegramBotClient bot = new TelegramBotClient(Config.config.Token);
 
-        // Get the time when message was sent
-        public static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e) => e.Message.Date.ToString("yyyy-MM-dd_HH-mm-ss");
-
         // Check if user is authorized
         public bool CheckAuth(Telegram.Bot.Args.MessageEventArgs e)
         {
@@ -30,19 +27,19 @@ namespace PictureSync.Logic
             return whitelist.Contains(e.Message.Chat.Username);
         }
 
-        public async Task Download_img(Telegram.Bot.Args.MessageEventArgs e)
-        {
-            // Create dir for username if not exists
-            Directory.CreateDirectory(Config.config.Path_photos + e.Message.Chat.Username);
+        //public async Task Download_img(Telegram.Bot.Args.MessageEventArgs e)
+        //{
+        //    // Create dir for username if not exists
+        //    Directory.CreateDirectory(Config.config.Path_photos + e.Message.Chat.Username);
 
-            // Get and save file
-            Telegram.Bot.Types.File img = await bot.GetFileAsync(e.Message.Photo[e.Message.Photo.Count() - 1].FileId);
-            var image = Bitmap.FromStream(img.FileStream);
-            image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + TimeOfE(e) + ".png");
+        //    // Get and save file
+        //    Telegram.Bot.Types.File img = await bot.GetFileAsync(e.Message.Photo[e.Message.Photo.Count() - 1].FileId);
+        //    var image = Bitmap.FromStream(img.FileStream);
+        //    image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + TimeOfE(e) + ".png");
 
-            await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
-            Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
-        }
+        //    await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
+        //    Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
+        //}
 
         public async Task Download_document(Telegram.Bot.Args.MessageEventArgs e)
         {
@@ -84,13 +81,13 @@ namespace PictureSync.Logic
                 {
                     // Textmessage
                     Trace.WriteLine(serverlogic.NowLog + " Note: " + e.Message.Text);
-                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Note accepted");
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Note accepted.");
                 }
 
                 if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.PhotoMessage)
                 {
                     //Disabled because metadata is cut when sending a photo
-                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Bitte senden sie da Foto als Datei.");
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Please send the photo as file.");
                     
                     // Picture
                     //Trace.WriteLine(serverlogic.NowLog + " Photo incoming from " + e.Message.Chat.Username);
