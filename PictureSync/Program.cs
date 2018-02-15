@@ -7,6 +7,7 @@ using Telegram.Bot;
 using System.Drawing;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
 
 namespace PictureSync
 {
@@ -14,6 +15,13 @@ namespace PictureSync
     {
         static void Main(string[] args)
         {
+            var exitEvent = new ManualResetEvent(false);
+
+            Console.CancelKeyPress += (sender, eventArgs) => {
+                eventArgs.Cancel = true;
+                exitEvent.Set();
+            };
+
             Logic.Server serverlogic = new Logic.Server();
 
             // Fill config object with configs from file
@@ -26,7 +34,13 @@ namespace PictureSync
             serverlogic.InitiateTracer();
 
             // Start bot
-            UI.CL_UI.StartUp();
+            Logic.Telegram_Bot.telebot.Start_bot();
+            Trace.WriteLine(serverlogic.NowLog + " Bot started");
+
+            // wait for stop, to be implemented
+            exitEvent.WaitOne();
+            Logic.Telegram_Bot.telebot.Stop_bot();
+            Trace.WriteLine(serverlogic.NowLog + " Bot stopped");
         }
     }
 }

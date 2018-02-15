@@ -8,6 +8,8 @@ namespace PictureSync.UI
 {
     class CL_UI
     {
+        // never used and overall pretty useless class
+
         public static void StartUp()
         {
             Console.WriteLine("*****************************");
@@ -24,7 +26,7 @@ namespace PictureSync.UI
 
             if(answer == "1")
             {
-                Logic.Telegram_Bot.telebot.Start_bot();
+                
                 Console.Clear();
                 Console.ReadLine();
             }
