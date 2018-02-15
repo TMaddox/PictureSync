@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace PictureSync.Logic
 {
@@ -52,8 +53,18 @@ namespace PictureSync.Logic
             {
                 // Get and save file
                 Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
-                var image = Bitmap.FromStream(file.FileStream);
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + TimeOfE(e) + ".png");
+                Image image = Bitmap.FromStream(file.FileStream);
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image) + ".png");
+
+                await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
+                Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
+            }
+            else if (e.Message.Document.MimeType == "image/jpeg")
+            {
+                // Get and save file
+                Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
+                Image image = Bitmap.FromStream(file.FileStream);
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image) + ".jpg");
 
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
                 Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
@@ -116,6 +127,17 @@ namespace PictureSync.Logic
             bot.StopReceiving();
             bot.OnMessage -= Bot_OnMessage;
             bot.OnMessageEdited -= Bot_OnMessage;
+        }
+
+        public string Date_taken(Image image)
+        {
+            PropertyItem[] propItems = image.PropertyItems;
+            Encoding _Encoding = Encoding.UTF8;
+            var DataTakenProperty1 = propItems.Where(a => a.Id.ToString("x") == "9004").FirstOrDefault();
+            var DataTakenProperty2 = propItems.Where(a => a.Id.ToString("x") == "9003").FirstOrDefault();
+            string originalDateString = _Encoding.GetString(DataTakenProperty1.Value);
+            originalDateString = originalDateString.Remove(originalDateString.Length - 1);
+            return originalDateString.Replace(":", "-").Replace(" ", "_");
         }
     }
 }
