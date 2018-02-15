@@ -20,7 +20,7 @@ namespace PictureSync.Logic
         private TelegramBotClient bot = new TelegramBotClient(Config.config.Token);
 
         // Get the time when message was sent
-        public static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e) => e.Message.Date.ToString("yyMMdd_HHmmss");
+        public static string TimeOfE(Telegram.Bot.Args.MessageEventArgs e) => e.Message.Date.ToString("yyyy-MM-dd_HH-mm-ss");
 
         // Check if user is authorized
         public bool CheckAuth(Telegram.Bot.Args.MessageEventArgs e)
@@ -37,10 +37,32 @@ namespace PictureSync.Logic
             // Get and save file
             Telegram.Bot.Types.File img = await bot.GetFileAsync(e.Message.Photo[e.Message.Photo.Count() - 1].FileId);
             var image = Bitmap.FromStream(img.FileStream);
-            image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Logic.Telegram_Bot.TimeOfE(e) + ".png"); //Dafuq is da fehler ???
+            image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + TimeOfE(e) + ".png");
 
             await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
             Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
+        }
+
+        public async Task Download_document(Telegram.Bot.Args.MessageEventArgs e)
+        {
+            // Create dir for username if not exists
+            Directory.CreateDirectory(Config.config.Path_photos + e.Message.Chat.Username);
+
+            if (e.Message.Document.MimeType == "image/png")
+            {
+                // Get and save file
+                Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
+                var image = Bitmap.FromStream(file.FileStream);
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + TimeOfE(e) + ".png");
+
+                await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
+                Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
+            }
+            else
+            {
+                await bot.SendTextMessageAsync(e.Message.Chat.Id, "Error. Wrong File Type");
+                Trace.WriteLine(serverlogic.NowLog + " Error, wrong file Type from " + e.Message.Chat.Username);
+            }
         }
 
         public void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
@@ -56,9 +78,18 @@ namespace PictureSync.Logic
 
                 if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.PhotoMessage)
                 {
+                    //Disabled because metadata is cut when sending a photo
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Bitte senden sie da Foto als Datei.");
+                    
                     // Picture
-                    Trace.WriteLine(serverlogic.NowLog + " Photo incoming from " + e.Message.Chat.Username);
-                    Download_img(e);
+                    //Trace.WriteLine(serverlogic.NowLog + " Photo incoming from " + e.Message.Chat.Username);
+                    //Download_img(e);
+                }
+
+                if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.DocumentMessage)
+                {
+                    Trace.WriteLine(serverlogic.NowLog + " Document incoming from " + e.Message.Chat.Username);
+                    Download_document(e);
                 }
             }
             else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + Config.config.Auth_key)
