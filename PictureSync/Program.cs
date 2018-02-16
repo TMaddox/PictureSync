@@ -13,10 +13,13 @@ namespace PictureSync
 {
     public class Program
     {
-        static string path = @"C:\Users\Maddox\Desktop\test\";
+        static string basedir;
 
         static void Main(string[] args)
         {
+            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\");
+            basedir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\";
+
             var exitEvent = new ManualResetEvent(false);
             Console.CancelKeyPress += (sender, eventArgs) => {
                 eventArgs.Cancel = true;
@@ -24,10 +27,10 @@ namespace PictureSync
             };
 
             Logic.Server serverlogic = new Logic.Server();
-            serverlogic.Create_Config(path);
+            serverlogic.Create_Config(basedir);
 
             // Fill config object with configs from file
-            serverlogic.ReadConfig(path);
+            serverlogic.ReadConfig(basedir);
 
             // Create files (log, Users)
             serverlogic.Create_files();

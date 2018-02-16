@@ -51,7 +51,7 @@ namespace PictureSync.Logic
                 // Get and save file
                 Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
                 Image image = Bitmap.FromStream(file.FileStream);
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image) + ".png");
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + ".png");
 
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
                 Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
@@ -61,7 +61,7 @@ namespace PictureSync.Logic
                 // Get and save file
                 Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
                 Image image = Bitmap.FromStream(file.FileStream);
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image) + ".jpg");
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + ".jpg");
 
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
                 Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
@@ -126,15 +126,24 @@ namespace PictureSync.Logic
             bot.OnMessageEdited -= Bot_OnMessage;
         }
 
-        public string Date_taken(Image image)
+        public string Date_taken(Image image, Telegram.Bot.Args.MessageEventArgs e)
         {
-            PropertyItem[] propItems = image.PropertyItems;
-            Encoding _Encoding = Encoding.UTF8;
-            var DataTakenProperty1 = propItems.Where(a => a.Id.ToString("x") == "9004").FirstOrDefault();
-            var DataTakenProperty2 = propItems.Where(a => a.Id.ToString("x") == "9003").FirstOrDefault();
-            string originalDateString = _Encoding.GetString(DataTakenProperty1.Value);
-            originalDateString = originalDateString.Remove(originalDateString.Length - 1);
-            return originalDateString.Replace(":", "-").Replace(" ", "_");
+            try
+            {
+                PropertyItem[] propItems = image.PropertyItems;
+                Encoding _Encoding = Encoding.UTF8;
+                var DataTakenProperty1 = propItems.Where(a => a.Id.ToString("x") == "9004").FirstOrDefault();
+                var DataTakenProperty2 = propItems.Where(a => a.Id.ToString("x") == "9003").FirstOrDefault();
+                string originalDateString = _Encoding.GetString(DataTakenProperty1.Value);
+                originalDateString = originalDateString.Remove(originalDateString.Length - 1);
+                return originalDateString.Replace(":", "-").Replace(" ", "_");
+            }
+            catch (Exception)
+            {
+                Trace.WriteLine(serverlogic.NowLog + " Received photo with no cpature time (using servertime instead) from " + e.Message.Chat.Username);
+                return "noCaptureTime_" + DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            }
+            
         }
     }
 }
