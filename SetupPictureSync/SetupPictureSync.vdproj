@@ -104,6 +104,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
         "Release"
@@ -336,7 +344,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SetupPictureSync"
         "ProductCode" = "8:{0D422BF3-3F81-47A3-B8A6-94BD25249AC1}"
-        "PackageCode" = "8:{974E1D83-7ADF-4F6E-8EC5-5B96457E06B5}"
+        "PackageCode" = "8:{14DD4C29-B9CA-452E-AF3B-E7FFD2D8A867}"
         "UpgradeCode" = "8:{D2399980-F5C4-485E-9133-4480EF7AF34B}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

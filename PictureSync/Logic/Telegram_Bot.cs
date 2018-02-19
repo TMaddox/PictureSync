@@ -8,6 +8,7 @@ using Telegram.Bot;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Text.RegularExpressions;
 
 namespace PictureSync.Logic
 {
@@ -23,8 +24,15 @@ namespace PictureSync.Logic
         // Check if user is authorized
         public bool CheckAuth(Telegram.Bot.Args.MessageEventArgs e)
         {
-            List<string> whitelist = File.ReadAllLines(Config.config.Path_users).ToList();
-            return whitelist.Contains(e.Message.Chat.Username);
+            if (e.Message.Chat.Username != null)
+            {
+                List<string> whitelist = File.ReadAllLines(Config.config.Path_users).ToList();
+                return whitelist.Contains(e.Message.Chat.Username);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         //public async Task Download_img(Telegram.Bot.Args.MessageEventArgs e)
@@ -51,9 +59,9 @@ namespace PictureSync.Logic
                 // Get and save file
                 Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
                 Image image = Bitmap.FromStream(file.FileStream);
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + ".png");
+                Save_image(e, image, ".png");
 
-                await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
+                await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
                 Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
             }
             else if (e.Message.Document.MimeType == "image/jpeg")
@@ -61,15 +69,50 @@ namespace PictureSync.Logic
                 // Get and save file
                 Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
                 Image image = Bitmap.FromStream(file.FileStream);
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + ".jpg");
+                Save_image(e, image, ".jpg");
 
-                await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert");
+                await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
                 Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
             }
             else
             {
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Error. Wrong File Type");
                 Trace.WriteLine(serverlogic.NowLog + " Error, wrong file Type from " + e.Message.Chat.Username);
+            }
+        }
+
+        private void Save_image(Telegram.Bot.Args.MessageEventArgs e, Image image, string filetype)
+        {
+            if(!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + filetype))
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + filetype);
+            else if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + " (2)" + filetype))
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + " (2)" + filetype);
+            else
+            {
+                string path = Config.config.Path_photos + e.Message.Chat.Username + @"\";
+                DirectoryInfo dir = new DirectoryInfo(path);
+                int number = 0;
+                int test;
+
+                foreach (var file in dir.GetFiles("*" + filetype))
+                {
+                    try
+                    {
+                        int pFrom = file.ToString().IndexOf("(") + "(".Length;
+                        int pTo = file.ToString().LastIndexOf(")");
+
+                        test = Convert.ToInt16(file.ToString().Substring(pFrom, pTo - pFrom));
+                    }
+                    catch (Exception)
+                    {
+                        test = 0;
+                    }
+                    
+                    if (number < test)
+                        number = test;
+                }
+                number++;
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + " (" + number.ToString() + ")" + filetype);
             }
         }
 
@@ -81,13 +124,13 @@ namespace PictureSync.Logic
                 {
                     // Textmessage
                     Trace.WriteLine(serverlogic.NowLog + " Note: " + e.Message.Text);
-                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Note accepted.");
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Test erfolgreich.");
                 }
 
                 if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.PhotoMessage)
                 {
                     //Disabled because metadata is cut when sending a photo
-                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Please send the photo as file.");
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild abgelehnt, bitte als Datei senden.");
                     
                     // Picture
                     //Trace.WriteLine(serverlogic.NowLog + " Photo incoming from " + e.Message.Chat.Username);
@@ -100,7 +143,7 @@ namespace PictureSync.Logic
                     Download_document(e);
                 }
             }
-            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + Config.config.Auth_key)
+            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + Config.config.Auth_key && e.Message.Chat.Username != null)
             {
                 File.AppendAllText(Config.config.Path_users, e.Message.Chat.Username + Environment.NewLine);
                 Trace.WriteLine(serverlogic.NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
@@ -108,7 +151,7 @@ namespace PictureSync.Logic
             }
             else
             {
-                bot.SendTextMessageAsync(e.Message.Chat.Id, "Authorisation failed.");
+                bot.SendTextMessageAsync(e.Message.Chat.Id, "Authentifizierung fehlgeschlagen. Sicherstellen dass ein Benutzername gesetzt ist.");
             }
         }
 
