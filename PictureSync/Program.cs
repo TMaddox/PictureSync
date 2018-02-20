@@ -38,14 +38,11 @@ namespace PictureSync
             TrayIcon.ContextMenuStrip.Items[0].Click += new EventHandler(smoothExit);
             TrayIcon.Visible = true;
 
+            // on ctrl-c
+            Console.CancelKeyPress += smoothExit;
+
             Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\");
             basedir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\";
-
-            //var exitEvent = new ManualResetEvent(false);
-            //Console.CancelKeyPress += (sender, eventArgs) => {
-            //    eventArgs.Cancel = true;
-            //    exitEvent.Set();
-            //};
 
             Logic.Server serverlogic = new Logic.Server();
             serverlogic.Create_Config(basedir);

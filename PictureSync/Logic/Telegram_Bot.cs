@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
+using HashLibrary;
 
 namespace PictureSync.Logic
 {
@@ -143,7 +144,8 @@ namespace PictureSync.Logic
                 {
                     //Disabled because metadata is cut when sending a photo
                     bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild abgelehnt, bitte als Datei senden.");
-                    
+                    Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + e.Message.Chat.Username + " tried to send a picture, but sent not as file.");
+
                     // Picture
                     //Trace.WriteLine(serverlogic.NowLog + " Photo incoming from " + e.Message.Chat.Username);
                     //Download_img(e);
@@ -155,15 +157,24 @@ namespace PictureSync.Logic
                     Download_document(e, messageID);
                 }
             }
-            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + Config.config.Auth_key && e.Message.Chat.Username != null)
+            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Chat.Username != null && e.Message.Text.StartsWith("/auth "))
             {
-                File.AppendAllText(Config.config.Path_users, e.Message.Chat.Username + Environment.NewLine);
-                Trace.WriteLine(serverlogic.NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
-                bot.SendTextMessageAsync(e.Message.Chat.Id, "Erfolgreich Authentifiziert.");
+                var hasher = new Hasher();
+                if (hasher.Check(e.Message.Text.Remove(0, 6), new HashedPassword(Config.config.Hash, Config.config.Salt)))
+                {
+                    File.AppendAllText(Config.config.Path_users, e.Message.Chat.Username + Environment.NewLine);
+                    Trace.WriteLine(serverlogic.NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Erfolgreich Authentifiziert.");
+                }
+                else
+                {
+                    Trace.WriteLine(serverlogic.NowLog + " " + e.Message.Chat.Username + " tried to authenticate, but entered wrong password.");
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Authentifizierung fehlgeschlagen. Falsches Passwort.");
+                }
             }
             else
             {
-                bot.SendTextMessageAsync(e.Message.Chat.Id, "Authentifizierung fehlgeschlagen. Sicherstellen dass ein Benutzername gesetzt ist.");
+                bot.SendTextMessageAsync(e.Message.Chat.Id, "Authentifizierung fehlgeschlagen. Stellen Sie sicher dass ein Benutzername gesetzt ist.");
             }
         }
 
@@ -195,7 +206,7 @@ namespace PictureSync.Logic
             }
             catch
             {
-                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Photo has no cpature time (using servertime instead) from " + e.Message.Chat.Username);
+                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Photo has no capture time (using servertime instead) from " + e.Message.Chat.Username);
                 return "noCaptureTime_" + DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", System.Globalization.DateTimeFormatInfo.InvariantInfo);
             }
         }

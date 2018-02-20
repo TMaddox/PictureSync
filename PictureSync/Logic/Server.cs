@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
+using HashLibrary;
 
 namespace PictureSync.Logic
 {
@@ -52,7 +53,8 @@ namespace PictureSync.Logic
             Config.config = new Config
             {
                 Token = result.ElementAt(0),
-                Auth_key = result.ElementAt(1),
+                Hash = result.ElementAt(1),
+                Salt = result.ElementAt(2),
                 Path_root = path
             };
         }
@@ -69,7 +71,10 @@ namespace PictureSync.Logic
 
                     Console.Write("Auth_key: ");
                     string auth_key = Console.ReadLine();
-                    sw.WriteLine("Auth_key = [" + auth_key + "]");
+                    var hasher = new Hasher();
+                    var hashedPW = hasher.HashPassword(auth_key);
+                    sw.WriteLine("Hash = [" + hashedPW.Hash + "]");
+                    sw.WriteLine("Salt = [" + hashedPW.Salt + "]");
 
                     Console.Clear();
                 }

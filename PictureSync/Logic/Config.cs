@@ -45,11 +45,18 @@ namespace PictureSync.Logic
             get { return path_root + @"config.dat"; }
         }
 
-        private string auth_key;
-        public string Auth_key
+        private string hash;
+        public string Hash
         {
-            get { return auth_key; }
-            set { auth_key = value; }
+            get { return hash; }
+            set { hash = value; }
+        }
+
+        private string salt;
+        public string Salt
+        {
+            get { return salt; }
+            set { salt = value; }
         }
 
         private int msg_increment;
