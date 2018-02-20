@@ -49,7 +49,7 @@ namespace PictureSync.Logic
         //    Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
         //}
 
-        public async Task Download_document(Telegram.Bot.Args.MessageEventArgs e)
+        public async Task Download_document(Telegram.Bot.Args.MessageEventArgs e, int messageID)
         {
             // Create dir for username if not exists
             Directory.CreateDirectory(Config.config.Path_photos + e.Message.Chat.Username);
@@ -59,34 +59,42 @@ namespace PictureSync.Logic
                 // Get and save file
                 Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
                 Image image = Bitmap.FromStream(file.FileStream);
-                Save_image(e, image, ".png");
+                string filename = Save_image(e, image, ".png", messageID);
 
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
-                Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
+                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Saved photo from " + e.Message.Chat.Username + " as " + filename);
             }
             else if (e.Message.Document.MimeType == "image/jpeg")
             {
                 // Get and save file
                 Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
                 Image image = Bitmap.FromStream(file.FileStream);
-                Save_image(e, image, ".jpg");
+                string filename = Save_image(e, image, ".jpg", messageID);
 
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
-                Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
+                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Saved photo from " + e.Message.Chat.Username + " as " + filename);
             }
             else
             {
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Error. Wrong File Type");
-                Trace.WriteLine(serverlogic.NowLog + " Error, wrong file Type from " + e.Message.Chat.Username);
+                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Error, wrong file Type from " + e.Message.Chat.Username);
             }
         }
 
-        private void Save_image(Telegram.Bot.Args.MessageEventArgs e, Image image, string filetype)
+        private string Save_image(Telegram.Bot.Args.MessageEventArgs e, Image image, string filetype, int messageID)
         {
-            if(!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + filetype))
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + filetype);
-            else if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + " (2)" + filetype))
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + " (2)" + filetype);
+            string dateTaken = Date_taken(image, e, messageID);
+
+            if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + filetype))
+            {
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + filetype);
+                return dateTaken + filetype;
+            }
+            else if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + filetype))
+            {
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + filetype);
+                return dateTaken + " (2)" + filetype;
+            }
             else
             {
                 string path = Config.config.Path_photos + e.Message.Chat.Username + @"\";
@@ -112,7 +120,8 @@ namespace PictureSync.Logic
                         number = test;
                 }
                 number++;
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + Date_taken(image, e) + " (" + number.ToString() + ")" + filetype);
+                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (" + number.ToString() + ")" + filetype);
+                return dateTaken + " (" + number.ToString() + ")" + filetype;
             }
         }
 
@@ -120,6 +129,9 @@ namespace PictureSync.Logic
         {
             if (CheckAuth(e))
             {
+                int messageID = Config.config.Msg_Increment;
+                Config.config.Msg_Increment++;
+
                 if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage)
                 {
                     // Textmessage
@@ -139,8 +151,8 @@ namespace PictureSync.Logic
 
                 if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.DocumentMessage)
                 {
-                    Trace.WriteLine(serverlogic.NowLog + " Document incoming from " + e.Message.Chat.Username);
-                    Download_document(e);
+                    Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Document incoming from " + e.Message.Chat.Username);
+                    Download_document(e, messageID);
                 }
             }
             else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Text == "/auth " + Config.config.Auth_key && e.Message.Chat.Username != null)
@@ -169,7 +181,7 @@ namespace PictureSync.Logic
             bot.OnMessageEdited -= Bot_OnMessage;
         }
 
-        public string Date_taken(Image image, Telegram.Bot.Args.MessageEventArgs e)
+        public string Date_taken(Image image, Telegram.Bot.Args.MessageEventArgs e, int messageID)
         {
             try
             {
@@ -181,12 +193,11 @@ namespace PictureSync.Logic
                 originalDateString = originalDateString.Remove(originalDateString.Length - 1);
                 return originalDateString.Replace(":", "-").Replace(" ", "_");
             }
-            catch (Exception)
+            catch
             {
-                Trace.WriteLine(serverlogic.NowLog + " Received photo with no cpature time (using servertime instead) from " + e.Message.Chat.Username);
+                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Photo has no cpature time (using servertime instead) from " + e.Message.Chat.Username);
                 return "noCaptureTime_" + DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", System.Globalization.DateTimeFormatInfo.InvariantInfo);
             }
-            
         }
     }
 }

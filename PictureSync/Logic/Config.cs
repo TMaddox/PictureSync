@@ -51,5 +51,12 @@ namespace PictureSync.Logic
             get { return auth_key; }
             set { auth_key = value; }
         }
+
+        private int msg_increment;
+        public int Msg_Increment
+        {
+            get { return msg_increment; }
+            set { msg_increment = value; }
+        }
     }
 }

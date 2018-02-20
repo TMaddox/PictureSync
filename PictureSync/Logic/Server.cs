@@ -25,6 +25,7 @@ namespace PictureSync.Logic
         }
 
         public string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
+        public string MessageIDformat(int msgID) => "<" + msgID.ToString().PadLeft(6, '0') + ">";
 
         public void Create_files()
         {
