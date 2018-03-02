@@ -27,6 +27,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_82F666DFA42821EDCF3A625D71B7A280"
+        "OwnerKey" = "8:_6B97766E29E2441C9CF7D497E3A77994"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_87F59D5D8D1793161BFABF239AA695BF"
         "OwnerKey" = "8:_6B97766E29E2441C9CF7D497E3A77994"
         "MsmSig" = "8:_UNDEFINED"
@@ -71,6 +77,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_BAA3A264F5A231E07001B422B194B014"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_82F666DFA42821EDCF3A625D71B7A280"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -188,6 +200,37 @@
                     }
                 }
             "SourcePath" = "8:Telegram.Bot.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F3E72C4DE0F947FDA4749E681F7AAB5E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_82F666DFA42821EDCF3A625D71B7A280"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Hash, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_82F666DFA42821EDCF3A625D71B7A280"
+                    {
+                    "Name" = "8:Hash.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Hash.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F3E72C4DE0F947FDA4749E681F7AAB5E"
@@ -342,9 +385,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:SetupPictureSync"
+        "ProductName" = "8:PictureSync"
         "ProductCode" = "8:{0D422BF3-3F81-47A3-B8A6-94BD25249AC1}"
-        "PackageCode" = "8:{14DD4C29-B9CA-452E-AF3B-E7FFD2D8A867}"
+        "PackageCode" = "8:{6EEC39CF-003B-4AC2-9F08-3BE66429E0BA}"
         "UpgradeCode" = "8:{D2399980-F5C4-485E-9133-4480EF7AF34B}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -352,12 +395,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Default Company Name"
+        "Manufacturer" = "8:T Maddox"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:SetupPictureSync"
+        "Title" = "8:PictureSync"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Default Company Name"
+        "ARPCONTACT" = "8:T Maddox"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"

@@ -16,6 +16,7 @@ namespace PictureSync
 {
     public class Program
     {
+
         static string basedir;
         private static NotifyIcon TrayIcon = new NotifyIcon();
 
@@ -27,19 +28,21 @@ namespace PictureSync
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
         private static Int32 showWindow = 0; //0 - SW_HIDE - Hides the window and activates another window.
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Assembly currentAssembly = Assembly.GetExecutingAssembly();
             TrayIcon.Icon = Properties.Resources.icon;
             TrayIcon.MouseDoubleClick += new MouseEventHandler(TrayIcon_DoubleClick);
             TrayIcon.ContextMenuStrip = new ContextMenuStrip();
-            TrayIcon.ContextMenuStrip.Items.AddRange(new ToolStripItem[] { new ToolStripMenuItem() });
+            TrayIcon.ContextMenuStrip.Items.AddRange(new ToolStripItem[] { new ToolStripMenuItem(), new ToolStripMenuItem() });
             TrayIcon.ContextMenuStrip.Items[0].Text = "Exit";
-            TrayIcon.ContextMenuStrip.Items[0].Click += new EventHandler(smoothExit);
+            TrayIcon.ContextMenuStrip.Items[0].Click += new EventHandler(SmoothExit);
+            TrayIcon.ContextMenuStrip.Items[1].Text = "Hide";
+            TrayIcon.ContextMenuStrip.Items[1].Click += Hide_Show_Click;
             TrayIcon.Visible = true;
 
             // on ctrl-c
-            Console.CancelKeyPress += smoothExit;
+            Console.CancelKeyPress += SmoothExit;
 
             Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\");
             basedir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\";
@@ -66,6 +69,17 @@ namespace PictureSync
             Application.Run();
         }
 
+        private static void Hide_Show_Click(object sender, EventArgs e)
+        {
+            showWindow = ++showWindow % 2;
+            ShowWindow(ThisConsole, showWindow);
+
+            if (showWindow == 1)
+                TrayIcon.ContextMenuStrip.Items[1].Text = "Hide";
+            else
+                TrayIcon.ContextMenuStrip.Items[1].Text = "Show";
+        }
+
         private static void TrayIcon_DoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right)
@@ -73,10 +87,15 @@ namespace PictureSync
                 //reserve right click for context menu
                 showWindow = ++showWindow % 2;
                 ShowWindow(ThisConsole, showWindow);
+
+                if (showWindow == 1)
+                    TrayIcon.ContextMenuStrip.Items[1].Text = "Hide";
+                else
+                    TrayIcon.ContextMenuStrip.Items[1].Text = "Show";
             }
         }
 
-        private static void smoothExit(object sender, EventArgs e)
+        private static void SmoothExit(object sender, EventArgs e)
         {
             Logic.Server serverlogic = new Logic.Server();
             Logic.Telegram_Bot.telebot.Stop_bot();

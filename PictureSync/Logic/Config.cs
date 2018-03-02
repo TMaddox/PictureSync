@@ -25,9 +25,11 @@ namespace PictureSync.Logic
             set { path_root = value; }
         }
 
+        private string path_photos;
         public string Path_photos
         {
-            get { return path_root + @"pic\"; }
+            get { return path_photos; }
+            set { path_photos = value; }
         }
 
         public string Path_log

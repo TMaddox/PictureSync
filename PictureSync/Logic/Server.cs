@@ -55,6 +55,7 @@ namespace PictureSync.Logic
                 Token = result.ElementAt(0),
                 Hash = result.ElementAt(1),
                 Salt = result.ElementAt(2),
+                Path_photos = result.ElementAt(3),
                 Path_root = path
             };
         }
@@ -75,6 +76,10 @@ namespace PictureSync.Logic
                     var hashedPW = hasher.HashPassword(auth_key);
                     sw.WriteLine("Hash = [" + hashedPW.Hash + "]");
                     sw.WriteLine("Salt = [" + hashedPW.Salt + "]");
+
+                    Console.Write("Path for pictures: ");
+                    string path_pictures = Console.ReadLine();
+                    sw.WriteLine("path_pictures = [" + path_pictures + "]");
 
                     Console.Clear();
                 }
