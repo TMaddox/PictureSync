@@ -95,11 +95,11 @@ namespace PictureSync.Logic
                 sw.WriteLine("path_pictures = [" + path_pictures + "]");
 
                 Console.Write("Maximal lenght of pictures: ");
-                int max_len = Convert.ToInt32(Console.ReadLine());
+                string max_len = Console.ReadLine();
                 sw.WriteLine("max_picture_lenght = [" + max_len + "]");
 
                 Console.Write("Qaulity of encoding (1-100): ");
-                int encodingQ = Convert.ToInt32(Console.ReadLine());
+                string encodingQ = Console.ReadLine();
                 sw.WriteLine("encoding_Quality = [" + encodingQ + "]");
 
                 Console.Clear();

@@ -102,7 +102,7 @@ namespace PictureSync.Logic
             ImageCodecInfo jpgEncoder = serverlogic.GetEncoder(ImageFormat.Jpeg);
             System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
             EncoderParameters encoder = new EncoderParameters(1);
-            EncoderParameter encoderParameter = new EncoderParameter(myEncoder, 80L);
+            EncoderParameter encoderParameter = new EncoderParameter(myEncoder, Config.config.EncodeQ);
             encoder.Param[0] = encoderParameter;
 
             if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg"))
