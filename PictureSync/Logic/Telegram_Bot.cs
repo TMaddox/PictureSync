@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using HashLibrary;
+using System.Windows.Forms;
 
 namespace PictureSync.Logic
 {
@@ -55,22 +56,12 @@ namespace PictureSync.Logic
             // Create dir for username if not exists
             Directory.CreateDirectory(Config.config.Path_photos + e.Message.Chat.Username);
 
-            if (e.Message.Document.MimeType == "image/png")
+            if (e.Message.Document.MimeType == "image/png" || e.Message.Document.MimeType == "image/jpeg")
             {
                 // Get and save file
                 Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
                 Image image = Bitmap.FromStream(file.FileStream);
-                string filename = Save_image(e, image, ".png", messageID);
-
-                await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
-                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Saved photo from " + e.Message.Chat.Username + " as " + filename);
-            }
-            else if (e.Message.Document.MimeType == "image/jpeg")
-            {
-                // Get and save file
-                Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
-                Image image = Bitmap.FromStream(file.FileStream);
-                string filename = Save_image(e, image, ".jpg", messageID);
+                string filename = Save_image(e, image, messageID);
 
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
                 Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Saved photo from " + e.Message.Chat.Username + " as " + filename);
@@ -82,19 +73,47 @@ namespace PictureSync.Logic
             }
         }
 
-        private string Save_image(Telegram.Bot.Args.MessageEventArgs e, Image image, string filetype, int messageID)
+        private string Save_image(Telegram.Bot.Args.MessageEventArgs e, Image image, int messageID)
         {
+            Bitmap final_image;
+            double res = (double)image.Width / image.Height;
+            int width,
+                height;
             string dateTaken = Date_taken(image, e, messageID);
 
-            if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + filetype))
+            if(res <= 1)
             {
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + filetype);
-                return dateTaken + filetype;
+                //Hochformat
+                height = Config.config.Max_len;
+                width = Convert.ToInt16(height * res);
             }
-            else if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + filetype))
+            else
             {
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + filetype);
-                return dateTaken + " (2)" + filetype;
+                //Querformat
+                width = Config.config.Max_len;
+                height = Convert.ToInt16(width / res);
+            }
+
+            if (image.Width > width && image.Height > height)
+                final_image = serverlogic.ResizeImg(image, width, height);
+            else
+                final_image = serverlogic.ResizeImg(image, image.Width, image.Height);
+
+            ImageCodecInfo jpgEncoder = serverlogic.GetEncoder(ImageFormat.Jpeg);
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            EncoderParameters encoder = new EncoderParameters(1);
+            EncoderParameter encoderParameter = new EncoderParameter(myEncoder, 80L);
+            encoder.Param[0] = encoderParameter;
+
+            if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg"))
+            {
+                final_image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg", jpgEncoder, encoder);
+                return dateTaken + ".jpg";
+            }
+            else if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + ".jpg"))
+            {
+                final_image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + ".jpg", jpgEncoder, encoder);
+                return dateTaken + " (2)" + ".jpg";
             }
             else
             {
@@ -103,7 +122,7 @@ namespace PictureSync.Logic
                 int number = 0;
                 int test;
 
-                foreach (var file in dir.GetFiles("*" + filetype))
+                foreach (var file in dir.GetFiles("*" + ".jpg"))
                 {
                     try
                     {
@@ -121,8 +140,8 @@ namespace PictureSync.Logic
                         number = test;
                 }
                 number++;
-                image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (" + number.ToString() + ")" + filetype);
-                return dateTaken + " (" + number.ToString() + ")" + filetype;
+                final_image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (" + number.ToString() + ")" + ".jpg", jpgEncoder, encoder);
+                return dateTaken + " (" + number.ToString() + ")" + ".jpg";
             }
         }
 
@@ -207,7 +226,7 @@ namespace PictureSync.Logic
             catch
             {
                 Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Photo has no capture time (using servertime instead) from " + e.Message.Chat.Username);
-                return DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "noCaptureTime_";
+                return DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "_noCaptureTime";
             }
         }
     }

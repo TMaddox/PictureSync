@@ -67,5 +67,21 @@ namespace PictureSync.Logic
             get { return msg_increment; }
             set { msg_increment = value; }
         }
+
+        // Max lenght of a saved picture
+        private int max_len;
+        public int Max_len
+        {
+            get { return max_len; }
+            set { max_len = value; }
+        }
+
+        // Quality of the jpg encoder (1-100)
+        private int encodeQ;
+        public int EncodeQ
+        {
+            get { return encodeQ; }
+            set { encodeQ = value; }
+        }
     }
 }

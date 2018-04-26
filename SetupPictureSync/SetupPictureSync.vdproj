@@ -64,6 +64,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_87F59D5D8D1793161BFABF239AA695BF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6B97766E29E2441C9CF7D497E3A77994"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -83,12 +89,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_82F666DFA42821EDCF3A625D71B7A280"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_87F59D5D8D1793161BFABF239AA695BF"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -386,15 +386,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PictureSync"
-        "ProductCode" = "8:{0D422BF3-3F81-47A3-B8A6-94BD25249AC1}"
-        "PackageCode" = "8:{6EEC39CF-003B-4AC2-9F08-3BE66429E0BA}"
+        "ProductCode" = "8:{909A41A9-CD4F-4DEE-B1DD-1C8FFCBDA6B9}"
+        "PackageCode" = "8:{39F73FB5-8C8F-4B4C-A0CC-6FD853646D89}"
         "UpgradeCode" = "8:{D2399980-F5C4-485E-9133-4480EF7AF34B}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.1.0"
         "Manufacturer" = "8:T Maddox"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
