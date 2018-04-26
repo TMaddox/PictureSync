@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
 using HashLibrary;
+using System.Windows.Forms;
 
 namespace PictureSync.Logic
 {
@@ -38,52 +39,60 @@ namespace PictureSync.Logic
 
         public void ReadConfig(string path)
         {
-            //Read from file
-            string[] file = File.ReadAllLines(path + "config.dat");
-            List<string> result = new List<string>();
-
-            foreach (string item in file)
+            try
             {
-                int pFrom = item.IndexOf("[") + "[".Length;
-                int pTo = item.LastIndexOf("]");
+                //Read from file
+                string[] file = File.ReadAllLines(path + "config.dat");
+                List<string> result = new List<string>();
 
-                result.Add(item.Substring(pFrom, pTo - pFrom));
+                foreach (string item in file)
+                {
+                    int pFrom = item.IndexOf("[") + "[".Length;
+                    int pTo = item.LastIndexOf("]");
+
+                    result.Add(item.Substring(pFrom, pTo - pFrom));
+                }
+
+                Config.config = new Config
+                {
+                    Token = result.ElementAt(0),
+                    Hash = result.ElementAt(1),
+                    Salt = result.ElementAt(2),
+                    Path_photos = result.ElementAt(3),
+                    Path_root = path
+                };
             }
-
-            Config.config = new Config
+            catch (Exception)
             {
-                Token = result.ElementAt(0),
-                Hash = result.ElementAt(1),
-                Salt = result.ElementAt(2),
-                Path_photos = result.ElementAt(3),
-                Path_root = path
-            };
+                Create_Config(path);
+            }
+            
         }
 
         public void Create_Config(string path)
         {
-            if (!File.Exists(path + "config.dat"))
+            File.Delete(path + "config.dat");
+            using (StreamWriter sw = File.AppendText(path + "config.dat"))
             {
-                using (StreamWriter sw = File.AppendText(path + "config.dat"))
-                {
-                    Console.Write("Token: ");
-                    string token = Console.ReadLine();
-                    sw.WriteLine("Token = [" + token + "]");
+                Console.Write("Token: ");
+                string token = Console.ReadLine();
+                sw.WriteLine("Token = [" + token + "]");
 
-                    Console.Write("Auth_key: ");
-                    string auth_key = Console.ReadLine();
-                    var hasher = new Hasher();
-                    var hashedPW = hasher.HashPassword(auth_key);
-                    sw.WriteLine("Hash = [" + hashedPW.Hash + "]");
-                    sw.WriteLine("Salt = [" + hashedPW.Salt + "]");
+                Console.Write("Auth_key: ");
+                string auth_key = Console.ReadLine();
+                var hasher = new Hasher();
+                var hashedPW = hasher.HashPassword(auth_key);
+                sw.WriteLine("Hash = [" + hashedPW.Hash + "]");
+                sw.WriteLine("Salt = [" + hashedPW.Salt + "]");
 
-                    Console.Write("Path for pictures: ");
-                    string path_pictures = Console.ReadLine();
-                    sw.WriteLine("path_pictures = [" + path_pictures + "]");
+                Console.Write("Path for pictures: ");
+                string path_pictures = Console.ReadLine();
+                sw.WriteLine("path_pictures = [" + path_pictures + "]");
 
-                    Console.Clear();
-                }
+                Console.Clear();
             }
+            System.Diagnostics.Process.Start(Application.ExecutablePath);
+            Environment.Exit(0);
         }
     }
 }

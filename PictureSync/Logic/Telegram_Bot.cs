@@ -207,7 +207,7 @@ namespace PictureSync.Logic
             catch
             {
                 Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Photo has no capture time (using servertime instead) from " + e.Message.Chat.Username);
-                return "noCaptureTime_" + DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", System.Globalization.DateTimeFormatInfo.InvariantInfo);
+                return DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "noCaptureTime_";
             }
         }
     }

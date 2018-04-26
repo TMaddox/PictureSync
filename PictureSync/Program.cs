@@ -48,16 +48,21 @@ namespace PictureSync
             basedir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\";
 
             Logic.Server serverlogic = new Logic.Server();
-            serverlogic.Create_Config(basedir);
-
-            // Fill config object with configs from file
             serverlogic.ReadConfig(basedir);
 
             // Create files (log, Users)
             serverlogic.Create_files();
 
             // Create global telebot
-            Logic.Telegram_Bot.telebot = new Logic.Telegram_Bot();
+            try
+            {
+                Logic.Telegram_Bot.telebot = new Logic.Telegram_Bot();
+            }
+            catch (Exception)
+            {
+                serverlogic.Create_Config(basedir);
+            }
+            
 
             // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
             serverlogic.InitiateTracer();
