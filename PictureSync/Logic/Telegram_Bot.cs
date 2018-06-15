@@ -19,9 +19,9 @@ namespace PictureSync.Logic
         Logic.Server serverlogic = new Logic.Server();
 
         // global static object because only one bot is needed
-        public static Telegram_Bot telebot;
+        public static Telegram_Bot Telebot;
 
-        private TelegramBotClient bot = new TelegramBotClient(Config.config.Token);
+        private readonly TelegramBotClient bot = new TelegramBotClient(Config.config.Token);
 
         //public async Task Download_img(Telegram.Bot.Args.MessageEventArgs e)
         //{
@@ -45,14 +45,22 @@ namespace PictureSync.Logic
             if (e.Message.Document.MimeType == "image/png" || e.Message.Document.MimeType == "image/jpeg")
             {
                 // Get and save file
-                Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
-                Image image = Image.FromStream(file.FileStream);
-                string filename = Save_image(e, image, messageId);
+                var file = await bot.GetFileAsync(e.Message.Document.FileId);
+                var image = Image.FromStream(file.FileStream);
+                var filename = Save_image(e, image, messageId);
 
-                await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
+                if(Userlist.HasCompression(e.Message.Chat.Username))
+                    await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
+                else
+                    await bot.SendTextMessageAsync(e.Message.Chat.Id, "Unkomprimiertes Bild akzeptiert.");
                 Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageId) + " Saved photo from " + e.Message.Chat.Username + " as " + filename);
 
-                // ADD IMG Counter per Person here
+                Userlist.AddPictureAmount(e.Message.Chat.Username);
+                if (Userlist.SetCompression(e.Message.Chat.Username, true))
+                {
+                    Trace.WriteLine(serverlogic.NowLog + " " + e.Message.Chat.Username + " autoenable compression");
+                    await bot.SendTextMessageAsync(e.Message.Chat.Id, "Komprimieren ist wieder aktiviert");
+                }
             }
             else
             {
@@ -61,14 +69,14 @@ namespace PictureSync.Logic
             }
         }
 
-        private string Save_image(Telegram.Bot.Args.MessageEventArgs e, Image image, int messageID)
+        private string Save_image(Telegram.Bot.Args.MessageEventArgs e, Image image, int messageId)
         {
             Bitmap finalImage;
             var hasCompression = Userlist.HasCompression(e.Message.Chat.Username);
             var res = (double)image.Width / image.Height;
             int width = image.Width,
                 height = image.Height;
-            var dateTaken = Date_taken(image, e, messageID);
+            var dateTaken = Date_taken(image, e, messageId);
 
             if(res <= 1)
             {
@@ -144,8 +152,23 @@ namespace PictureSync.Logic
                 if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage)
                 {
                     // Textmessage
-                    Trace.WriteLine(serverlogic.NowLog + " Note: " + e.Message.Text);
-                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Test erfolgreich.");
+                    switch (e.Message.Text)
+                    {
+                        case ".":
+                            Userlist.SetCompression(e.Message.Chat.Username, false);
+                            Trace.WriteLine(serverlogic.NowLog + " " + e.Message.Chat.Username + " disabled compression");
+                            bot.SendTextMessageAsync(e.Message.Chat.Id, "Komprimieren ist für das nächste Bild deaktiviert");
+                            break;
+                        case ",":
+                            Userlist.SetCompression(e.Message.Chat.Username, true);
+                            Trace.WriteLine(serverlogic.NowLog + " " + e.Message.Chat.Username + " enabled compression");
+                            bot.SendTextMessageAsync(e.Message.Chat.Id, "Komprimieren ist aktiviert");
+                            break;
+                        default:
+                            Trace.WriteLine(serverlogic.NowLog + " Note: " + e.Message.Text);
+                            bot.SendTextMessageAsync(e.Message.Chat.Id, "Dieser Befehl hat keine Bedeutung.");
+                            break;
+                    }
                 }
 
                 if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.PhotoMessage)

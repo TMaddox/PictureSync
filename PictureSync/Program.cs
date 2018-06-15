@@ -56,7 +56,7 @@ namespace PictureSync
             // Create global telebot
             try
             {
-                Logic.Telegram_Bot.telebot = new Logic.Telegram_Bot();
+                Logic.Telegram_Bot.Telebot = new Logic.Telegram_Bot();
             }
             catch (Exception)
             {
@@ -68,7 +68,7 @@ namespace PictureSync
             serverlogic.InitiateTracer();
 
             // Start bot
-            Logic.Telegram_Bot.telebot.Start_bot();
+            Logic.Telegram_Bot.Telebot.Start_bot();
             Trace.WriteLine(serverlogic.NowLog + " Bot started");
 
             Application.Run();
@@ -103,7 +103,7 @@ namespace PictureSync
         private static void SmoothExit(object sender, EventArgs e)
         {
             Logic.Server serverlogic = new Logic.Server();
-            Logic.Telegram_Bot.telebot.Stop_bot();
+            Logic.Telegram_Bot.Telebot.Stop_bot();
             Trace.WriteLine(serverlogic.NowLog + " Bot stopped");
 
             TrayIcon.Visible = false;
