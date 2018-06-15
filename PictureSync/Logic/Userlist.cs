@@ -17,7 +17,7 @@ namespace PictureSync.Logic
         {
             get
             {
-                var temp = File.ReadAllLines(Config.config.Path_users).ToList();
+                var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
                 foreach (var user in temp)
                 {
                     var userdata = user.Split(',');
@@ -34,7 +34,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static bool HasCompression(string username)
         {
-            var temp = File.ReadAllLines(Config.config.Path_users).ToList();
+            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
             foreach (var user in temp)
             {
                 var userdata = user.Split(',');
@@ -52,7 +52,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static bool SetCompression(string username, bool compress)
         {
-            var temp = File.ReadAllLines(Config.config.Path_users).ToList();
+            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
             var statechanged = false;
 
             foreach (var user in temp)
@@ -76,7 +76,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static bool HasAdminPrivilege(string username)
         {
-            var temp = File.ReadAllLines(Config.config.Path_users).ToList();
+            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
             foreach (var user in temp)
             {
                 var userdata = user.Split(',');
@@ -93,7 +93,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static int GetPictureAmount(string username)
         {
-            var temp = File.ReadAllLines(Config.config.Path_users).ToList();
+            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
             foreach (var user in temp)
             {
                 var userdata = user.Split(',');
@@ -109,7 +109,7 @@ namespace PictureSync.Logic
         /// <param name="username"></param>
         public static void AddPictureAmount(string username)
         {
-            var temp = File.ReadAllLines(Config.config.Path_users).ToList();
+            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
             foreach (var user in temp)
             {
                 var userdata = user.Split(',');
@@ -133,7 +133,7 @@ namespace PictureSync.Logic
 
         private static void WriteUserdata(string[] userdata)
         {
-            var temp = File.ReadAllLines(Config.config.Path_users);
+            var temp = File.ReadAllLines(Config.config.PathUsers);
             for (var i = 0; i < temp.Length; i++)
             {
                 var line = temp[i].Split(',');
@@ -150,7 +150,7 @@ namespace PictureSync.Logic
                     temp[i] = b.ToString();
                 }
             }
-            File.WriteAllLines(Config.config.Path_users,temp);
+            File.WriteAllLines(Config.config.PathUsers,temp);
         }
     }
 }

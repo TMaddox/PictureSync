@@ -73,7 +73,7 @@
   <ItemGroup>
     <Compile Include="Logic\Config.cs" />
     <Compile Include="Logic\Server.cs" />
-    <Compile Include="Logic\Telegram_Bot.cs" />
+    <Compile Include="Logic\TelegramBot.cs" />
     <Compile Include="Logic\Userlist.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
