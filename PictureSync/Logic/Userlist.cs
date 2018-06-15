@@ -87,6 +87,31 @@ namespace PictureSync.Logic
         }
 
         /// <summary>
+        /// Sets admin privileges (yes|no) for user, returns true if state was changed
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="adminprivilege"></param>
+        /// <returns></returns>
+        public static bool SetAdminPrivilege(string username, bool adminprivilege)
+        {
+            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+            var statechanged = false;
+
+            foreach (var user in temp)
+            {
+                var userdata = user.Split(',');
+                if (userdata[0] == username)
+                {
+                    if (userdata[2] != Convert.ToString(Convert.ToInt32(adminprivilege)))
+                        statechanged = true;
+                    userdata[2] = Convert.ToInt32(adminprivilege).ToString();
+                    WriteUserdata(userdata);
+                }
+            }
+            return statechanged;
+        }
+
+        /// <summary>
         /// Returns the amount of pictures sent in a given date range
         /// </summary>
         /// <param name="username"></param>
@@ -131,6 +156,7 @@ namespace PictureSync.Logic
             return Users.Contains(username);
         }
 
+        // Refreshes users.dat
         private static void WriteUserdata(string[] userdata)
         {
             var temp = File.ReadAllLines(Config.config.PathUsers);
