@@ -23,20 +23,6 @@ namespace PictureSync.Logic
 
         private TelegramBotClient bot = new TelegramBotClient(Config.config.Token);
 
-        // Check if user is authorized
-        public bool CheckAuth(Telegram.Bot.Args.MessageEventArgs e)
-        {
-            if (e.Message.Chat.Username != null)
-            {
-                List<string> whitelist = File.ReadAllLines(Config.config.Path_users).ToList();
-                return whitelist.Contains(e.Message.Chat.Username);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         //public async Task Download_img(Telegram.Bot.Args.MessageEventArgs e)
         //{
         //    // Create dir for username if not exists
@@ -51,7 +37,7 @@ namespace PictureSync.Logic
         //    Trace.WriteLine(serverlogic.NowLog + " Received photo from " + e.Message.Chat.Username);
         //}
 
-        public async Task Download_document(Telegram.Bot.Args.MessageEventArgs e, int messageID)
+        public async Task Download_document(Telegram.Bot.Args.MessageEventArgs e, int messageId)
         {
             // Create dir for username if not exists
             Directory.CreateDirectory(Config.config.Path_photos + e.Message.Chat.Username);
@@ -60,59 +46,62 @@ namespace PictureSync.Logic
             {
                 // Get and save file
                 Telegram.Bot.Types.File file = await bot.GetFileAsync(e.Message.Document.FileId);
-                Image image = Bitmap.FromStream(file.FileStream);
-                string filename = Save_image(e, image, messageID);
+                Image image = Image.FromStream(file.FileStream);
+                string filename = Save_image(e, image, messageId);
 
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
-                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Saved photo from " + e.Message.Chat.Username + " as " + filename);
+                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageId) + " Saved photo from " + e.Message.Chat.Username + " as " + filename);
+
+                // ADD IMG Counter per Person here
             }
             else
             {
                 await bot.SendTextMessageAsync(e.Message.Chat.Id, "Error. Wrong File Type");
-                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageID) + " Error, wrong file Type from " + e.Message.Chat.Username);
+                Trace.WriteLine(serverlogic.NowLog + " " + serverlogic.MessageIDformat(messageId) + " Error, wrong file Type from " + e.Message.Chat.Username);
             }
         }
 
         private string Save_image(Telegram.Bot.Args.MessageEventArgs e, Image image, int messageID)
         {
-            Bitmap final_image;
-            double res = (double)image.Width / image.Height;
-            int width,
-                height;
-            string dateTaken = Date_taken(image, e, messageID);
+            Bitmap finalImage;
+            var hasCompression = Userlist.HasCompression(e.Message.Chat.Username);
+            var res = (double)image.Width / image.Height;
+            int width = image.Width,
+                height = image.Height;
+            var dateTaken = Date_taken(image, e, messageID);
 
             if(res <= 1)
             {
                 //Hochformat
-                height = Config.config.Max_len;
-                width = Convert.ToInt16(height * res);
+                height = hasCompression ? Config.config.Max_len : height;
+                width = hasCompression ? Convert.ToInt16(height * res): width;
             }
             else
             {
                 //Querformat
-                width = Config.config.Max_len;
-                height = Convert.ToInt16(width / res);
+                width = hasCompression ? Config.config.Max_len : width;
+                height = hasCompression ? Convert.ToInt16(width / res): height;
             }
 
             if (image.Width > width && image.Height > height)
-                final_image = serverlogic.ResizeImg(image, width, height);
+                finalImage = serverlogic.ResizeImg(image, width, height);
             else
-                final_image = serverlogic.ResizeImg(image, image.Width, image.Height);
+                finalImage = serverlogic.ResizeImg(image, image.Width, image.Height);
 
-            ImageCodecInfo jpgEncoder = serverlogic.GetEncoder(ImageFormat.Jpeg);
-            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
-            EncoderParameters encoder = new EncoderParameters(1);
-            EncoderParameter encoderParameter = new EncoderParameter(myEncoder, Config.config.EncodeQ);
+            var jpgEncoder = serverlogic.GetEncoder(ImageFormat.Jpeg);
+            var myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            var encoder = new EncoderParameters(1);
+            var encoderParameter = new EncoderParameter(myEncoder, hasCompression ? Config.config.EncodeQ : 93L);
             encoder.Param[0] = encoderParameter;
 
             if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg"))
             {
-                final_image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg", jpgEncoder, encoder);
+                finalImage.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg", jpgEncoder, encoder);
                 return dateTaken + ".jpg";
             }
             else if (!File.Exists(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + ".jpg"))
             {
-                final_image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + ".jpg", jpgEncoder, encoder);
+                finalImage.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + ".jpg", jpgEncoder, encoder);
                 return dateTaken + " (2)" + ".jpg";
             }
             else
@@ -126,7 +115,7 @@ namespace PictureSync.Logic
                 {
                     try
                     {
-                        int pFrom = file.ToString().IndexOf("(") + "(".Length;
+                        int pFrom = file.ToString().IndexOf("(", StringComparison.Ordinal) + "(".Length;
                         int pTo = file.ToString().LastIndexOf(")");
 
                         test = Convert.ToInt16(file.ToString().Substring(pFrom, pTo - pFrom));
@@ -140,14 +129,14 @@ namespace PictureSync.Logic
                         number = test;
                 }
                 number++;
-                final_image.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (" + number.ToString() + ")" + ".jpg", jpgEncoder, encoder);
+                finalImage.Save(Config.config.Path_photos + e.Message.Chat.Username + @"\" + dateTaken + " (" + number.ToString() + ")" + ".jpg", jpgEncoder, encoder);
                 return dateTaken + " (" + number.ToString() + ")" + ".jpg";
             }
         }
 
         public void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
         {
-            if (CheckAuth(e))
+            if (Userlist.HasAuth(e.Message.Chat.Username))
             {
                 int messageID = Config.config.Msg_Increment;
                 Config.config.Msg_Increment++;

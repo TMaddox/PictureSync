@@ -98,7 +98,7 @@ namespace PictureSync.Logic
                 string max_len = Console.ReadLine();
                 sw.WriteLine("max_picture_lenght = [" + max_len + "]");
 
-                Console.Write("Qaulity of encoding (1-100): ");
+                Console.Write("Quality of encoding (1-100): ");
                 string encodingQ = Console.ReadLine();
                 sw.WriteLine("encoding_Quality = [" + encodingQ + "]");
 
