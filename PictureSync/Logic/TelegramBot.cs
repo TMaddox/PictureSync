@@ -158,7 +158,7 @@ namespace PictureSync.Logic
         /// <param name="e"></param>
         private void Bot_OnMessage(object sender, MessageEventArgs e)
         {
-            if (Userlist.HasAuth(e.Message.Chat.Username))
+            if (HasAuth(e.Message.Chat.Username))
             {
                 var messageId = config.MsgIncrement;
                 config.MsgIncrement++;
@@ -190,7 +190,7 @@ namespace PictureSync.Logic
                 var hasher = new Hasher();
                 if (hasher.Check(e.Message.Text.Remove(0, 6), new HashedPassword(config.Hash, config.Salt)))
                 {
-                    File.AppendAllText(config.PathUsers, e.Message.Chat.Username + ",1,0,0" + Environment.NewLine);
+                    File.AppendAllText(config.PathUsers, e.Message.Chat.Username + ",1,0,0," + DateTime.Today.ToString("yyyy-MM-dd") + Environment.NewLine);
                     SortUsers();
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, "Erfolgreich Authentifiziert.");

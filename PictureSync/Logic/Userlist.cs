@@ -129,7 +129,7 @@ namespace PictureSync.Logic
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static int GetPictureAmount(string username)
+        private static int GetPictureAmount(string username)
         {
             var temp = File.ReadAllLines(config.PathUsers).ToList();
             foreach (var user in temp)
@@ -159,7 +159,12 @@ namespace PictureSync.Logic
             }
         }
 
-        public static DateTime GetLatestActivity(string username)
+        /// <summary>
+        /// Gets latest activity per user
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        private static DateTime GetLatestActivity(string username)
         {
             var temp = File.ReadAllLines(config.PathUsers).ToList();
             foreach (var user in temp)
@@ -171,6 +176,11 @@ namespace PictureSync.Logic
             return DateTime.MinValue;
         }
 
+        /// <summary>
+        /// sets latest acitvity per user
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="date"></param>
         public static void SetLatestActivity(string username, DateTime date)
         {
             var temp = File.ReadAllLines(config.PathUsers).ToList();
@@ -237,7 +247,7 @@ namespace PictureSync.Logic
             {
                 var userdata = temp[i].Split(',');
                 userName[i] = userdata[0];
-                userActivity[i] = Convert.ToInt32(userdata[3]);
+                userActivity[i] = GetPictureAmount(userName[i]);
             }
 
             Array.Sort(userActivity,userName);
@@ -268,7 +278,7 @@ namespace PictureSync.Logic
             {
                 var userdata = temp[i].Split(',');
                 userName[i] = userdata[0];
-                userActivity[i] = Convert.ToDateTime(userdata[4]);
+                userActivity[i] = GetLatestActivity(userName[i]);
             }
 
             Array.Sort(userActivity, userName);
