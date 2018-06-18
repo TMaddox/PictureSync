@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using PictureSync.Logic;
 using static PictureSync.Logic.Server;
 using static PictureSync.Logic.TelegramBot;
 
@@ -43,6 +44,7 @@ namespace PictureSync
             _basedir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\";
 
             ReadConfig(_basedir);
+            SortUsers();
 
             // Create files (log, Users)
             Create_files();

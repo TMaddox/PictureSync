@@ -123,6 +123,17 @@ namespace PictureSync.Logic
         }
 
         /// <summary>
+        /// Sort users in users.dat alphabetically
+        /// </summary>
+        public static void SortUsers()
+        {
+            var file = File.ReadAllLines(Config.config.PathUsers);
+            var result = file.ToList();
+            result.Sort();
+            File.WriteAllLines(Config.config.PathUsers, result);
+        }
+
+        /// <summary>
         /// Resize the image to the specified width and height.
         /// </summary>
         /// <param name="image">The image to resize.</param>

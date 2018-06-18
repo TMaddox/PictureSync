@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using static PictureSync.Logic.Server;
 
 namespace PictureSync.Logic
 {
@@ -48,21 +49,21 @@ namespace PictureSync.Logic
                     await _bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild akzeptiert.");
                 else
                     await _bot.SendTextMessageAsync(e.Message.Chat.Id, "Unkomprimiertes Bild akzeptiert.");
-                Trace.WriteLine(Server.NowLog + " " + Server.MessageIDformat(messageId) + " Saved photo from " +
+                Trace.WriteLine(NowLog + " " + MessageIDformat(messageId) + " Saved photo from " +
                                 e.Message.Chat.Username + " as " + filename);
 
                 // Add +1 to picture counter, auto enable compression
                 Userlist.AddPictureAmount(e.Message.Chat.Username);
                 if (Userlist.SetCompression(e.Message.Chat.Username, true))
                 {
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " autoenable compression");
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " autoenable compression");
                     await _bot.SendTextMessageAsync(e.Message.Chat.Id, "Komprimieren ist wieder aktiviert");
                 }
             }
             else
             {
                 await _bot.SendTextMessageAsync(e.Message.Chat.Id, "Error. Wrong File Type");
-                Trace.WriteLine(Server.NowLog + " " + Server.MessageIDformat(messageId) +
+                Trace.WriteLine(NowLog + " " + MessageIDformat(messageId) +
                                 " Error, wrong file Type from " + e.Message.Chat.Username);
             }
         }
@@ -97,11 +98,11 @@ namespace PictureSync.Logic
             }
 
             if (image.Width > width && image.Height > height)
-                finalImage = Server.ResizeImg(image, width, height);
+                finalImage = ResizeImg(image, width, height);
             else
-                finalImage = Server.ResizeImg(image, image.Width, image.Height);
+                finalImage = ResizeImg(image, image.Width, image.Height);
 
-            var jpgEncoder = Server.GetEncoder(ImageFormat.Jpeg);
+            var jpgEncoder = GetEncoder(ImageFormat.Jpeg);
             var myEncoder = System.Drawing.Imaging.Encoder.Quality;
             var encoder = new EncoderParameters(1);
             var encoderParameter = new EncoderParameter(myEncoder, hasCompression ? Config.config.EncodeQ : 93L);
@@ -169,14 +170,14 @@ namespace PictureSync.Logic
                     case Telegram.Bot.Types.Enums.MessageType.PhotoMessage:
                         //Disabled because metadata is cut when sending a photo
                         _bot.SendTextMessageAsync(e.Message.Chat.Id, "Bild abgelehnt, bitte als Datei senden.");
-                        Trace.WriteLine(Server.NowLog + " " + Server.MessageIDformat(messageId) + e.Message.Chat.Username + " tried to send a picture, but sent not as file.");
+                        Trace.WriteLine(NowLog + " " + MessageIDformat(messageId) + e.Message.Chat.Username + " tried to send a picture, but sent not as file.");
 
                         // Picture
                         //Trace.WriteLine(serverlogic.NowLog + " Photo incoming from " + e.Message.Chat.Username);
                         //Download_img(e);
                         break;
                     case Telegram.Bot.Types.Enums.MessageType.DocumentMessage:
-                        Trace.WriteLine(Server.NowLog + " " + Server.MessageIDformat(messageId) + " Document incoming from " + e.Message.Chat.Username);
+                        Trace.WriteLine(NowLog + " " + MessageIDformat(messageId) + " Document incoming from " + e.Message.Chat.Username);
                         Download_document(e, messageId);
                         break;
                 }
@@ -187,12 +188,13 @@ namespace PictureSync.Logic
                 if (hasher.Check(e.Message.Text.Remove(0, 6), new HashedPassword(Config.config.Hash, Config.config.Salt)))
                 {
                     File.AppendAllText(Config.config.PathUsers, e.Message.Chat.Username + ",1,0,0" + Environment.NewLine);
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
+                    SortUsers();
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, "Erfolgreich Authentifiziert.");
                 }
                 else
                 {
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " tried to authenticate, but entered wrong password.");
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " tried to authenticate, but entered wrong password.");
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, "Authentifizierung fehlgeschlagen. Falsches Passwort.");
                 }
             }
@@ -243,7 +245,7 @@ namespace PictureSync.Logic
             }
             catch
             {
-                Trace.WriteLine(Server.NowLog + " " + Server.MessageIDformat(messageId) + " Photo has no capture time (using servertime instead) from " + e.Message.Chat.Username);
+                Trace.WriteLine(NowLog + " " + MessageIDformat(messageId) + " Photo has no capture time (using servertime instead) from " + e.Message.Chat.Username);
                 return DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "_noCaptureTime";
             }
         }
@@ -280,7 +282,7 @@ namespace PictureSync.Logic
                     {
                         b.AppendLine(list[i, 0] + " - " + list[i, 1]);
                     }
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " accessed activity");
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " accessed activity");
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, b.ToString());
                     break;
                 case "/party":
@@ -329,13 +331,13 @@ namespace PictureSync.Logic
                     {
                         Userlist.SetAdminPrivilege(e.Message.Chat.Username, true);
                         Trace.WriteLine(
-                            Server.NowLog + " " + e.Message.Chat.Username + " has just authenticated as Admin");
+                            NowLog + " " + e.Message.Chat.Username + " has just authenticated as Admin");
                         _bot.SendTextMessageAsync(e.Message.Chat.Id, "Sie sind jetzt Admin.");
                     }
                     else
                     {
                         Userlist.SetAdminPrivilege(e.Message.Chat.Username, false);
-                        Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username +
+                        Trace.WriteLine(NowLog + " " + e.Message.Chat.Username +
                                         " tried to get admin, but entered wrong password.");
                         _bot.SendTextMessageAsync(e.Message.Chat.Id,
                             "Authentifizierung fehlgeschlagen. Falsches Passwort. Sie sind jetzt kein Admin.");
@@ -343,16 +345,16 @@ namespace PictureSync.Logic
                     break;
                 case "/koff":
                     Userlist.SetCompression(e.Message.Chat.Username, false);
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " disabled compression");
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " disabled compression");
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, "Komprimieren ist für das nächste Bild deaktiviert");
                     break;
                 case "/kon":
                     Userlist.SetCompression(e.Message.Chat.Username, true);
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " enabled compression");
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " enabled compression");
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, "Komprimieren ist aktiviert");
                     break;
                 default:
-                    Trace.WriteLine(Server.NowLog + " Note: " + e.Message.Text);
+                    Trace.WriteLine(NowLog + " Note: " + e.Message.Text);
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, "Dieser Befehl hat keine Bedeutung.");
                     break;
             }
