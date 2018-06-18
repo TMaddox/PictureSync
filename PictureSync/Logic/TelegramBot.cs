@@ -276,10 +276,11 @@ namespace PictureSync.Logic
                 case "/activity":
                     var b = new StringBuilder();
                     var list = Userlist.GetUseractivity();
-                    for (int i = 0; i < Userlist.UsersAmount; i++)
+                    for (var i = 0; i < Userlist.UsersAmount; i++)
                     {
                         b.AppendLine(list[i, 0] + " - " + list[i, 1]);
                     }
+                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " accessed activity");
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, b.ToString());
                     break;
                 case "/party":
