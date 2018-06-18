@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using PictureSync.Logic;
+using PictureSync.Properties;
+using static PictureSync.Logic.Config;
 using static PictureSync.Logic.Server;
 using static PictureSync.Logic.TelegramBot;
 
@@ -27,13 +29,13 @@ namespace PictureSync
         private static void Main(string[] args)
         {
             Assembly.GetExecutingAssembly();
-            TrayIcon.Icon = Properties.Resources.icon;
+            TrayIcon.Icon = Resources.icon;
             TrayIcon.MouseDoubleClick += TrayIcon_DoubleClick;
             TrayIcon.ContextMenuStrip = new ContextMenuStrip();
             TrayIcon.ContextMenuStrip.Items.AddRange(new ToolStripItem[] { new ToolStripMenuItem(), new ToolStripMenuItem() });
-            TrayIcon.ContextMenuStrip.Items[0].Text = "Exit";
+            TrayIcon.ContextMenuStrip.Items[0].Text = Resources.Program_Main_Exit;
             TrayIcon.ContextMenuStrip.Items[0].Click += SmoothExit;
-            TrayIcon.ContextMenuStrip.Items[1].Text = "Hide";
+            TrayIcon.ContextMenuStrip.Items[1].Text = Resources.Program_Main_Hide;
             TrayIcon.ContextMenuStrip.Items[1].Click += Hide_Show_Click;
             TrayIcon.Visible = true;
 
@@ -45,6 +47,7 @@ namespace PictureSync
 
             ReadConfig(_basedir);
             SortUsers();
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(config.Localization);
 
             // Create files (log, Users)
             Create_files();
@@ -52,7 +55,7 @@ namespace PictureSync
             // Create global telebot
             try
             {
-                Telebot = new Logic.TelegramBot();
+                Telebot = new TelegramBot();
             }
             catch (Exception)
             {
@@ -65,7 +68,7 @@ namespace PictureSync
 
             // Start bot
             Telebot.Start_bot();
-            Trace.WriteLine(NowLog + " Bot started");
+            Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_started_log);
 
             Application.Run();
         }
@@ -81,9 +84,9 @@ namespace PictureSync
             ShowWindow(ThisConsole, _showWindow);
 
             if (_showWindow == 1)
-                TrayIcon.ContextMenuStrip.Items[1].Text = "Hide";
+                TrayIcon.ContextMenuStrip.Items[1].Text = Resources.Program_Main_Hide;
             else
-                TrayIcon.ContextMenuStrip.Items[1].Text = "Show";
+                TrayIcon.ContextMenuStrip.Items[1].Text = Resources.Program_Main_Show;
         }
 
         /// <summary>
@@ -100,9 +103,9 @@ namespace PictureSync
                 ShowWindow(ThisConsole, _showWindow);
 
                 if (_showWindow == 1)
-                    TrayIcon.ContextMenuStrip.Items[1].Text = "Hide";
+                    TrayIcon.ContextMenuStrip.Items[1].Text = Resources.Program_Main_Hide;
                 else
-                    TrayIcon.ContextMenuStrip.Items[1].Text = "Show";
+                    TrayIcon.ContextMenuStrip.Items[1].Text = Resources.Program_Main_Show;
             }
         }
 
@@ -114,7 +117,7 @@ namespace PictureSync
         private static void SmoothExit(object sender, EventArgs e)
         {
             Telebot.Stop_bot();
-            Trace.WriteLine(NowLog + " Bot stopped");
+            Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_stopped_log);
 
             TrayIcon.Visible = false;
             Application.Exit();

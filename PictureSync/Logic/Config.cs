@@ -61,5 +61,10 @@
         /// Quality of the jpg encoder (1-100)
         /// </summary>
         public int EncodeQ { get; set; }
+
+        /// <summary>
+        /// Language
+        /// </summary>
+        public string Localization { get; set; }
     }
 }

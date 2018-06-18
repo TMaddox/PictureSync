@@ -74,6 +74,7 @@ namespace PictureSync.Logic
                     PathPhotos = result.ElementAt(3),
                     MaxLen = Convert.ToInt32(result.ElementAt(4)),
                     EncodeQ = Convert.ToInt32(result.ElementAt(5)),
+                    Localization = result.ElementAt(6),
                     PathRoot = path
                 };
             }
@@ -115,6 +116,10 @@ namespace PictureSync.Logic
                 Console.Write("Quality of encoding (1-100): ");
                 var encodingQ = Console.ReadLine();
                 sw.WriteLine("encoding_Quality = [" + encodingQ + "]");
+
+                Console.Write("Localisation (en|de): ");
+                var localisation = Console.ReadLine();
+                sw.WriteLine("localization = [" + localisation + "]");
 
                 Console.Clear();
             }

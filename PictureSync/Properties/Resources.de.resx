@@ -122,129 +122,129 @@
     <value>..\Resources\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Program_Main_Exit" xml:space="preserve">
-    <value>Exit</value>
+    <value>Verlassen</value>
   </data>
   <data name="Program_Main_Hide" xml:space="preserve">
-    <value>Hide</value>
+    <value>Verstecken</value>
   </data>
   <data name="Program_Main_Bot_started_log" xml:space="preserve">
-    <value>Bot started</value>
+    <value>Bot gestartet</value>
   </data>
   <data name="Program_Main_Show" xml:space="preserve">
-    <value>Show</value>
+    <value>Anzeigen</value>
   </data>
   <data name="Program_Main_Bot_stopped_log" xml:space="preserve">
-    <value>Bot stopped</value>
+    <value>Bot gestoppt</value>
   </data>
   <data name="TelegramBot_picture_accepted" xml:space="preserve">
-    <value>Picture accepted.</value>
+    <value>Bild akzeptiert.</value>
   </data>
   <data name="TelegramBot_picture_accepted_uncompressed" xml:space="preserve">
-    <value>Accepted uncompressed picture.</value>
+    <value>Unkomprimiertes Bild akzeptiert von.</value>
   </data>
   <data name="TelegramBot_picture_accepted_log" xml:space="preserve">
-    <value>picture accepted from</value>
+    <value>Bild akzeptiert von</value>
   </data>
   <data name="TelegramBot_picture_compression_autoenable_log" xml:space="preserve">
-    <value>autoenable compression for</value>
+    <value>autoenable compression für</value>
   </data>
   <data name="TelegramBot_picture_compression_autoenable" xml:space="preserve">
-    <value>Image compressing is active again.</value>
+    <value>Komprimierung ist wieder aktiv.</value>
   </data>
   <data name="TelegramBot_picture_wrong_filetype" xml:space="preserve">
-    <value>Error. Wrong file type.</value>
+    <value>Error. Falscher Dateityp.</value>
   </data>
   <data name="TelegramBot_picture_wrong_filetype_log" xml:space="preserve">
-    <value>Error, wrong file type from</value>
+    <value>Error. Falscher Dateityp.</value>
   </data>
   <data name="TelegramBot_picture_saved_as_log" xml:space="preserve">
-    <value>as</value>
+    <value>als</value>
   </data>
   <data name="TelegramBot_Bot_OnMessage_deny_picture" xml:space="preserve">
-    <value>Picture not accepted. Please send as file.</value>
+    <value>Bild nicht akzeptiert. Bitte als Datei senden.</value>
   </data>
   <data name="TelegramBot_Bot_OnMessage_deny_picture_log" xml:space="preserve">
-    <value>tried to send a picture, but sent not as file.</value>
+    <value>versuchte ein Bild zu senden, allerdings nicht als Datei</value>
   </data>
   <data name="TelegramBot_Bot_OnMessage_document_incoming_log" xml:space="preserve">
-    <value>Document incoming from</value>
+    <value>Dokument wird geladen von</value>
   </data>
   <data name="TelegramBot_Bot_OnMessage_auth_successful_log" xml:space="preserve">
-    <value>has just authenticated a new telegram account</value>
+    <value>hat gerade einen neuen Telegram Account authentifiziert</value>
   </data>
   <data name="TelegramBot_Bot_OnMessage_auth_successful" xml:space="preserve">
-    <value>Authentification successful.</value>
+    <value>Authentifizierung erfolgreich.</value>
   </data>
   <data name="TelegramBot_Bot_OnMessage_auth_not_successful_log" xml:space="preserve">
-    <value>tried to authenticate, but entered wrong password.</value>
+    <value>versuchte sich zu authentifizieren, gab aber das falsche Passwort ein</value>
   </data>
   <data name="TelegramBot_Bot_OnMessage_auth_not_successful" xml:space="preserve">
-    <value>Authentication error.</value>
+    <value>Authentifizierungs Fehler.</value>
   </data>
   <data name="TelegramBot_Bot_OnMessage_auth_no_username" xml:space="preserve">
-    <value>Authentication error. Have you set a username?</value>
+    <value>Authentifizierungs Fehler. Ist ein Benutzername gesetzt?</value>
   </data>
   <data name="TelegramBot_Date_taken_no_capturetime" xml:space="preserve">
-    <value>Photo has no capture time (using servertime instead) from</value>
+    <value>Foto hat kein Aufnahmedatum (speichere mit Serverzeit) von</value>
   </data>
   <data name="TelegramBot_AdminCommands_activity_accessed" xml:space="preserve">
-    <value>accessed activity</value>
+    <value>sah in die Aktivität ein</value>
   </data>
   <data name="TelegramBot_AdminCommands_party" xml:space="preserve">
-    <value>You enabled the partymode. YAY!</value>
+    <value>Du hast den Partymodus aktiviert. Gratuliere!</value>
   </data>
   <data name="TelegramBot_CommonCommands_commands" xml:space="preserve">
-    <value>Commands:</value>
+    <value>Befehle:</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_activity_amount" xml:space="preserve">
-    <value>/activity_amount - Displays amount of pictures sent per user</value>
+    <value>/activity_amount - Zeigt an wieviele Bilder pro Nutzer insgesamt schon gesendet wurden</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_activity_time" xml:space="preserve">
-    <value>/activity_time - Displays date when users were last time active</value>
+    <value>/activity_time - Zeigt die letzte Nutzeraktivität an</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_coff" xml:space="preserve">
-    <value>/coff - Disable comression for one picture</value>
+    <value>/coff - Komprimierung für das nächste Bild deaktivieren</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_con" xml:space="preserve">
-    <value>/con - enable compression</value>
+    <value>/con - Komprimierung aktivieren</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_admin" xml:space="preserve">
-    <value>/admin &lt;pw&gt; - Authenticate as admin</value>
+    <value>/admin &lt;pw&gt; - Als admin registrieren</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_auth" xml:space="preserve">
-    <value>/auth &lt;pw&gt; - Authenticates a new user</value>
+    <value>/auth &lt;pw&gt; - Einen neuen Nutzer authentifizieren</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_help" xml:space="preserve">
-    <value>/help - Displays this text</value>
+    <value>/help - Zeigt diesen Text an</value>
   </data>
   <data name="TelegramBot_CommonCommands_admin_successful_log" xml:space="preserve">
-    <value>has just authenticated as Admin</value>
+    <value>hat sich als Admin registriert</value>
   </data>
   <data name="TelegramBot_CommonCommands_admin_successful" xml:space="preserve">
-    <value>You are now a Admin.</value>
+    <value>Sie sind jetzt Admin</value>
   </data>
   <data name="TelegramBot_CommonCommands_admin_not_successful_log" xml:space="preserve">
-    <value>tried to get admin, but entered wrong password</value>
+    <value>versuchte sich als admin zu registrieren, gab aber das falsche Passwort ein</value>
   </data>
   <data name="TelegramBot_CommonCommands_admin_not_successful" xml:space="preserve">
-    <value>Failed. You have no Admin rights.</value>
+    <value>Fehler. Sie haben keine Admin Rechte.</value>
   </data>
   <data name="TelegramBot_CommonCommands_coff_log" xml:space="preserve">
-    <value>disabled compression</value>
+    <value>deaktivierte die Komprimierung</value>
   </data>
   <data name="TelegramBot_CommonCommands_coff" xml:space="preserve">
-    <value>Compression is disabled for the next picture.</value>
+    <value>Komprimierung ist für das nächste Bild deaktiviert.</value>
   </data>
   <data name="TelegramBot_CommonCommands_con_log" xml:space="preserve">
-    <value>enabled compression</value>
+    <value>aktivierte die Komprimierung</value>
   </data>
   <data name="TelegramBot_CommonCommands_con" xml:space="preserve">
-    <value>Compression is enabled.</value>
+    <value>Komprimierung ist aktiviert.</value>
   </data>
   <data name="TelegramBot_CommonCommands_Note_log" xml:space="preserve">
-    <value>Note:</value>
+    <value>Notiz:</value>
   </data>
   <data name="TelegramBot_CommonCommands_nocommand" xml:space="preserve">
-    <value>Can´t parse command.</value>
+    <value>Befehl nicht vorhanden.</value>
   </data>
 </root>
