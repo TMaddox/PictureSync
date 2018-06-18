@@ -14,7 +14,6 @@ namespace PictureSync
 {
     public class Program
     {
-
         private static string _basedir;
         private static readonly NotifyIcon TrayIcon = new NotifyIcon();
 

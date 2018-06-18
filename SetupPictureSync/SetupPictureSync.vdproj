@@ -4,9 +4,9 @@
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
 "ProjectName" = "8:SetupPictureSync"
-"LanguageId" = "3:1031"
+"LanguageId" = "3:0"
 "CodePage" = "3:1252"
-"UILanguageId" = "3:1031"
+"UILanguageId" = "3:0"
 "SccProjectName" = "8:"
 "SccLocalPath" = "8:"
 "SccAuxPath" = "8:"
@@ -64,13 +64,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_14B98460D44D85A1857B898AB1D4997C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_BAA3A264F5A231E07001B422B194B014"
+        "OwnerKey" = "8:_87F59D5D8D1793161BFABF239AA695BF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -82,7 +76,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_87F59D5D8D1793161BFABF239AA695BF"
+        "OwnerKey" = "8:_BAA3A264F5A231E07001B422B194B014"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_14B98460D44D85A1857B898AB1D4997C"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -187,11 +187,6 @@
             "AssemblyAsmDisplayName" = "8:Telegram.Bot, Version=13.4.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_14B98460D44D85A1857B898AB1D4997C"
-                    {
-                    "Name" = "8:Telegram.Bot.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Telegram.Bot.dll"
             "TargetName" = "8:"
@@ -218,11 +213,6 @@
             "AssemblyAsmDisplayName" = "8:Hash, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_82F666DFA42821EDCF3A625D71B7A280"
-                    {
-                    "Name" = "8:Hash.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Hash.dll"
             "TargetName" = "8:"
@@ -249,11 +239,6 @@
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_87F59D5D8D1793161BFABF239AA695BF"
-                    {
-                    "Name" = "8:System.Net.Http.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
@@ -280,11 +265,6 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_BAA3A264F5A231E07001B422B194B014"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -353,28 +333,28 @@
         }
         "MsiBootstrapper"
         {
-        "LangId" = "3:1031"
+        "LangId" = "3:0"
         "RequiresElevation" = "11:FALSE"
         }
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PictureSync"
-        "ProductCode" = "8:{909A41A9-CD4F-4DEE-B1DD-1C8FFCBDA6B9}"
-        "PackageCode" = "8:{39F73FB5-8C8F-4B4C-A0CC-6FD853646D89}"
-        "UpgradeCode" = "8:{D2399980-F5C4-485E-9133-4480EF7AF34B}"
+        "ProductCode" = "8:{B2574277-E663-4490-8822-7E7139F57A3A}"
+        "PackageCode" = "8:{8C4B2363-566A-43A8-8F6E-F2155650FA5B}"
+        "UpgradeCode" = "8:{F00FDAEF-BCF5-430B-9F4A-C2135C548685}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.1.0"
-        "Manufacturer" = "8:T Maddox"
+        "ProductVersion" = "8:1.2.0"
+        "Manufacturer" = "8:"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:PictureSync"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:T Maddox"
+        "ARPCONTACT" = "8:"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
@@ -522,7 +502,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_C8A3B557254C426DAC820AD475A82A53"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Fertig"
+                    "DisplayName" = "8:Finished"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminFinishedDlg.wid"
@@ -553,7 +533,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_31955F23FFC04CDC904C7F983FE6B2C7"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Fertig"
+                    "DisplayName" = "8:Finished"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdFinishedDlg.wid"
@@ -597,7 +577,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_6308BADDE95A4441A364717E8197ED11"
                     {
                     "Sequence" = "3:300"
-                    "DisplayName" = "8:Installation bestätigen"
+                    "DisplayName" = "8:Confirm Installation"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdConfirmDlg.wid"
@@ -619,7 +599,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_661EFCEC39C24B56841CBFC0A8B156B2"
                     {
                     "Sequence" = "3:200"
-                    "DisplayName" = "8:Installationsordner"
+                    "DisplayName" = "8:Installation Folder"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdFolderDlg.wid"
@@ -654,7 +634,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_F2BC4DE225394F94B205F11075426901"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Willkommen"
+                    "DisplayName" = "8:Welcome"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdWelcomeDlg.wid"
@@ -711,7 +691,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_9A8A7B27416246128FC9C060061D189F"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Status"
+                    "DisplayName" = "8:Progress"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminProgressDlg.wid"
@@ -755,7 +735,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_6EFFD3854E9841468CC2281B10D21797"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Status"
+                    "DisplayName" = "8:Progress"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdProgressDlg.wid"
@@ -799,7 +779,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_4064B3DB80A0451CB22AFF9456ECE5DF"
                     {
                     "Sequence" = "3:300"
-                    "DisplayName" = "8:Installation bestätigen"
+                    "DisplayName" = "8:Confirm Installation"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminConfirmDlg.wid"
@@ -821,7 +801,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_979590FA99E3449D8CA9A1D8AE2531E0"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Willkommen"
+                    "DisplayName" = "8:Welcome"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminWelcomeDlg.wid"
@@ -869,7 +849,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_DDC38A1664254A66879BCBC9FCC67D3B"
                     {
                     "Sequence" = "3:200"
-                    "DisplayName" = "8:Installationsordner"
+                    "DisplayName" = "8:Installation Folder"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminFolderDlg.wid"
