@@ -186,7 +186,7 @@ namespace PictureSync.Logic
                 var hasher = new Hasher();
                 if (hasher.Check(e.Message.Text.Remove(0, 6), new HashedPassword(Config.config.Hash, Config.config.Salt)))
                 {
-                    File.AppendAllText(Config.config.PathUsers, e.Message.Chat.Username + Environment.NewLine);
+                    File.AppendAllText(Config.config.PathUsers, e.Message.Chat.Username + ",1,0,0" + Environment.NewLine);
                     Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, "Erfolgreich Authentifiziert.");
                 }
