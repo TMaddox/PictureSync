@@ -12,7 +12,10 @@ namespace PictureSync.Logic
 {
     internal class Server
     {
-        public void InitiateTracer()
+        /// <summary>
+        /// Initiate a Tracer, Use Tracker.WriteLine instead of Console.WriteLine to write output to logfile
+        /// </summary>
+        public static void InitiateTracer()
         {
             Trace.Listeners.Clear();
             var twtl = new TextWriterTraceListener(Config.config.PathLog)
@@ -26,10 +29,24 @@ namespace PictureSync.Logic
             Trace.AutoFlush = true;
         }
 
-        public string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
-        public string MessageIDformat(int msgId) => "<" + msgId.ToString().PadLeft(6, '0') + ">";
+        /// <summary>
+        /// Creates a timestampstring for the log
+        /// </summary>
+        public static string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " +
+                                       DateTime.Now.ToString("HH:mm:ss.fff",
+                                           System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
 
-        public void Create_files()
+        /// <summary>
+        /// Creates a msgID string
+        /// </summary>
+        /// <param name="msgId">unique msgID ot the MEssage</param>
+        /// <returns></returns>
+        public static string MessageIDformat(int msgId) => "<" + msgId.ToString().PadLeft(6, '0') + ">";
+
+        /// <summary>
+        /// Creates Log and User file if the do not exist
+        /// </summary>
+        public static void Create_files()
         {
             if (!File.Exists(Config.config.PathLog))
                 using (File.AppendText(Config.config.PathLog));
@@ -37,7 +54,11 @@ namespace PictureSync.Logic
                 using (File.AppendText(Config.config.PathUsers));
         }
 
-        public void ReadConfig(string path)
+        /// <summary>
+        /// Reades the Config file and saves it to Config.config
+        /// </summary>
+        /// <param name="path">Path of the config file</param>
+        public static void ReadConfig(string path)
         {
             try
             {
@@ -51,7 +72,7 @@ namespace PictureSync.Logic
                     Hash = result.ElementAt(1),
                     Salt = result.ElementAt(2),
                     PathPhotos = result.ElementAt(3),
-                    Max_len = Convert.ToInt32(result.ElementAt(4)),
+                    MaxLen = Convert.ToInt32(result.ElementAt(4)),
                     EncodeQ = Convert.ToInt32(result.ElementAt(5)),
                     PathRoot = path
                 };
@@ -63,7 +84,11 @@ namespace PictureSync.Logic
             
         }
 
-        public void Create_Config(string path)
+        /// <summary>
+        /// Creates a new config file
+        /// </summary>
+        /// <param name="path">path  for the new config file</param>
+        public static void Create_Config(string path)
         {
             File.Delete(path + "config.dat");
             using (var sw = File.AppendText(path + "config.dat"))
@@ -104,7 +129,7 @@ namespace PictureSync.Logic
         /// <param name="width">The width to resize to.</param>
         /// <param name="height">The height to resize to.</param>
         /// <returns>The resized image.</returns>
-        public Bitmap ResizeImg(Image image, int width, int height)
+        public static Bitmap ResizeImg(Image image, int width, int height)
         {
             var destRect = new Rectangle(0, 0, width, height);
             var destImage = new Bitmap(width, height);
@@ -129,17 +154,15 @@ namespace PictureSync.Logic
             return destImage;
         }
 
-        public ImageCodecInfo GetEncoder(ImageFormat format)
+        /// <summary>
+        /// Gets the encoder of a image format
+        /// </summary>
+        /// <param name="format">image format</param>
+        /// <returns></returns>
+        public static ImageCodecInfo GetEncoder(ImageFormat format)
         {
             var codecs = ImageCodecInfo.GetImageDecoders();
-            foreach (var codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
-                {
-                    return codec;
-                }
-            }
-            return null;
+            return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
         }
     }
 }

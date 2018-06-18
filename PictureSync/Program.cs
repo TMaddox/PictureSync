@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using static PictureSync.Logic.Server;
+using static PictureSync.Logic.TelegramBot;
 
 namespace PictureSync
 {
@@ -40,33 +42,37 @@ namespace PictureSync
             Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\");
             _basedir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\";
 
-            Logic.Server serverlogic = new Logic.Server();
-            serverlogic.ReadConfig(_basedir);
+            ReadConfig(_basedir);
 
             // Create files (log, Users)
-            serverlogic.Create_files();
+            Create_files();
 
             // Create global telebot
             try
             {
-                Logic.TelegramBot.Telebot = new Logic.TelegramBot();
+                Telebot = new Logic.TelegramBot();
             }
             catch (Exception)
             {
-                serverlogic.Create_Config(_basedir);
+                Create_Config(_basedir);
             }
             
 
             // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
-            serverlogic.InitiateTracer();
+            InitiateTracer();
 
             // Start bot
-            Logic.TelegramBot.Telebot.Start_bot();
-            Trace.WriteLine(serverlogic.NowLog + " Bot started");
+            Telebot.Start_bot();
+            Trace.WriteLine(NowLog + " Bot started");
 
             Application.Run();
         }
 
+        /// <summary>
+        /// Hides and shows the CLI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void Hide_Show_Click(object sender, EventArgs e)
         {
             _showWindow = ++_showWindow % 2;
@@ -78,6 +84,11 @@ namespace PictureSync
                 TrayIcon.ContextMenuStrip.Items[1].Text = "Show";
         }
 
+        /// <summary>
+        /// Handles a double click on the tray icon
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void TrayIcon_DoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right)
@@ -93,11 +104,15 @@ namespace PictureSync
             }
         }
 
+        /// <summary>
+        /// Performs a smooth exit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void SmoothExit(object sender, EventArgs e)
         {
-            Logic.Server serverlogic = new Logic.Server();
-            Logic.TelegramBot.Telebot.Stop_bot();
-            Trace.WriteLine(serverlogic.NowLog + " Bot stopped");
+            Telebot.Stop_bot();
+            Trace.WriteLine(NowLog + " Bot stopped");
 
             TrayIcon.Visible = false;
             Application.Exit();

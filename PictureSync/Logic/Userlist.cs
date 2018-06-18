@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace PictureSync.Logic
 {
@@ -169,7 +168,10 @@ namespace PictureSync.Logic
             return Users.Contains(username);
         }
 
-        // Refreshes users.dat
+        /// <summary>
+        /// Refreshes user.dat
+        /// </summary>
+        /// <param name="userdata"></param>
         private static void WriteUserdata(string[] userdata)
         {
             var temp = File.ReadAllLines(Config.config.PathUsers);
@@ -191,7 +193,6 @@ namespace PictureSync.Logic
             }
             File.WriteAllLines(Config.config.PathUsers,temp);
         }
-
 
         /// <summary>
         /// Returns Array [username, picturecount]
