@@ -200,16 +200,28 @@ namespace PictureSync.Logic
         public static string[,] GetUseractivity()
         {
             var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
-            var userActivity = new string[temp.Count, 2];
+            var userName = new string[temp.Count];
+            var userActivity = new int[temp.Count];
+            var final = new string[temp.Count, 2];
 
             for (var i = 0; i < temp.Count; i++)
             {
                 var userdata = temp[i].Split(',');
-                userActivity[i, 0] = userdata[0];
-                userActivity[i, 1] = userdata[3];
+                userName[i] = userdata[0];
+                userActivity[i] = Convert.ToInt32(userdata[3]);
             }
 
-            return userActivity;
+            Array.Sort(userActivity,userName);
+            Array.Reverse(userName);
+            Array.Reverse(userActivity);
+
+            for (var i = 0; i < temp.Count; i++)
+            {
+                final[i, 0] = userName[i];
+                final[i, 1] = userActivity[i].ToString();
+            }
+
+            return final;
         }
     }
 }
