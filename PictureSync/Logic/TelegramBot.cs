@@ -1,13 +1,15 @@
-﻿using System;
+﻿using HashLibrary;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using HashLibrary;
+using Telegram.Bot.Args;
 
 namespace PictureSync.Logic
 {
@@ -20,7 +22,7 @@ namespace PictureSync.Logic
 
         private readonly TelegramBotClient _bot = new TelegramBotClient(Config.config.Token);
 
-        public async Task Download_document(Telegram.Bot.Args.MessageEventArgs e, int messageId)
+        private async Task Download_document(Telegram.Bot.Args.MessageEventArgs e, int messageId)
         {
             // Create dir for username if not exists
             Directory.CreateDirectory(Config.config.PathPhotos + e.Message.Chat.Username);
@@ -127,7 +129,7 @@ namespace PictureSync.Logic
             }
         }
 
-        public void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
+        private void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
         {
             if (Userlist.HasAuth(e.Message.Chat.Username))
             {
@@ -191,7 +193,7 @@ namespace PictureSync.Logic
             _bot.OnMessageEdited -= Bot_OnMessage;
         }
 
-        public string Date_taken(Image image, Telegram.Bot.Args.MessageEventArgs e, int messageId)
+        private string Date_taken(Image image, Telegram.Bot.Args.MessageEventArgs e, int messageId)
         {
             try
             {
@@ -210,49 +212,82 @@ namespace PictureSync.Logic
             }
         }
 
-        public void ParseCommands(Telegram.Bot.Args.MessageEventArgs e)
+        private void ParseCommands(Telegram.Bot.Args.MessageEventArgs e)
         {
             var temp = e.Message.Text.Split(' ');
             var command = temp[0];
 
             if (Userlist.HasAdminPrivilege(e.Message.Chat.Username))
-            {
-                // ADMIN AREA
-                switch (command)
-                {
-                    case "":
-                        break;
-                }
-            }
+                AdminCommands(e, command);
+            else
+                CommonCommands(e, command);
+        }
 
+        private void AdminCommands(MessageEventArgs e, string command)
+        {
+            // ADMIN AREA
+            switch (command)
+            {
+                case "/activity":
+                    var b = new StringBuilder();
+                    var list = Userlist.GetUseractivity();
+                    for (int i = 0; i < Userlist.UsersAmount; i++)
+                    {
+                        b.AppendLine(list[i, 0] + " - " + list[i, 1]);
+                    }
+                    _bot.SendTextMessageAsync(e.Message.Chat.Id, b.ToString());
+                    break;
+                case "/party":
+                    _bot.SendTextMessageAsync(e.Message.Chat.Id, "Du bist jetzt im Partymodus. Nur Admins können in den Partymodus wechseln. GZ!");
+                    break;
+                default:
+                    //Admin can of course execute normal commands too
+                    CommonCommands(e, command);
+                    break;
+            }
+        }
+
+        private void CommonCommands(MessageEventArgs e, string command)
+        {
             // NORMAL AREA
             switch (command)
             {
                 case "/help":
+                    var commandsList = new List<string>();
+                    
+                    if (Userlist.HasAdminPrivilege(e.Message.Chat.Username))
+                    {
+                        commandsList.Add("/activity - Zeigt Gesamtaktivität aller registrierten Benutzer an");
+                    }
+                    commandsList.Add("/koff - Komprimierung für ein Bild ausschalten");
+                    commandsList.Add("/kon - Komprimierung einschalten");
+                    commandsList.Add("/admin <pw> - Adminrechte freischalten");
+                    commandsList.Add("/auth <pw> - Authentifiziert einen neuen Benutzer"); // auth is handled in Bot_OnMessage
+                    commandsList.Add("/help - Zeigt diesen Text an");
+                    commandsList.Sort();
+
                     var b = new StringBuilder();
                     b.AppendLine("Befehle:");
-                    // auth is handled in Bot_OnMessage
-                    b.AppendLine("/koff - Komprimierung für ein Bild ausschalten");
-                    b.AppendLine("/kon - Komprimierung einschalten");
-                    b.AppendLine("/admin <pw> - Adminrechte freischalten");
-                    b.AppendLine("/auth <pw> - Authentifiziert einen neuen Benutzer");
-                    b.AppendLine("/help - Zeigt diesen Text an");
+                    foreach (var line in commandsList)
+                        b.AppendLine(line);
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, b.ToString());
                     break;
-
                 case "/admin":
                     var hasher = new Hasher();
                     if (hasher.Check(e.Message.Text.Remove(0, 7), new HashedPassword(Config.config.Hash, Config.config.Salt)))
                     {
                         Userlist.SetAdminPrivilege(e.Message.Chat.Username, true);
-                        Trace.WriteLine(_serverlogic.NowLog + " " + e.Message.Chat.Username + " has just authenticated as Admin");
+                        Trace.WriteLine(
+                            _serverlogic.NowLog + " " + e.Message.Chat.Username + " has just authenticated as Admin");
                         _bot.SendTextMessageAsync(e.Message.Chat.Id, "Sie sind jetzt Admin.");
                     }
                     else
                     {
                         Userlist.SetAdminPrivilege(e.Message.Chat.Username, false);
-                        Trace.WriteLine(_serverlogic.NowLog + " " + e.Message.Chat.Username + " tried to get admin, but entered wrong password.");
-                        _bot.SendTextMessageAsync(e.Message.Chat.Id, "Authentifizierung fehlgeschlagen. Falsches Passwort. Sie sind jetzt kein Admin.");
+                        Trace.WriteLine(_serverlogic.NowLog + " " + e.Message.Chat.Username +
+                                        " tried to get admin, but entered wrong password.");
+                        _bot.SendTextMessageAsync(e.Message.Chat.Id,
+                            "Authentifizierung fehlgeschlagen. Falsches Passwort. Sie sind jetzt kein Admin.");
                     }
                     break;
                 case "/koff":

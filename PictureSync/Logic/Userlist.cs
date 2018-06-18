@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace PictureSync.Logic
 {
@@ -13,7 +14,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Returns a List of strings with users
         /// </summary>
-        public static List<string> Users
+        private static List<string> Users
         {
             get
             {
@@ -24,6 +25,18 @@ namespace PictureSync.Logic
                     users.Add(userdata[0]);
                 }
                 return users;
+            }
+        }
+
+        /// <summary>
+        /// Returns n of Uers
+        /// </summary>
+        public static int UsersAmount
+        {
+            get
+            {
+                var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+                return temp.Count;
             }
         }
 
@@ -147,7 +160,7 @@ namespace PictureSync.Logic
         }
 
         /// <summary>
-        /// check if user is authorized
+        /// check if user is authorized to interact with the bot
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
@@ -177,6 +190,26 @@ namespace PictureSync.Logic
                 }
             }
             File.WriteAllLines(Config.config.PathUsers,temp);
+        }
+
+
+        /// <summary>
+        /// Returns Array [username, picturecount]
+        /// </summary>
+        /// <returns></returns>
+        public static string[,] GetUseractivity()
+        {
+            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+            var userActivity = new string[temp.Count, 2];
+
+            for (var i = 0; i < temp.Count; i++)
+            {
+                var userdata = temp[i].Split(',');
+                userActivity[i, 0] = userdata[0];
+                userActivity[i, 1] = userdata[3];
+            }
+
+            return userActivity;
         }
     }
 }
