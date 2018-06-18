@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using static PictureSync.Logic.Config;
 
 namespace PictureSync.Logic
 {
@@ -17,7 +18,7 @@ namespace PictureSync.Logic
         {
             get
             {
-                var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+                var temp = File.ReadAllLines(config.PathUsers).ToList();
                 foreach (var user in temp)
                 {
                     var userdata = user.Split(',');
@@ -34,7 +35,7 @@ namespace PictureSync.Logic
         {
             get
             {
-                var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+                var temp = File.ReadAllLines(config.PathUsers).ToList();
                 return temp.Count;
             }
         }
@@ -46,7 +47,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static bool HasCompression(string username)
         {
-            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
             foreach (var user in temp)
             {
                 var userdata = user.Split(',');
@@ -64,7 +65,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static bool SetCompression(string username, bool compress)
         {
-            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
             var statechanged = false;
 
             foreach (var user in temp)
@@ -85,10 +86,10 @@ namespace PictureSync.Logic
         /// Checks if user is admin
         /// </summary>
         /// <param name="username"></param>
-        /// <returns></returns>
+        /// <returns>if user has admin privileges</returns>
         public static bool HasAdminPrivilege(string username)
         {
-            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
             foreach (var user in temp)
             {
                 var userdata = user.Split(',');
@@ -103,10 +104,10 @@ namespace PictureSync.Logic
         /// </summary>
         /// <param name="username"></param>
         /// <param name="adminprivilege"></param>
-        /// <returns></returns>
+        /// <returns>if admin state was changed</returns>
         public static bool SetAdminPrivilege(string username, bool adminprivilege)
         {
-            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
             var statechanged = false;
 
             foreach (var user in temp)
@@ -130,7 +131,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static int GetPictureAmount(string username)
         {
-            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
             foreach (var user in temp)
             {
                 var userdata = user.Split(',');
@@ -146,13 +147,40 @@ namespace PictureSync.Logic
         /// <param name="username"></param>
         public static void AddPictureAmount(string username)
         {
-            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
             foreach (var user in temp)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username)
                 {
                     userdata[3] = Convert.ToString(Convert.ToInt32(userdata[3]) + 1);
+                    WriteUserdata(userdata);
+                }
+            }
+        }
+
+        public static DateTime GetLatestActivity(string username)
+        {
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
+            foreach (var user in temp)
+            {
+                var userdata = user.Split(',');
+                if (userdata[0] == username)
+                    return Convert.ToDateTime(userdata[4]);
+            }
+            return DateTime.MinValue;
+        }
+
+        public static void SetLatestActivity(string username, DateTime date)
+        {
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
+
+            foreach (var user in temp)
+            {
+                var userdata = user.Split(',');
+                if (userdata[0] == username)
+                {
+                    userdata[4] = date.ToString("yyyy-MM-dd"); 
                     WriteUserdata(userdata);
                 }
             }
@@ -174,7 +202,7 @@ namespace PictureSync.Logic
         /// <param name="userdata"></param>
         private static void WriteUserdata(string[] userdata)
         {
-            var temp = File.ReadAllLines(Config.config.PathUsers);
+            var temp = File.ReadAllLines(config.PathUsers);
             for (var i = 0; i < temp.Length; i++)
             {
                 var line = temp[i].Split(',');
@@ -191,16 +219,16 @@ namespace PictureSync.Logic
                     temp[i] = b.ToString();
                 }
             }
-            File.WriteAllLines(Config.config.PathUsers,temp);
+            File.WriteAllLines(config.PathUsers,temp);
         }
 
         /// <summary>
-        /// Returns Array [username, picturecount]
+        /// Gets total sent pictures
         /// </summary>
-        /// <returns></returns>
-        public static string[,] GetUseractivity()
+        /// <returns>Array [username, picturecount]</returns>
+        public static string[,] GetUseractivity_Amount()
         {
-            var temp = File.ReadAllLines(Config.config.PathUsers).ToList();
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
             var userName = new string[temp.Count];
             var userActivity = new int[temp.Count];
             var final = new string[temp.Count, 2];
@@ -220,6 +248,37 @@ namespace PictureSync.Logic
             {
                 final[i, 0] = userName[i];
                 final[i, 1] = userActivity[i].ToString();
+            }
+
+            return final;
+        }
+
+        /// <summary>
+        /// Gets date of latest activity (picture received)
+        /// </summary>
+        /// <returns>Array [username, date_lastpic]</returns>
+        public static string[,] GetUseractivity_Time()
+        {
+            var temp = File.ReadAllLines(config.PathUsers).ToList();
+            var userName = new string[temp.Count];
+            var userActivity = new DateTime[temp.Count];
+            var final = new string[temp.Count, 2];
+
+            for (var i = 0; i < temp.Count; i++)
+            {
+                var userdata = temp[i].Split(',');
+                userName[i] = userdata[0];
+                userActivity[i] = Convert.ToDateTime(userdata[4]);
+            }
+
+            Array.Sort(userActivity, userName);
+            Array.Reverse(userName);
+            Array.Reverse(userActivity);
+
+            for (var i = 0; i < temp.Count; i++)
+            {
+                final[i, 0] = userName[i];
+                final[i, 1] = userActivity[i].ToString("dd.MM.yyyy");
             }
 
             return final;

@@ -10,7 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using static PictureSync.Logic.Config;
 using static PictureSync.Logic.Server;
+using static PictureSync.Logic.Userlist;
 
 namespace PictureSync.Logic
 {
@@ -24,7 +26,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Create a TelegramBotClient with telegram token
         /// </summary>
-        private readonly TelegramBotClient _bot = new TelegramBotClient(Config.config.Token);
+        private readonly TelegramBotClient _bot = new TelegramBotClient(config.Token);
 
         /// <summary>
         /// Download a document from telegram Server
@@ -35,7 +37,7 @@ namespace PictureSync.Logic
         private async Task Download_document(MessageEventArgs e, int messageId)
         {
             // Create dir for username if not exists
-            Directory.CreateDirectory(Config.config.PathPhotos + e.Message.Chat.Username);
+            Directory.CreateDirectory(config.PathPhotos + e.Message.Chat.Username);
 
             if (e.Message.Document.MimeType == "image/png" || e.Message.Document.MimeType == "image/jpeg")
             {
@@ -59,6 +61,7 @@ namespace PictureSync.Logic
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " autoenable compression");
                     await _bot.SendTextMessageAsync(e.Message.Chat.Id, "Komprimieren ist wieder aktiviert");
                 }
+                SetLatestActivity(e.Message.Chat.Username,DateTime.Today);
             }
             else
             {
@@ -87,13 +90,13 @@ namespace PictureSync.Logic
             if(res <= 1)
             {
                 //Hochformat
-                height = hasCompression ? Config.config.MaxLen : height;
+                height = hasCompression ? config.MaxLen : height;
                 width = hasCompression ? Convert.ToInt16(height * res): width;
             }
             else
             {
                 //Querformat
-                width = hasCompression ? Config.config.MaxLen : width;
+                width = hasCompression ? config.MaxLen : width;
                 height = hasCompression ? Convert.ToInt16(width / res): height;
             }
 
@@ -105,22 +108,22 @@ namespace PictureSync.Logic
             var jpgEncoder = GetEncoder(ImageFormat.Jpeg);
             var myEncoder = System.Drawing.Imaging.Encoder.Quality;
             var encoder = new EncoderParameters(1);
-            var encoderParameter = new EncoderParameter(myEncoder, hasCompression ? Config.config.EncodeQ : 93L);
+            var encoderParameter = new EncoderParameter(myEncoder, hasCompression ? config.EncodeQ : 93L);
             encoder.Param[0] = encoderParameter;
 
-            if (!File.Exists(Config.config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg"))
+            if (!File.Exists(config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg"))
             {
-                finalImage.Save(Config.config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg", jpgEncoder, encoder);
+                finalImage.Save(config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + ".jpg", jpgEncoder, encoder);
                 return dateTaken + ".jpg";
             }
-            else if (!File.Exists(Config.config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + ".jpg"))
+            else if (!File.Exists(config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + ".jpg"))
             {
-                finalImage.Save(Config.config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + ".jpg", jpgEncoder, encoder);
+                finalImage.Save(config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + " (2)" + ".jpg", jpgEncoder, encoder);
                 return dateTaken + " (2)" + ".jpg";
             }
             else
             {
-                var path = Config.config.PathPhotos + e.Message.Chat.Username + @"\";
+                var path = config.PathPhotos + e.Message.Chat.Username + @"\";
                 var dir = new DirectoryInfo(path);
                 var number = 0;
 
@@ -143,7 +146,7 @@ namespace PictureSync.Logic
                         number = test;
                 }
                 number++;
-                finalImage.Save(Config.config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + " (" + number.ToString() + ")" + ".jpg", jpgEncoder, encoder);
+                finalImage.Save(config.PathPhotos + e.Message.Chat.Username + @"\" + dateTaken + " (" + number.ToString() + ")" + ".jpg", jpgEncoder, encoder);
                 return dateTaken + " (" + number.ToString() + ")" + ".jpg";
             }
         }
@@ -157,8 +160,8 @@ namespace PictureSync.Logic
         {
             if (Userlist.HasAuth(e.Message.Chat.Username))
             {
-                var messageId = Config.config.MsgIncrement;
-                Config.config.MsgIncrement++;
+                var messageId = config.MsgIncrement;
+                config.MsgIncrement++;
 
                 // Message Types
                 switch (e.Message.Type)
@@ -185,9 +188,9 @@ namespace PictureSync.Logic
             else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Chat.Username != null && e.Message.Text.StartsWith("/auth "))
             {
                 var hasher = new Hasher();
-                if (hasher.Check(e.Message.Text.Remove(0, 6), new HashedPassword(Config.config.Hash, Config.config.Salt)))
+                if (hasher.Check(e.Message.Text.Remove(0, 6), new HashedPassword(config.Hash, config.Salt)))
                 {
-                    File.AppendAllText(Config.config.PathUsers, e.Message.Chat.Username + ",1,0,0" + Environment.NewLine);
+                    File.AppendAllText(config.PathUsers, e.Message.Chat.Username + ",1,0,0" + Environment.NewLine);
                     SortUsers();
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " has just authenticated a new Device.");
                     _bot.SendTextMessageAsync(e.Message.Chat.Id, "Erfolgreich Authentifiziert.");
@@ -275,10 +278,20 @@ namespace PictureSync.Logic
             // ADMIN AREA
             switch (command)
             {
-                case "/activity":
+                case "/activity_amount":
+                    var b1 = new StringBuilder();
+                    var list1 = GetUseractivity_Amount();
+                    for (var i = 0; i < UsersAmount; i++)
+                    {
+                        b1.AppendLine(list1[i, 0] + " - " + list1[i, 1]);
+                    }
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " accessed activity");
+                    _bot.SendTextMessageAsync(e.Message.Chat.Id, b1.ToString());
+                    break;
+                case "/activity_time":
                     var b = new StringBuilder();
-                    var list = Userlist.GetUseractivity();
-                    for (var i = 0; i < Userlist.UsersAmount; i++)
+                    var list = GetUseractivity_Time();
+                    for (var i = 0; i < UsersAmount; i++)
                     {
                         b.AppendLine(list[i, 0] + " - " + list[i, 1]);
                     }
@@ -310,7 +323,8 @@ namespace PictureSync.Logic
                     
                     if (Userlist.HasAdminPrivilege(e.Message.Chat.Username))
                     {
-                        commandsList.Add("/activity - Zeigt Gesamtaktivität aller registrierten Benutzer an");
+                        commandsList.Add("/activity_amount - Zeigt insgesamt gesendete Fotos pro Benutzer");
+                        commandsList.Add("/activity_time - Zeigt Datum an an welchem zuletzt ein Bild erhalten wurde");
                     }
                     commandsList.Add("/koff - Komprimierung für ein Bild ausschalten");
                     commandsList.Add("/kon - Komprimierung einschalten");
@@ -327,7 +341,7 @@ namespace PictureSync.Logic
                     break;
                 case "/admin":
                     var hasher = new Hasher();
-                    if (hasher.Check(e.Message.Text.Remove(0, 7), new HashedPassword(Config.config.Hash, Config.config.Salt)))
+                    if (hasher.Check(e.Message.Text.Remove(0, 7), new HashedPassword(config.Hash, config.Salt)))
                     {
                         Userlist.SetAdminPrivilege(e.Message.Chat.Username, true);
                         Trace.WriteLine(
