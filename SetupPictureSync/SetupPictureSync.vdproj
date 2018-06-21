@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_14B98460D44D85A1857B898AB1D4997C"
+        "MsmKey" = "8:_2D40F42D23CEF4286ED8A20A574926D3"
         "OwnerKey" = "8:_6B97766E29E2441C9CF7D497E3A77994"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -27,12 +27,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_82F666DFA42821EDCF3A625D71B7A280"
-        "OwnerKey" = "8:_6B97766E29E2441C9CF7D497E3A77994"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_87F59D5D8D1793161BFABF239AA695BF"
         "OwnerKey" = "8:_6B97766E29E2441C9CF7D497E3A77994"
         "MsmSig" = "8:_UNDEFINED"
@@ -40,19 +34,31 @@
         "Entry"
         {
         "MsmKey" = "8:_87F59D5D8D1793161BFABF239AA695BF"
-        "OwnerKey" = "8:_14B98460D44D85A1857B898AB1D4997C"
+        "OwnerKey" = "8:_F70CFF5B591B40023377657A2253A275"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BAA3A264F5A231E07001B422B194B014"
+        "MsmKey" = "8:_B02B55DA2248CEE52AA1B9427399F1A5"
         "OwnerKey" = "8:_6B97766E29E2441C9CF7D497E3A77994"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BAA3A264F5A231E07001B422B194B014"
-        "OwnerKey" = "8:_14B98460D44D85A1857B898AB1D4997C"
+        "MsmKey" = "8:_B02B55DA2248CEE52AA1B9427399F1A5"
+        "OwnerKey" = "8:_F70CFF5B591B40023377657A2253A275"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E3688B3B75DF4F4796DBC5411CC0B92A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F70CFF5B591B40023377657A2253A275"
+        "OwnerKey" = "8:_6B97766E29E2441C9CF7D497E3A77994"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -64,19 +70,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_14B98460D44D85A1857B898AB1D4997C"
+        "OwnerKey" = "8:_F70CFF5B591B40023377657A2253A275"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_BAA3A264F5A231E07001B422B194B014"
+        "OwnerKey" = "8:_B02B55DA2248CEE52AA1B9427399F1A5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_82F666DFA42821EDCF3A625D71B7A280"
+        "OwnerKey" = "8:_2D40F42D23CEF4286ED8A20A574926D3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -180,39 +186,18 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_14B98460D44D85A1857B898AB1D4997C"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Telegram.Bot, Version=13.4.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:Telegram.Bot.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F3E72C4DE0F947FDA4749E681F7AAB5E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_82F666DFA42821EDCF3A625D71B7A280"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2D40F42D23CEF4286ED8A20A574926D3"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Hash, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_2D40F42D23CEF4286ED8A20A574926D3"
+                    {
+                    "Name" = "8:Hash.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Hash.dll"
             "TargetName" = "8:"
@@ -239,6 +224,11 @@
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
+                    "_87F59D5D8D1793161BFABF239AA695BF"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
@@ -258,15 +248,71 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BAA3A264F5A231E07001B422B194B014"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B02B55DA2248CEE52AA1B9427399F1A5"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_B02B55DA2248CEE52AA1B9427399F1A5"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F3E72C4DE0F947FDA4749E681F7AAB5E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E3688B3B75DF4F4796DBC5411CC0B92A"
+            {
+            "SourcePath" = "8:..\\PictureSync\\Resources\\icon.ico"
+            "TargetName" = "8:icon.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_F3E72C4DE0F947FDA4749E681F7AAB5E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F70CFF5B591B40023377657A2253A275"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Telegram.Bot, Version=13.4.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F70CFF5B591B40023377657A2253A275"
+                    {
+                    "Name" = "8:Telegram.Bot.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Telegram.Bot.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F3E72C4DE0F947FDA4749E681F7AAB5E"
@@ -341,7 +387,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PictureSync"
         "ProductCode" = "8:{B2574277-E663-4490-8822-7E7139F57A3A}"
-        "PackageCode" = "8:{8C4B2363-566A-43A8-8F6E-F2155650FA5B}"
+        "PackageCode" = "8:{C6DCB9CE-A84E-4A3A-B19D-61F7F77A2E7C}"
         "UpgradeCode" = "8:{F00FDAEF-BCF5-430B-9F4A-C2135C548685}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -358,7 +404,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_E3688B3B75DF4F4796DBC5411CC0B92A"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -472,7 +518,7 @@
             "Target" = "8:_6B97766E29E2441C9CF7D497E3A77994"
             "Folder" = "8:_7744D1D4A8F74541AE06BB696005CB50"
             "WorkingFolder" = "8:_F3E72C4DE0F947FDA4749E681F7AAB5E"
-            "Icon" = "8:"
+            "Icon" = "8:_E3688B3B75DF4F4796DBC5411CC0B92A"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1DCE91D581D94DFB85B3AF6FE1F865ED"
@@ -486,7 +532,7 @@
             "Target" = "8:_6B97766E29E2441C9CF7D497E3A77994"
             "Folder" = "8:_86C7A465B6494883950C07F17C9A9BCB"
             "WorkingFolder" = "8:_F3E72C4DE0F947FDA4749E681F7AAB5E"
-            "Icon" = "8:"
+            "Icon" = "8:_E3688B3B75DF4F4796DBC5411CC0B92A"
             "Feature" = "8:"
             }
         }
