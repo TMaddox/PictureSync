@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Diagnostics;
+using System.Globalization;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.Threading;
 using PictureSync.Logic;
 using PictureSync.Properties;
 using static PictureSync.Logic.Config;
@@ -45,8 +47,10 @@ namespace PictureSync
             _basedir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\";
 
             ReadConfig(_basedir);
-            
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(config.Localization);
+
+            var culture = CultureInfo.CreateSpecificCulture(config.Localization);
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
 
             // Create files (log, Users)
             Create_files();

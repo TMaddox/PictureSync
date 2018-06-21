@@ -387,7 +387,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PictureSync"
         "ProductCode" = "8:{B2574277-E663-4490-8822-7E7139F57A3A}"
-        "PackageCode" = "8:{C6DCB9CE-A84E-4A3A-B19D-61F7F77A2E7C}"
+        "PackageCode" = "8:{DD0D8660-A567-4D84-8E45-AECA33129975}"
         "UpgradeCode" = "8:{F00FDAEF-BCF5-430B-9F4A-C2135C548685}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -934,6 +934,34 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_4BA0846383F045ACA4910A9465CC8D28"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F3E72C4DE0F947FDA4749E681F7AAB5E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
+            "OutputProjectGuid" = "8:{594A5939-CADF-4540-B249-C4D5D624D3EF}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6B97766E29E2441C9CF7D497E3A77994"
             {
             "SourcePath" = "8:..\\PictureSync\\obj\\Debug\\PictureSync.exe"
