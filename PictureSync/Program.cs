@@ -45,11 +45,12 @@ namespace PictureSync
             _basedir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\";
 
             ReadConfig(_basedir);
-            SortUsers();
+            
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(config.Localization);
 
             // Create files (log, Users)
             Create_files();
+            SortUsers();
 
             // Create global telebot
             try
