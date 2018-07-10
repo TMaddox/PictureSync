@@ -8,6 +8,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
+using static PictureSync.Logic.Config;
+
 namespace PictureSync.Logic
 {
     internal class Server
@@ -117,9 +119,39 @@ namespace PictureSync.Logic
                 Console.Write("Localisation (en|de): ");
                 var localisation = Console.ReadLine();
                 sw.WriteLine("localization = [" + localisation + "]");
-
-                Console.Clear();
             }
+            RestartBot();
+        }
+
+        /// <summary>
+        /// Updates the config file from config class
+        /// </summary>
+        public static void Update_Config()
+        {
+            File.Delete(PathConfig);
+            using (var sw = File.AppendText(PathConfig))
+            {
+                sw.WriteLine("Token = [" + Token + "]");
+
+                sw.WriteLine("Hash = [" + Hash + "]");
+                sw.WriteLine("Salt = [" + Salt + "]");
+
+                sw.WriteLine("path_pictures = [" + PathPhotos + "]");
+
+                sw.WriteLine("max_picture_lenght = [" + MaxLen + "]");
+
+                sw.WriteLine("encoding_Quality = [" + EncodeQ + "]");
+
+                sw.WriteLine("localization = [" + Localization + "]");
+            }
+            RestartBot();
+        }
+
+        /// <summary>
+        /// Restarts the Application
+        /// </summary>
+        private static void RestartBot()
+        {
             Process.Start(Application.ExecutablePath);
             Environment.Exit(0);
         }

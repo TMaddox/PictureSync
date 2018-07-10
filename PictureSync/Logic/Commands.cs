@@ -4,7 +4,9 @@ using System.Text;
 using HashLibrary;
 using PictureSync.Properties;
 using Telegram.Bot.Args;
+
 using static PictureSync.Logic.Config;
+using static PictureSync.Logic.Server;
 
 namespace PictureSync.Logic
 {
@@ -42,7 +44,7 @@ namespace PictureSync.Logic
                     {
                         b1.AppendLine(list1[i, 0] + " - " + list1[i, 1]);
                     }
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed);
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, b1.ToString());
                     break;
                 case "/activity_time":
@@ -52,9 +54,20 @@ namespace PictureSync.Logic
                     {
                         b.AppendLine(list[i, 0] + " - " + list[i, 1]);
                     }
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed);
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, b.ToString());
                     break;
+                //case "/pwedit":
+                //    var strings = e.Message.Text.Split(' ');
+                //    var hasher = new Hasher();
+                //    if (hasher.Check(strings[1], new HashedPassword(Hash, Salt)))
+                //    {
+                //        var hashedPw = hasher.HashPassword(strings[2]);
+                //        Hash = hashedPw.Hash;
+                //        Salt = hashedPw.Salt;
+                //        Update_Config();
+                //    }
+                //    break;
                 case "/party":
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_AdminCommands_party);
                     break;
@@ -82,13 +95,14 @@ namespace PictureSync.Logic
                     {
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_activity_amount);
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_activity_time);
+                        //commandsList.Add(Resources.TelegramBot_CommonCommands_help_change_pw);
                     }
                     commandsList.Add(Resources.TelegramBot_CommonCommands_help_coff);
                     commandsList.Add(Resources.TelegramBot_CommonCommands_help_con);
                     commandsList.Add(Resources.TelegramBot_CommonCommands_help_admin);
                     commandsList.Add(Resources.TelegramBot_CommonCommands_help_auth); // auth is handled in Bot_OnMessage
                     commandsList.Add(Resources.TelegramBot_CommonCommands_help_help);
-                    commandsList.Sort();
+                    commandsList.Sort(); // sort commands alpahbetically
 
                     var b = new StringBuilder();
                     b.AppendLine(Resources.TelegramBot_CommonCommands_commands);

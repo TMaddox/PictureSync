@@ -247,4 +247,7 @@
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TelegramBot_CommonCommands_help_change_pw" xml:space="preserve">
+    <value>/pwedit &lt;old&gt; &lt;new&gt; - Changes the password</value>
+  </data>
 </root>

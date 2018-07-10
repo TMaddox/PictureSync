@@ -247,4 +247,7 @@
   <data name="TelegramBot_CommonCommands_nocommand" xml:space="preserve">
     <value>Can´t parse command.</value>
   </data>
+  <data name="TelegramBot_CommonCommands_help_change_pw" xml:space="preserve">
+    <value>/pwedit &lt;old&gt; &lt;new&gt; - Changes the password</value>
+  </data>
 </root>

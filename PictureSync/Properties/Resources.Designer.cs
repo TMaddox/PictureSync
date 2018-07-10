@@ -323,6 +323,15 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /pwedit &lt;old&gt; &lt;new&gt; - Changes the password.
+        /// </summary>
+        internal static string TelegramBot_CommonCommands_help_change_pw {
+            get {
+                return ResourceManager.GetString("TelegramBot_CommonCommands_help_change_pw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /coff - Disable comression for one picture.
         /// </summary>
         internal static string TelegramBot_CommonCommands_help_coff {

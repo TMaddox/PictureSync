@@ -247,4 +247,7 @@
   <data name="TelegramBot_CommonCommands_nocommand" xml:space="preserve">
     <value>Befehl nicht vorhanden.</value>
   </data>
+  <data name="TelegramBot_CommonCommands_help_change_pw" xml:space="preserve">
+    <value>/pwedit &lt;alt&gt; &lt;neu&gt; - Ändert das Passwort</value>
+  </data>
 </root>

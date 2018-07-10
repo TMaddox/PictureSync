@@ -31,7 +31,7 @@ namespace PictureSync.Logic
         /// <param name="e"></param>
         /// <param name="messageId"></param>
         /// <returns></returns>
-        private async Task Download_document(MessageEventArgs e, int messageId)
+        private static async Task Download_document(MessageEventArgs e, int messageId)
         {
             // Create dir for username if not exists
             Directory.CreateDirectory(PathPhotos + e.Message.Chat.Username);
@@ -153,7 +153,7 @@ namespace PictureSync.Logic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Bot_OnMessage(object sender, MessageEventArgs e)
+        private static void Bot_OnMessage(object sender, MessageEventArgs e)
         {
             if (HasAuth(e.Message.Chat.Username))
             {
@@ -168,13 +168,9 @@ namespace PictureSync.Logic
                         ParseCommands(e);
                         break;
                     case Telegram.Bot.Types.Enums.MessageType.PhotoMessage:
-                        //Disabled because metadata is cut when sending a photo
+                        //Disabled because metadata is cut when sending a photo and we need capture date
                         Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_Bot_OnMessage_deny_picture);
                         Trace.WriteLine(NowLog + " " + MessageIDformat(messageId) + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_deny_picture_log);
-
-                        // Picture
-                        //Trace.WriteLine(serverlogic.NowLog + " Photo incoming from " + e.Message.Chat.Username);
-                        //Download_img(e);
                         break;
                     case Telegram.Bot.Types.Enums.MessageType.DocumentMessage:
                         Trace.WriteLine(NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_Bot_OnMessage_document_incoming_log + " " + e.Message.Chat.Username);
@@ -207,7 +203,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Starts listener
         /// </summary>
-        public void Start_bot()
+        public static void Start_bot()
         {
             Bot = new TelegramBotClient(Token);
             Bot.OnMessage += Bot_OnMessage;
@@ -218,7 +214,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Stops listener
         /// </summary>
-        public void Stop_bot()
+        public static void Stop_bot()
         {
             Bot.StopReceiving();
             Bot.OnMessage -= Bot_OnMessage;

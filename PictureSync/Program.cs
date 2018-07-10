@@ -71,7 +71,7 @@ namespace PictureSync
             InitiateTracer();
 
             // Start bot
-            Telebot.Start_bot();
+            Start_bot();
             Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_started_log);
 
             Application.Run();
@@ -120,7 +120,7 @@ namespace PictureSync
         /// <param name="e"></param>
         private static void SmoothExit(object sender, EventArgs e)
         {
-            Telebot.Stop_bot();
+            Stop_bot();
             Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_stopped_log);
 
             TrayIcon.Visible = false;
