@@ -48,7 +48,7 @@ namespace PictureSync
 
             ReadConfig(_basedir);
 
-            var culture = CultureInfo.CreateSpecificCulture(config.Localization);
+            var culture = CultureInfo.CreateSpecificCulture(Localization);
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
 

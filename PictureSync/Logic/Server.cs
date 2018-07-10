@@ -18,7 +18,7 @@ namespace PictureSync.Logic
         public static void InitiateTracer()
         {
             Trace.Listeners.Clear();
-            var twtl = new TextWriterTraceListener(Config.config.PathLog)
+            var twtl = new TextWriterTraceListener(Config.PathLog)
             {
                 Name = "TextLogger",
                 TraceOutputOptions = TraceOptions.ThreadId | TraceOptions.DateTime
@@ -48,10 +48,10 @@ namespace PictureSync.Logic
         /// </summary>
         public static void Create_files()
         {
-            if (!File.Exists(Config.config.PathLog))
-                using (File.AppendText(Config.config.PathLog));
-            if (!File.Exists(Config.config.PathUsers))
-                using (File.AppendText(Config.config.PathUsers));
+            if (!File.Exists(Config.PathLog))
+                using (File.AppendText(Config.PathLog));
+            if (!File.Exists(Config.PathUsers))
+                using (File.AppendText(Config.PathUsers));
         }
 
         /// <summary>
@@ -66,17 +66,14 @@ namespace PictureSync.Logic
                 var file = File.ReadAllLines(path + "config.dat");
                 var result = (from item in file let pFrom = item.IndexOf("[") + "[".Length let pTo = item.LastIndexOf("]") select item.Substring(pFrom, pTo - pFrom)).ToList();
 
-                Config.config = new Config
-                {
-                    Token = result.ElementAt(0),
-                    Hash = result.ElementAt(1),
-                    Salt = result.ElementAt(2),
-                    PathPhotos = result.ElementAt(3),
-                    MaxLen = Convert.ToInt32(result.ElementAt(4)),
-                    EncodeQ = Convert.ToInt32(result.ElementAt(5)),
-                    Localization = result.ElementAt(6),
-                    PathRoot = path
-                };
+                Config.Token = result.ElementAt(0);
+                Config.Hash = result.ElementAt(1);
+                Config.Salt = result.ElementAt(2);
+                Config.PathPhotos = result.ElementAt(3);
+                Config.MaxLen = Convert.ToInt32(result.ElementAt(4));
+                Config.EncodeQ = Convert.ToInt32(result.ElementAt(5));
+                Config.Localization = result.ElementAt(6);
+                Config.PathRoot = path;
             }
             catch (Exception)
             {
@@ -132,10 +129,10 @@ namespace PictureSync.Logic
         /// </summary>
         public static void SortUsers()
         {
-            var file = File.ReadAllLines(Config.config.PathUsers);
+            var file = File.ReadAllLines(Config.PathUsers);
             var result = file.ToList();
             result.Sort();
-            File.WriteAllLines(Config.config.PathUsers, result);
+            File.WriteAllLines(Config.PathUsers, result);
         }
 
         /// <summary>

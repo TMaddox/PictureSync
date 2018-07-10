@@ -71,6 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\Commands.cs" />
     <Compile Include="Logic\Config.cs" />
     <Compile Include="Logic\Server.cs" />
     <Compile Include="Logic\TelegramBot.cs" />
