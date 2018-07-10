@@ -7,6 +7,7 @@ using Telegram.Bot.Args;
 
 using static PictureSync.Logic.Config;
 using static PictureSync.Logic.Server;
+using static PictureSync.Logic.Userlist;
 
 namespace PictureSync.Logic
 {
@@ -39,8 +40,8 @@ namespace PictureSync.Logic
             {
                 case "/activity_amount":
                     var b1 = new StringBuilder();
-                    var list1 = Userlist.GetUseractivity_Amount();
-                    for (var i = 0; i < Userlist.UsersAmount; i++)
+                    var list1 = GetUseractivity_Amount();
+                    for (var i = 0; i < UsersAmount; i++)
                     {
                         b1.AppendLine(list1[i, 0] + " - " + list1[i, 1]);
                     }
@@ -49,8 +50,8 @@ namespace PictureSync.Logic
                     break;
                 case "/activity_time":
                     var b = new StringBuilder();
-                    var list = Userlist.GetUseractivity_Time();
-                    for (var i = 0; i < Userlist.UsersAmount; i++)
+                    var list = GetUseractivity_Time();
+                    for (var i = 0; i < UsersAmount; i++)
                     {
                         b.AppendLine(list[i, 0] + " - " + list[i, 1]);
                     }
@@ -68,6 +69,12 @@ namespace PictureSync.Logic
                 //        Update_Config();
                 //    }
                 //    break;
+                case "/clear_amount":
+                    ResetAllAmount();
+                    break;
+                case "/clear_activity":
+                    ResetAllActivity();
+                    break;
                 case "/party":
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_AdminCommands_party);
                     break;
@@ -91,11 +98,13 @@ namespace PictureSync.Logic
                 case "/help":
                     var commandsList = new List<string>();
                     
-                    if (Userlist.HasAdminPrivilege(e.Message.Chat.Username))
+                    if (HasAdminPrivilege(e.Message.Chat.Username))
                     {
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_activity_amount);
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_activity_time);
                         //commandsList.Add(Resources.TelegramBot_CommonCommands_help_change_pw);
+                        commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_activity);
+                        commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_amount);
                     }
                     commandsList.Add(Resources.TelegramBot_CommonCommands_help_coff);
                     commandsList.Add(Resources.TelegramBot_CommonCommands_help_con);
@@ -112,34 +121,34 @@ namespace PictureSync.Logic
                     break;
                 case "/admin":
                     var hasher = new Hasher();
-                    if (hasher.Check(e.Message.Text.Remove(0, 7), new HashedPassword(Config.Hash, Config.Salt)))
+                    if (hasher.Check(e.Message.Text.Remove(0, 7), new HashedPassword(Hash, Salt)))
                     {
-                        Userlist.SetAdminPrivilege(e.Message.Chat.Username, true);
+                        SetAdminPrivilege(e.Message.Chat.Username, true);
                         Trace.WriteLine(
-                            Server.NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_admin_successful_log);
+                            NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_admin_successful_log);
                         Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_CommonCommands_admin_successful);
                     }
                     else
                     {
-                        Userlist.SetAdminPrivilege(e.Message.Chat.Username, false);
-                        Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username +
+                        SetAdminPrivilege(e.Message.Chat.Username, false);
+                        Trace.WriteLine(NowLog + " " + e.Message.Chat.Username +
                                         " " + Resources.TelegramBot_CommonCommands_admin_not_successful_log);
                         Bot.SendTextMessageAsync(e.Message.Chat.Id,
                             Resources.TelegramBot_CommonCommands_admin_not_successful);
                     }
                     break;
                 case "/coff":
-                    Userlist.SetCompression(e.Message.Chat.Username, false);
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_coff_log);
+                    SetCompression(e.Message.Chat.Username, false);
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_coff_log);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_CommonCommands_coff);
                     break;
                 case "/con":
-                    Userlist.SetCompression(e.Message.Chat.Username, true);
-                    Trace.WriteLine(Server.NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_con_log);
+                    SetCompression(e.Message.Chat.Username, true);
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_con_log);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_CommonCommands_con);
                     break;
                 default:
-                    Trace.WriteLine(Server.NowLog + " " + Resources.TelegramBot_CommonCommands_Note_log + " " + e.Message.Text);
+                    Trace.WriteLine(NowLog + " " + Resources.TelegramBot_CommonCommands_Note_log + " " + e.Message.Text);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_CommonCommands_nocommand);
                     break;
             }

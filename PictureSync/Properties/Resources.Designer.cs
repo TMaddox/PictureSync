@@ -332,6 +332,24 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /clear_activity - Clears all stored activities.
+        /// </summary>
+        internal static string TelegramBot_CommonCommands_help_clear_activity {
+            get {
+                return ResourceManager.GetString("TelegramBot_CommonCommands_help_clear_activity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /clear_amount - Clears amount counters.
+        /// </summary>
+        internal static string TelegramBot_CommonCommands_help_clear_amount {
+            get {
+                return ResourceManager.GetString("TelegramBot_CommonCommands_help_clear_amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /coff - Disable comression for one picture.
         /// </summary>
         internal static string TelegramBot_CommonCommands_help_coff {

@@ -160,6 +160,20 @@ namespace PictureSync.Logic
         }
 
         /// <summary>
+        /// Resets all amounts of sent pictures for all users
+        /// </summary>
+        public static void ResetAllAmount()
+        {
+            var temp = File.ReadAllLines(PathUsers).ToList();
+            foreach (var user in temp)
+            {
+                var userdata = user.Split(',');
+                userdata[3] = Convert.ToString(0);
+                WriteUserdata(userdata);
+            }
+        }
+
+        /// <summary>
         /// Gets latest activity per user
         /// </summary>
         /// <param name="username"></param>
@@ -193,6 +207,21 @@ namespace PictureSync.Logic
                     userdata[4] = date.ToString("yyyy-MM-dd"); 
                     WriteUserdata(userdata);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Resets All activities stored for users
+        /// </summary>
+        public static void ResetAllActivity()
+        {
+            var temp = File.ReadAllLines(PathUsers).ToList();
+
+            foreach (var user in temp)
+            {
+                var userdata = user.Split(',');
+                userdata[4] = "2000.01.01";
+                WriteUserdata(userdata);
             }
         }
 

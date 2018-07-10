@@ -250,4 +250,10 @@
   <data name="TelegramBot_CommonCommands_help_change_pw" xml:space="preserve">
     <value>/pwedit &lt;alt&gt; &lt;neu&gt; - Ändert das Passwort</value>
   </data>
+  <data name="TelegramBot_CommonCommands_help_clear_activity" xml:space="preserve">
+    <value>/clear_activity - Setzt Nutzeraktivität zurück</value>
+  </data>
+  <data name="TelegramBot_CommonCommands_help_clear_amount" xml:space="preserve">
+    <value>/clear_amount - Setzt alle Zähler zurück</value>
+  </data>
 </root>

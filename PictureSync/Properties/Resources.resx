@@ -250,4 +250,10 @@
   <data name="TelegramBot_CommonCommands_help_change_pw" xml:space="preserve">
     <value>/pwedit &lt;old&gt; &lt;new&gt; - Changes the password</value>
   </data>
+  <data name="TelegramBot_CommonCommands_help_clear_activity" xml:space="preserve">
+    <value>/clear_activity - Clears all stored activities</value>
+  </data>
+  <data name="TelegramBot_CommonCommands_help_clear_amount" xml:space="preserve">
+    <value>/clear_amount - Clears amount counters</value>
+  </data>
 </root>
