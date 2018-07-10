@@ -47,7 +47,10 @@ namespace PictureSync.Logic
         public static List<string> GetLogList(int maxCount)
         {
             var final = new List<string>();
-            var file = File.ReadAllLines(PathLog).ToList();
+            var stream = File.Open(PathLog, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var reader = new StreamReader(stream);
+            var file = reader.ReadToEnd().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).ToList();
+
             file.Reverse();
             if (maxCount < file.Count)
                 for (var i = 0; i < maxCount; i++)
