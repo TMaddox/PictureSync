@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-
+using Telegram.Bot.Args;
 using static PictureSync.Logic.Config;
 
 namespace PictureSync.Logic
@@ -174,6 +174,14 @@ namespace PictureSync.Logic
         {
             Process.Start(Application.ExecutablePath);
             Environment.Exit(0);
+        }
+
+        /// <summary>
+        /// Adds a new user
+        /// </summary>
+        public static void AddUser(string username)
+        {
+            File.AppendAllText(PathUsers, username + ",1,0,0," + DateTime.Today.ToString("yyyy-MM-dd") + Environment.NewLine);
         }
 
         /// <summary>

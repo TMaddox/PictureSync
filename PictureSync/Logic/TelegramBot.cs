@@ -183,7 +183,7 @@ namespace PictureSync.Logic
                 var hasher = new Hasher();
                 if (hasher.Check(e.Message.Text.Remove(0, 6), new HashedPassword(Hash, Salt)))
                 {
-                    File.AppendAllText(PathUsers, e.Message.Chat.Username + ",1,0,0," + DateTime.Today.ToString("yyyy-MM-dd") + Environment.NewLine);
+                    AddUser(e.Message.Chat.Username);
                     SortUsers();
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_auth_successful_log);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_Bot_OnMessage_auth_successful);

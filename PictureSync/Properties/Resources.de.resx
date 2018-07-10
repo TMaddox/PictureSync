@@ -259,4 +259,16 @@
   <data name="TelegramBot_CommonCommands_help_log" xml:space="preserve">
     <value>/log - Zeigt die letzten 100 Zeilen des Logs an</value>
   </data>
+  <data name="TelegramBot_CommonCommands_help_add_user" xml:space="preserve">
+    <value>/add_user &lt;user&gt; - Fügt einen neuen Nutzer hinzu</value>
+  </data>
+  <data name="TelegramBot_AdminCommands_add_user_success" xml:space="preserve">
+    <value>Erfolgreich hinzugefügt</value>
+  </data>
+  <data name="TelegramBot_AdminCommands_add_user_success_log" xml:space="preserve">
+    <value>hat hinzugefügt:</value>
+  </data>
+  <data name="TelegramBot_AdminCommands_log_accessed" xml:space="preserve">
+    <value>hat sich den Log angesehen</value>
+  </data>
 </root>

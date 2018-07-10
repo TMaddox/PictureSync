@@ -48,16 +48,30 @@ namespace PictureSync.Logic
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, b1.ToString());
                     break;
                 case "/activity_time":
-                    var b = new StringBuilder();
+                    var b3 = new StringBuilder();
                     var list = GetUseractivity_Time();
                     for (var i = 0; i < UsersAmount; i++)
-                        b.AppendLine(list[i, 0] + " - " + list[i, 1]);
+                        b3.AppendLine(list[i, 0] + " - " + list[i, 1]);
 
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed);
-                    Bot.SendTextMessageAsync(e.Message.Chat.Id, b.ToString());
+                    Bot.SendTextMessageAsync(e.Message.Chat.Id, b3.ToString());
+                    break;
+                case "/add_user":
+                    var strings = e.Message.Text.Split(' ');
+                    AddUser(strings[1]);
+                    SortUsers();
+
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_add_user_success_log + " " + strings[1]);
+                    Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_AdminCommands_add_user_success);
                     break;
                 case "/log":
-                    GetLogList(100);
+                    var logList = GetLogList(100);
+                    var b2 = new StringBuilder();
+                    foreach (var line in logList)
+                        b2.AppendLine(line);
+
+                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_log_accessed);
+                    Bot.SendTextMessageAsync(e.Message.Chat.Id, b2.ToString());
                     break;
                 //case "/pwedit":
                 //    var strings = e.Message.Text.Split(' ');
@@ -103,6 +117,7 @@ namespace PictureSync.Logic
                     {
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_activity_amount);
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_activity_time);
+                        commandsList.Add(Resources.TelegramBot_CommonCommands_help_add_user);
                         //commandsList.Add(Resources.TelegramBot_CommonCommands_help_change_pw);
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_activity);
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_amount);

@@ -259,4 +259,16 @@
   <data name="TelegramBot_CommonCommands_help_log" xml:space="preserve">
     <value>/log - Returns the last 100 lines of the log</value>
   </data>
+  <data name="TelegramBot_CommonCommands_help_add_user" xml:space="preserve">
+    <value>/add_user &lt;user&gt; - Adds a new user</value>
+  </data>
+  <data name="TelegramBot_AdminCommands_add_user_success_log" xml:space="preserve">
+    <value>succesfully added</value>
+  </data>
+  <data name="TelegramBot_AdminCommands_add_user_success" xml:space="preserve">
+    <value>successfully added</value>
+  </data>
+  <data name="TelegramBot_AdminCommands_log_accessed" xml:space="preserve">
+    <value>accessed log</value>
+  </data>
 </root>

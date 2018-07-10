@@ -125,6 +125,33 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to successfully added.
+        /// </summary>
+        internal static string TelegramBot_AdminCommands_add_user_success {
+            get {
+                return ResourceManager.GetString("TelegramBot_AdminCommands_add_user_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to succesfully added.
+        /// </summary>
+        internal static string TelegramBot_AdminCommands_add_user_success_log {
+            get {
+                return ResourceManager.GetString("TelegramBot_AdminCommands_add_user_success_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to accessed log.
+        /// </summary>
+        internal static string TelegramBot_AdminCommands_log_accessed {
+            get {
+                return ResourceManager.GetString("TelegramBot_AdminCommands_log_accessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You enabled the partymode. YAY!.
         /// </summary>
         internal static string TelegramBot_AdminCommands_party {
@@ -301,6 +328,15 @@ namespace PictureSync.Properties {
         internal static string TelegramBot_CommonCommands_help_activity_time {
             get {
                 return ResourceManager.GetString("TelegramBot_CommonCommands_help_activity_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /add_user &lt;user&gt; - Adds a new user.
+        /// </summary>
+        internal static string TelegramBot_CommonCommands_help_add_user {
+            get {
+                return ResourceManager.GetString("TelegramBot_CommonCommands_help_add_user", resourceCulture);
             }
         }
         
