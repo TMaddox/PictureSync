@@ -58,6 +58,7 @@ namespace PictureSync.Logic
             else
                 final = file;
 
+            final.Reverse();
             return final;
         }
 

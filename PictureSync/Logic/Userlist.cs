@@ -18,12 +18,7 @@ namespace PictureSync.Logic
         {
             get
             {
-                var temp = File.ReadAllLines(PathUsers).ToList();
-                foreach (var user in temp)
-                {
-                    var userdata = user.Split(',');
-                    users.Add(userdata[0]);
-                }
+                users = File.ReadAllLines(PathUsers).ToList();
                 return users;
             }
         }
@@ -31,14 +26,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Returns n of Uers
         /// </summary>
-        public static int UsersAmount
-        {
-            get
-            {
-                var temp = File.ReadAllLines(PathUsers).ToList();
-                return temp.Count;
-            }
-        }
+        public static int UsersAmount => Users.Count;
 
         /// <summary>
         /// Adds a new user
@@ -55,8 +43,7 @@ namespace PictureSync.Logic
         /// <returns>Returns true if username exists</returns>
         public static bool CheckIfUserExists(string username)
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username)
@@ -72,8 +59,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static bool HasCompression(string username)
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username && userdata[1] == "1")
@@ -90,10 +76,9 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static bool SetCompression(string username, bool compress)
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
             var statechanged = false;
 
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username)
@@ -114,8 +99,7 @@ namespace PictureSync.Logic
         /// <returns>if user has admin privileges</returns>
         public static bool HasAdminPrivilege(string username)
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username && userdata[2] == "1")
@@ -132,10 +116,9 @@ namespace PictureSync.Logic
         /// <returns>if admin state was changed</returns>
         public static bool SetAdminPrivilege(string username, bool adminprivilege)
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
             var statechanged = false;
 
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username)
@@ -156,8 +139,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         private static int GetPictureAmount(string username)
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username)
@@ -172,8 +154,7 @@ namespace PictureSync.Logic
         /// <param name="username"></param>
         public static void AddPictureAmount(string username)
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username)
@@ -189,8 +170,7 @@ namespace PictureSync.Logic
         /// </summary>
         public static void ResetAllAmount()
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 userdata[3] = Convert.ToString(0);
@@ -205,8 +185,7 @@ namespace PictureSync.Logic
         /// <returns></returns>
         private static DateTime GetLatestActivity(string username)
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username)
@@ -222,9 +201,7 @@ namespace PictureSync.Logic
         /// <param name="date"></param>
         public static void SetLatestActivity(string username, DateTime date)
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
-
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 if (userdata[0] == username)
@@ -240,9 +217,7 @@ namespace PictureSync.Logic
         /// </summary>
         public static void ResetAllActivity()
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
-
-            foreach (var user in temp)
+            foreach (var user in Users)
             {
                 var userdata = user.Split(',');
                 userdata[4] = "2000-01-01";
@@ -257,7 +232,13 @@ namespace PictureSync.Logic
         /// <returns></returns>
         public static bool HasAuth(string username)
         {
-            return Users.Contains(username);
+            foreach (var user in Users)
+            {
+                var userdata = user.Split(',');
+                if (userdata[0] == username)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -292,7 +273,7 @@ namespace PictureSync.Logic
         /// <returns>Array [username, picturecount]</returns>
         public static string[,] GetUseractivity_Amount()
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
+            var temp = Users;
             var userName = new string[temp.Count];
             var userActivity = new int[temp.Count];
             var final = new string[temp.Count, 2];
@@ -323,7 +304,7 @@ namespace PictureSync.Logic
         /// <returns>Array [username, date_lastpic]</returns>
         public static string[,] GetUseractivity_Time()
         {
-            var temp = File.ReadAllLines(PathUsers).ToList();
+            var temp = Users;
             var userName = new string[temp.Count];
             var userActivity = new DateTime[temp.Count];
             var final = new string[temp.Count, 2];
