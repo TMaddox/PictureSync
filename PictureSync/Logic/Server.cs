@@ -180,14 +180,6 @@ namespace PictureSync.Logic
         }
 
         /// <summary>
-        /// Adds a new user
-        /// </summary>
-        public static void AddUser(string username)
-        {
-            File.AppendAllText(PathUsers, username + ",1,0,0," + DateTime.Today.ToString("yyyy-MM-dd") + Environment.NewLine);
-        }
-
-        /// <summary>
         /// Sort users in users.dat alphabetically
         /// </summary>
         public static void SortUsers()

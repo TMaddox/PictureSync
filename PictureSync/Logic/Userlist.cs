@@ -41,6 +41,31 @@ namespace PictureSync.Logic
         }
 
         /// <summary>
+        /// Adds a new user
+        /// </summary>
+        public static void AddUser(string username)
+        {
+            if(!CheckIfUserExists(username))
+                File.AppendAllText(PathUsers, username + ",1,0,0," + DateTime.Today.ToString("yyyy-MM-dd") + Environment.NewLine);
+        }
+
+        /// <summary>
+        /// Checks if a username exists already
+        /// </summary>
+        /// <returns>Returns true if username exists</returns>
+        public static bool CheckIfUserExists(string username)
+        {
+            var temp = File.ReadAllLines(PathUsers).ToList();
+            foreach (var user in temp)
+            {
+                var userdata = user.Split(',');
+                if (userdata[0] == username)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Checks if images shall be comressed for user
         /// </summary>
         /// <param name="username"></param>
@@ -220,7 +245,7 @@ namespace PictureSync.Logic
             foreach (var user in temp)
             {
                 var userdata = user.Split(',');
-                userdata[4] = "2000.01.01";
+                userdata[4] = "2000-01-01";
                 WriteUserdata(userdata);
             }
         }

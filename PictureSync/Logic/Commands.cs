@@ -58,11 +58,18 @@ namespace PictureSync.Logic
                     break;
                 case "/add_user":
                     var strings = e.Message.Text.Split(' ');
-                    AddUser(strings[1]);
-                    SortUsers();
+                    if (strings.Length == 2)
+                    {
+                        AddUser(strings[1]);
+                        SortUsers();
 
-                    Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_add_user_success_log + " " + strings[1]);
-                    Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_AdminCommands_add_user_success);
+                        Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_add_user_success_log + " " + strings[1]);
+                        Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_AdminCommands_add_user_success);
+                    }
+                    else
+                    {
+                        Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.Error);
+                    }
                     break;
                 case "/log":
                     var logList = GetLogList(100);
@@ -86,9 +93,11 @@ namespace PictureSync.Logic
                 //    break;
                 case "/clear_amount":
                     ResetAllAmount();
+                    Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.Success);
                     break;
                 case "/clear_activity":
                     ResetAllActivity();
+                    Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.Success);
                     break;
                 case "/party":
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_AdminCommands_party);

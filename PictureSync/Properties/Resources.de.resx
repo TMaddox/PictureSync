@@ -271,4 +271,10 @@
   <data name="TelegramBot_AdminCommands_log_accessed" xml:space="preserve">
     <value>hat sich den Log angesehen</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Erfolgreich</value>
+  </data>
 </root>
