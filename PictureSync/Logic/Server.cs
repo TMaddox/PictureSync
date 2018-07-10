@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
@@ -12,7 +13,7 @@ using static PictureSync.Logic.Config;
 
 namespace PictureSync.Logic
 {
-    internal class Server
+    internal static class Server
     {
         /// <summary>
         /// Initiate a Tracer, Use Tracker.WriteLine instead of Console.WriteLine to write output to logfile
@@ -37,6 +38,25 @@ namespace PictureSync.Logic
         public static string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " +
                                        DateTime.Now.ToString("HH:mm:ss.fff",
                                            System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
+
+        /// <summary>
+        /// retuns the log
+        /// </summary>
+        /// <param name="maxCount">maximum amount of returned lines</param>
+        /// <returns></returns>
+        public static List<string> GetLogList(int maxCount)
+        {
+            var final = new List<string>();
+            var file = File.ReadAllLines(PathLog).ToList();
+            file.Reverse();
+            if (maxCount < file.Count)
+                for (var i = 0; i < maxCount; i++)
+                    final.Add(file[i]);
+            else
+                final = file;
+
+            return final;
+        }
 
         /// <summary>
         /// Creates a msgID string
@@ -68,14 +88,14 @@ namespace PictureSync.Logic
                 var file = File.ReadAllLines(path + "config.dat");
                 var result = (from item in file let pFrom = item.IndexOf("[") + "[".Length let pTo = item.LastIndexOf("]") select item.Substring(pFrom, pTo - pFrom)).ToList();
 
-                Config.Token = result.ElementAt(0);
-                Config.Hash = result.ElementAt(1);
-                Config.Salt = result.ElementAt(2);
-                Config.PathPhotos = result.ElementAt(3);
-                Config.MaxLen = Convert.ToInt32(result.ElementAt(4));
-                Config.EncodeQ = Convert.ToInt32(result.ElementAt(5));
-                Config.Localization = result.ElementAt(6);
-                Config.PathRoot = path;
+                Token = result.ElementAt(0);
+                Hash = result.ElementAt(1);
+                Salt = result.ElementAt(2);
+                PathPhotos = result.ElementAt(3);
+                MaxLen = Convert.ToInt32(result.ElementAt(4));
+                EncodeQ = Convert.ToInt32(result.ElementAt(5));
+                Localization = result.ElementAt(6);
+                PathRoot = path;
             }
             catch (Exception)
             {

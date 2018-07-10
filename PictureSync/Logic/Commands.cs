@@ -42,9 +42,8 @@ namespace PictureSync.Logic
                     var b1 = new StringBuilder();
                     var list1 = GetUseractivity_Amount();
                     for (var i = 0; i < UsersAmount; i++)
-                    {
                         b1.AppendLine(list1[i, 0] + " - " + list1[i, 1]);
-                    }
+
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, b1.ToString());
                     break;
@@ -52,11 +51,13 @@ namespace PictureSync.Logic
                     var b = new StringBuilder();
                     var list = GetUseractivity_Time();
                     for (var i = 0; i < UsersAmount; i++)
-                    {
                         b.AppendLine(list[i, 0] + " - " + list[i, 1]);
-                    }
+
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, b.ToString());
+                    break;
+                case "/log":
+                    GetLogList(100);
                     break;
                 //case "/pwedit":
                 //    var strings = e.Message.Text.Split(' ');
@@ -105,6 +106,7 @@ namespace PictureSync.Logic
                         //commandsList.Add(Resources.TelegramBot_CommonCommands_help_change_pw);
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_activity);
                         commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_amount);
+                        commandsList.Add(Resources.TelegramBot_CommonCommands_help_log);
                     }
                     commandsList.Add(Resources.TelegramBot_CommonCommands_help_coff);
                     commandsList.Add(Resources.TelegramBot_CommonCommands_help_con);

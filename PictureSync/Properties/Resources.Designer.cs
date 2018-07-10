@@ -377,6 +377,15 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /log - Returns the last 100 lines of the log.
+        /// </summary>
+        internal static string TelegramBot_CommonCommands_help_log {
+            get {
+                return ResourceManager.GetString("TelegramBot_CommonCommands_help_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can´t parse command..
         /// </summary>
         internal static string TelegramBot_CommonCommands_nocommand {
