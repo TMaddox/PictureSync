@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.ServiceProcess;
 using System.Threading;
 using PictureSync.Logic;
 using PictureSync.Properties;
@@ -16,6 +17,28 @@ namespace PictureSync
 {
     public class Program
     {
+        #region Nested class to support running as service
+        public const string ServiceName = "PictureSyncService";
+
+        public class Service : ServiceBase
+        {
+            public Service()
+            {
+                ServiceName = Program.ServiceName;
+            }
+
+            protected override void OnStart(string[] args)
+            {
+                Program.Start(args);
+            }
+
+            protected override void OnStop()
+            {
+                Program.Stop();
+            }
+        }
+        #endregion
+
         private static string _basedir;
         private static readonly NotifyIcon TrayIcon = new NotifyIcon();
 
@@ -29,22 +52,39 @@ namespace PictureSync
 
         private static void Main(string[] args)
         {
-            Assembly.GetExecutingAssembly();
-            TrayIcon.Icon = Resources.icon;
-            TrayIcon.MouseDoubleClick += TrayIcon_DoubleClick;
-            TrayIcon.ContextMenuStrip = new ContextMenuStrip();
-            TrayIcon.ContextMenuStrip.Items.AddRange(new ToolStripItem[] { new ToolStripMenuItem(), new ToolStripMenuItem() });
-            TrayIcon.ContextMenuStrip.Items[0].Text = Resources.Program_Main_Exit;
-            TrayIcon.ContextMenuStrip.Items[0].Click += SmoothExit;
-            TrayIcon.ContextMenuStrip.Items[1].Text = Resources.Program_Main_Hide;
-            TrayIcon.ContextMenuStrip.Items[1].Click += Hide_Show_Click;
-            TrayIcon.Visible = true;
+            if (!Environment.UserInteractive)
+            {
+                // running as service
+                using (var service = new Service())
+                    ServiceBase.Run(service);
+            }
+            else
+            {
+                // running as console app
+                // Assembly.GetExecutingAssembly();
+                TrayIcon.Icon = Resources.icon;
+                TrayIcon.MouseDoubleClick += TrayIcon_DoubleClick;
+                TrayIcon.ContextMenuStrip = new ContextMenuStrip();
+                TrayIcon.ContextMenuStrip.Items.AddRange(new ToolStripItem[] { new ToolStripMenuItem(), new ToolStripMenuItem() });
+                TrayIcon.ContextMenuStrip.Items[0].Text = Resources.Program_Main_Exit;
+                TrayIcon.ContextMenuStrip.Items[0].Click += UserClosedApp;
+                TrayIcon.ContextMenuStrip.Items[1].Text = Resources.Program_Main_Hide;
+                TrayIcon.ContextMenuStrip.Items[1].Click += Hide_Show_Click;
+                TrayIcon.Visible = true;
 
-            // on ctrl-c
-            Console.CancelKeyPress += SmoothExit;
+                // on ctrl-c
+                Console.CancelKeyPress += UserClosedApp;
+                Start(args);
+            }
+        }
 
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\");
-            _basedir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PictureSync\";
+        /// <summary>
+        /// Starts the Bot
+        /// </summary>
+        private static void Start(string[] args)
+        {
+            Directory.CreateDirectory(GetApplicationPath() + @"\files\");
+            _basedir = GetApplicationPath() + @"\files\";
 
             ReadConfig(_basedir);
 
@@ -65,7 +105,7 @@ namespace PictureSync
             {
                 Create_Config(_basedir);
             }
-            
+
 
             // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
             InitiateTracer();
@@ -75,6 +115,29 @@ namespace PictureSync
             Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_started_log);
 
             Application.Run();
+        }
+        /// <summary>
+        /// Performs a smooth exit
+        /// </summary>
+        private static void Stop()
+        {
+            Stop_bot();
+            Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_stopped_log);
+
+            TrayIcon.Visible = false;
+            Application.Exit();
+            Environment.Exit(1);
+        }
+
+        /// <summary>
+        /// Gets the path of the Application
+        /// </summary>
+        private static string GetApplicationPath()
+        {
+            var assemblyPath = Assembly.GetEntryAssembly().CodeBase;
+            assemblyPath = new Uri(assemblyPath).LocalPath;
+            assemblyPath = Path.GetDirectoryName(assemblyPath);
+            return assemblyPath;
         }
 
         /// <summary>
@@ -114,18 +177,13 @@ namespace PictureSync
         }
 
         /// <summary>
-        /// Performs a smooth exit
+        /// The user closed the application
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private static void SmoothExit(object sender, EventArgs e)
+        private static void UserClosedApp(object sender, EventArgs e)
         {
-            Stop_bot();
-            Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_stopped_log);
-
-            TrayIcon.Visible = false;
-            Application.Exit();
-            Environment.Exit(1);
+            Stop();
         }
     }
 }
