@@ -156,17 +156,14 @@ namespace PictureSync.Logic
                     if (hasher.Check(e.Message.Text.Remove(0, 7), new HashedPassword(Hash, Salt)))
                     {
                         SetAdminPrivilege(e.Message.Chat.Username, true);
-                        Trace.WriteLine(
-                            NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_admin_successful_log);
+                        Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_admin_successful_log);
                         Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_CommonCommands_admin_successful);
                     }
                     else
                     {
                         SetAdminPrivilege(e.Message.Chat.Username, false);
-                        Trace.WriteLine(NowLog + " " + e.Message.Chat.Username +
-                                        " " + Resources.TelegramBot_CommonCommands_admin_not_successful_log);
-                        Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                            Resources.TelegramBot_CommonCommands_admin_not_successful);
+                        Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_admin_not_successful_log);
+                        Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_CommonCommands_admin_not_successful);
                     }
                     break;
                 case "/coff":
@@ -178,6 +175,9 @@ namespace PictureSync.Logic
                     SetCompression(e.Message.Chat.Username, true);
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_con_log);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_CommonCommands_con);
+                    break;
+                case "/start":
+                    Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_CommonCommands_start);
                     break;
                 default:
                     Trace.WriteLine(NowLog + " " + Resources.TelegramBot_CommonCommands_Note_log + " " + e.Message.Text);

@@ -476,6 +476,15 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bot started.
+        /// </summary>
+        internal static string TelegramBot_CommonCommands_start {
+            get {
+                return ResourceManager.GetString("TelegramBot_CommonCommands_start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photo has no capture time (using servertime instead) from.
         /// </summary>
         internal static string TelegramBot_Date_taken_no_capturetime {
