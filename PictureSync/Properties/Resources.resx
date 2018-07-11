@@ -193,10 +193,10 @@
     <value>Commands:</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_activity_amount" xml:space="preserve">
-    <value>/activity_amount - Displays amount of pictures sent per user</value>
+    <value>/amountactivity - Displays amount of pictures sent per user</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_activity_time" xml:space="preserve">
-    <value>/activity_time - Displays date when users were last time active</value>
+    <value>/timeactivity - Displays date when users were last time active</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_coff" xml:space="preserve">
     <value>/coff - Disable comression for one picture</value>
@@ -251,10 +251,10 @@
     <value>/pwedit &lt;old&gt; &lt;new&gt; - Changes the password</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_clear_activity" xml:space="preserve">
-    <value>/clear_activity - Clears all stored activities</value>
+    <value>/timeactivity_clear - Clears all stored activities</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_clear_amount" xml:space="preserve">
-    <value>/clear_amount - Clears amount counters</value>
+    <value>/amountactivity_clear - Clears amount counters</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_log" xml:space="preserve">
     <value>/log - Returns the last 100 lines of the log</value>

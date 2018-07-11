@@ -38,7 +38,7 @@ namespace PictureSync.Logic
             // ADMIN AREA
             switch (command)
             {
-                case "/activity_amount":
+                case "/amountactivity":
                     var b1 = new StringBuilder();
                     var list1 = GetUseractivity_Amount();
                     for (var i = 0; i < UsersAmount; i++)
@@ -47,7 +47,7 @@ namespace PictureSync.Logic
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, b1.ToString());
                     break;
-                case "/activity_time":
+                case "/timeactivity":
                     var b3 = new StringBuilder();
                     var list = GetUseractivity_Time();
                     for (var i = 0; i < UsersAmount; i++)
@@ -55,6 +55,14 @@ namespace PictureSync.Logic
 
                     Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed);
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, b3.ToString());
+                    break;
+                case "/amountactivity_clear":
+                    ResetAllAmount();
+                    Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.Success);
+                    break;
+                case "/timeactivity_clear":
+                    ResetAllActivity();
+                    Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.Success);
                     break;
                 case "/add_user":
                     var strings = e.Message.Text.Split(' ');
@@ -97,14 +105,6 @@ namespace PictureSync.Logic
                 //        Update_Config();
                 //    }
                 //    break;
-                case "/clear_amount":
-                    ResetAllAmount();
-                    Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.Success);
-                    break;
-                case "/clear_activity":
-                    ResetAllActivity();
-                    Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.Success);
-                    break;
                 case "/party":
                     Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_AdminCommands_party);
                     break;

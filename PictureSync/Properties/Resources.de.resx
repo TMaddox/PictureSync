@@ -197,10 +197,10 @@
     <value>Befehle:</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_activity_amount" xml:space="preserve">
-    <value>/activity_amount - Zeigt an wieviele Bilder pro Nutzer insgesamt schon gesendet wurden</value>
+    <value>/amountactivity - Zeigt an wieviele Bilder pro Nutzer insgesamt schon gesendet wurden</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_activity_time" xml:space="preserve">
-    <value>/activity_time - Zeigt die letzte Nutzeraktivität an</value>
+    <value>/timeactivity - Zeigt die letzte Nutzeraktivität an</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_coff" xml:space="preserve">
     <value>/coff - Komprimierung für das nächste Bild deaktivieren</value>
@@ -251,10 +251,10 @@
     <value>/pwedit &lt;alt&gt; &lt;neu&gt; - Ändert das Passwort</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_clear_activity" xml:space="preserve">
-    <value>/clear_activity - Setzt Nutzeraktivität zurück</value>
+    <value>/timeactivity_clear - Setzt Nutzeraktivität zurück</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_clear_amount" xml:space="preserve">
-    <value>/clear_amount - Setzt alle Zähler zurück</value>
+    <value>/amountactivity_clear - Setzt alle Zähler zurück</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_log" xml:space="preserve">
     <value>/log - Zeigt die letzten 100 Zeilen des Logs an</value>

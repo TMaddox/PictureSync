@@ -350,7 +350,7 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /activity_amount - Displays amount of pictures sent per user.
+        ///   Looks up a localized string similar to /amountactivity - Displays amount of pictures sent per user.
         /// </summary>
         internal static string TelegramBot_CommonCommands_help_activity_amount {
             get {
@@ -359,7 +359,7 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /activity_time - Displays date when users were last time active.
+        ///   Looks up a localized string similar to /timeactivity - Displays date when users were last time active.
         /// </summary>
         internal static string TelegramBot_CommonCommands_help_activity_time {
             get {
@@ -404,7 +404,7 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /clear_activity - Clears all stored activities.
+        ///   Looks up a localized string similar to /timeactivity_clear - Clears all stored activities.
         /// </summary>
         internal static string TelegramBot_CommonCommands_help_clear_activity {
             get {
@@ -413,7 +413,7 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /clear_amount - Clears amount counters.
+        ///   Looks up a localized string similar to /amountactivity_clear - Clears amount counters.
         /// </summary>
         internal static string TelegramBot_CommonCommands_help_clear_amount {
             get {
