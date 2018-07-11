@@ -277,4 +277,10 @@
   <data name="Success" xml:space="preserve">
     <value>Success</value>
   </data>
+  <data name="TelegramBot_AdminCommands_add_user_already_exists" xml:space="preserve">
+    <value>User already exists</value>
+  </data>
+  <data name="TelegramBot_AdminCommands_add_user_already_exists_log" xml:space="preserve">
+    <value>tried to add user which already exists:</value>
+  </data>
 </root>

@@ -9,7 +9,7 @@ namespace PictureSync.Logic
 {
     internal static class Userlist
     {
-        private static List<string> users = new List<string>();
+        private static List<string> _users = new List<string>();
 
         /// <summary>
         /// Returns a List of strings with users
@@ -18,8 +18,8 @@ namespace PictureSync.Logic
         {
             get
             {
-                users = File.ReadAllLines(PathUsers).ToList();
-                return users;
+                _users = File.ReadAllLines(PathUsers).ToList();
+                return _users;
             }
         }
 
@@ -29,12 +29,16 @@ namespace PictureSync.Logic
         public static int UsersAmount => Users.Count;
 
         /// <summary>
-        /// Adds a new user
+        /// Add a new user
         /// </summary>
-        public static void AddUser(string username)
+        /// <param name="username">Username of the user to be added</param>
+        /// <returns>true if new user was created, false if it already existed</returns>
+        public static bool AddUser(string username)
         {
-            if(!CheckIfUserExists(username))
-                File.AppendAllText(PathUsers, username + ",1,0,0," + DateTime.Today.ToString("yyyy-MM-dd") + Environment.NewLine);
+            if (CheckIfUserExists(username)) return false;
+
+            File.AppendAllText(PathUsers, username + ",1,0,0," + DateTime.Today.ToString("yyyy-MM-dd") + Environment.NewLine);
+            return true;
         }
 
         /// <summary>

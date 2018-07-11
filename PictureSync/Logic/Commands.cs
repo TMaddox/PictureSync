@@ -60,7 +60,13 @@ namespace PictureSync.Logic
                     var strings = e.Message.Text.Split(' ');
                     if (strings.Length == 2)
                     {
-                        AddUser(strings[1]);
+                        if (!AddUser(strings[1]))
+                        {
+                            // User already exists
+                            Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_add_user_already_exists_log + " " + strings[1]);
+                            Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_AdminCommands_add_user_already_exists);
+                            break;
+                        }
                         SortUsers();
 
                         Trace.WriteLine(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_add_user_success_log + " " + strings[1]);

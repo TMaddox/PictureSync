@@ -143,6 +143,24 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User already exists.
+        /// </summary>
+        internal static string TelegramBot_AdminCommands_add_user_already_exists {
+            get {
+                return ResourceManager.GetString("TelegramBot_AdminCommands_add_user_already_exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tried to add user which already exists:.
+        /// </summary>
+        internal static string TelegramBot_AdminCommands_add_user_already_exists_log {
+            get {
+                return ResourceManager.GetString("TelegramBot_AdminCommands_add_user_already_exists_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to successfully added.
         /// </summary>
         internal static string TelegramBot_AdminCommands_add_user_success {
