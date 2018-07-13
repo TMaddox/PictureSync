@@ -86,13 +86,13 @@ namespace PictureSync.Logic
 
             if(res <= 1)
             {
-                //Hochformat
+                //Portrait
                 height = hasCompression ? MaxLen : height;
                 width = hasCompression ? Convert.ToInt16(height * res): width;
             }
             else
             {
-                //Querformat
+                //Landscape
                 width = hasCompression ? MaxLen : width;
                 height = hasCompression ? Convert.ToInt16(width / res): height;
             }
@@ -232,11 +232,8 @@ namespace PictureSync.Logic
         {
             try
             {
-                var propItems = image.PropertyItems;
-                var encoding = Encoding.UTF8;
-                var dataTakenProperty1 = propItems.FirstOrDefault(a => a.Id.ToString("x") == "9004");
-                var dataTakenProperty2 = propItems.FirstOrDefault(a => a.Id.ToString("x") == "9003");
-                var originalDateString = encoding.GetString(dataTakenProperty1.Value);
+                var propItem = image.GetPropertyItem(36867);
+                var originalDateString = Encoding.UTF8.GetString(propItem.Value);
                 originalDateString = originalDateString.Remove(originalDateString.Length - 1);
                 return originalDateString.Replace(":", "-").Replace(" ", "_");
             }
