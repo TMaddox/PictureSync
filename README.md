@@ -7,3 +7,4 @@ A simple but powerful Telegram Bot that receives and saves pictures
 - Pictures are renamed automatically
 - User Activity Tracking and logging
 - Multi Language (currently en,de)
+- Run as a Windows service 
