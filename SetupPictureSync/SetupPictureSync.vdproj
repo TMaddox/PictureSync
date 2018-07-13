@@ -163,6 +163,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_ECE1FB21F2EE4321BFB1FFB0D1DC3E57"
+            {
+            "Name" = "8:Primary output from PictureSync (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_6B97766E29E2441C9CF7D497E3A77994"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_96B48C56_AD26_4D8A_9D1A_C8564FA3D038"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -387,7 +401,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PictureSync"
         "ProductCode" = "8:{B2574277-E663-4490-8822-7E7139F57A3A}"
-        "PackageCode" = "8:{DD0D8660-A567-4D84-8E45-AECA33129975}"
+        "PackageCode" = "8:{5B928371-882C-49E1-BDC9-10F727A7D916}"
         "UpgradeCode" = "8:{F00FDAEF-BCF5-430B-9F4A-C2135C548685}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

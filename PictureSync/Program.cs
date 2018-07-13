@@ -111,6 +111,8 @@ namespace PictureSync
             // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
             InitiateTracer();
 
+            //RestartAsAdmin();
+            //SelfInstaller.UninstallMe();
             //Install the service
             var ctl = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == Program.ServiceName);
             if (ctl == null)
@@ -162,10 +164,7 @@ namespace PictureSync
         /// </summary>
         private static string GetApplicationPath()
         {
-            var assemblyPath = Assembly.GetEntryAssembly().CodeBase;
-            assemblyPath = new Uri(assemblyPath).LocalPath;
-            assemblyPath = Path.GetDirectoryName(assemblyPath);
-            return assemblyPath;
+            return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
         }
 
         /// <summary>
