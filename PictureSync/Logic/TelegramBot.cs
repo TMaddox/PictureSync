@@ -15,16 +15,12 @@ using static PictureSync.Logic.Config;
 using static PictureSync.Logic.Server;
 using static PictureSync.Logic.Userlist;
 using static PictureSync.Logic.Commands;
+using static PictureSync.Logic.ImageProcessing;
 
 namespace PictureSync.Logic
 {
-    internal class TelegramBot
+    internal static class TelegramBot
     {
-        /// <summary>
-        /// static because only one bot is required
-        /// </summary>
-        public static TelegramBot Telebot;
-
         /// <summary>
         /// Download a document from telegram Server
         /// </summary>
@@ -82,7 +78,7 @@ namespace PictureSync.Logic
             var res = (double)image.Width / image.Height;
             int width = image.Width,
                 height = image.Height;
-            var dateTaken = Date_taken(image, e, messageId);
+            var dateTaken = ImageProcessing.Date_taken(image, e, messageId);
 
             if(res <= 1)
             {
@@ -219,29 +215,6 @@ namespace PictureSync.Logic
             Bot.StopReceiving();
             Bot.OnMessage -= Bot_OnMessage;
             Bot.OnMessageEdited -= Bot_OnMessage;
-        }
-
-        /// <summary>
-        /// Extracts time and date when the picture was taken from the metadata
-        /// </summary>
-        /// <param name="image"></param>
-        /// <param name="e"></param>
-        /// <param name="messageId"></param>
-        /// <returns></returns>
-        private static string Date_taken(Image image, MessageEventArgs e, int messageId)
-        {
-            try
-            {
-                var propItem = image.GetPropertyItem(36867);
-                var originalDateString = Encoding.UTF8.GetString(propItem.Value);
-                originalDateString = originalDateString.Remove(originalDateString.Length - 1);
-                return originalDateString.Replace(":", "-").Replace(" ", "_");
-            }
-            catch
-            {
-                Trace.WriteLine(NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_Date_taken_no_capturetime + " " + e.Message.Chat.Username);
-                return DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "_noCaptureTime";
-            }
         }
     }
 }
