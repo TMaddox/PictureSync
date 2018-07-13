@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Security.Principal;
 using Telegram.Bot.Args;
 using static PictureSync.Logic.Config;
 
@@ -144,7 +145,7 @@ namespace PictureSync.Logic
                 var localisation = Console.ReadLine();
                 sw.WriteLine("localization = [" + localisation + "]");
             }
-            RestartBot();
+            Restart();
         }
 
         /// <summary>
@@ -168,13 +169,13 @@ namespace PictureSync.Logic
 
                 sw.WriteLine("localization = [" + Localization + "]");
             }
-            RestartBot();
+            Restart();
         }
 
         /// <summary>
         /// Restarts the Application
         /// </summary>
-        private static void RestartBot()
+        public static void Restart()
         {
             Process.Start(Application.ExecutablePath);
             Environment.Exit(0);
@@ -232,6 +233,32 @@ namespace PictureSync.Logic
         {
             var codecs = ImageCodecInfo.GetImageDecoders();
             return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
+        }
+
+        /// <summary>
+        /// Checks if Application runs with admin permissions
+        /// </summary>
+        /// <returns>true if runs as admin</returns>
+        private static bool IsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        /// <summary>
+        /// Restarts the application with admin permissions
+        /// </summary>
+        public static void RestartAsAdmin()
+        {
+            if (IsAdministrator()) return;
+
+            // Restart program and run as admin
+            var exeName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+            var startInfo = new ProcessStartInfo(exeName) {Verb = "runas"};
+            System.Diagnostics.Process.Start(startInfo);
+            Environment.Exit(0);
+            return;
         }
     }
 }

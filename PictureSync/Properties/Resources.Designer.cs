@@ -116,11 +116,29 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PictureSyncService is installed.
+        /// </summary>
+        internal static string Program_Main_ServiceIsInstalled {
+            get {
+                return ResourceManager.GetString("Program_Main_ServiceIsInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show.
         /// </summary>
         internal static string Program_Main_Show {
             get {
                 return ResourceManager.GetString("Program_Main_Show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press any key to start.
+        /// </summary>
+        internal static string Program_Start_Press_Any_Key {
+            get {
+                return ResourceManager.GetString("Program_Start_Press_Any_Key", resourceCulture);
             }
         }
         

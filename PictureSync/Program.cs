@@ -2,6 +2,7 @@
 using System.IO;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Reflection;
@@ -29,7 +30,7 @@ namespace PictureSync
 
             protected override void OnStart(string[] args)
             {
-                Program.Start(args);
+                Program.Start(args, true);
             }
 
             protected override void OnStop()
@@ -74,14 +75,15 @@ namespace PictureSync
 
                 // on ctrl-c
                 Console.CancelKeyPress += UserClosedApp;
-                Start(args);
+                
+                Start(args, false);
             }
         }
 
         /// <summary>
         /// Starts the Bot
         /// </summary>
-        private static void Start(string[] args)
+        private static void Start(string[] args, bool runsAsService)
         {
             Directory.CreateDirectory(GetApplicationPath() + @"\files\");
             _basedir = GetApplicationPath() + @"\files\";
@@ -106,15 +108,41 @@ namespace PictureSync
                 Create_Config(_basedir);
             }
 
-
             // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
             InitiateTracer();
 
-            // Start bot
-            Start_bot();
-            Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_started_log);
+            //Install the service
+            var ctl = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == Program.ServiceName);
+            if (ctl == null)
+            {
+                RestartAsAdmin();
+                SelfInstaller.InstallMe();
+                Console.WriteLine();
+                Console.WriteLine(Resources.Program_Start_Press_Any_Key);
+                Console.ReadKey();
+                Restart();
+            }
+            else
+            {
+                Trace.WriteLine(NowLog + " " + Resources.Program_Main_ServiceIsInstalled);
 
-            Application.Run();
+                if (runsAsService)
+                {
+                    Start_bot();
+                    Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_started_log);
+                }
+                else
+                {
+                    var status = ctl.Status;
+                    if (status == ServiceControllerStatus.Stopped)
+                    {
+                        new Thread(Application.Run).Start();
+
+                        Start_bot();
+                        Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_started_log);
+                    }
+                }
+            }
         }
         /// <summary>
         /// Performs a smooth exit

@@ -286,4 +286,10 @@
   <data name="TelegramBot_CommonCommands_start" xml:space="preserve">
     <value>Bot started</value>
   </data>
+  <data name="Program_Main_ServiceIsInstalled" xml:space="preserve">
+    <value>PictureSyncService is installed</value>
+  </data>
+  <data name="Program_Start_Press_Any_Key" xml:space="preserve">
+    <value>Press any key to start</value>
+  </data>
 </root>
