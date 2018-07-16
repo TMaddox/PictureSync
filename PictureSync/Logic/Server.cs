@@ -61,7 +61,7 @@ namespace PictureSync.Logic
         /// Creates a msgID string
         /// </summary>
         /// <param name="msgId">unique msgID ot the Message</param>
-        public static string MessageIDformat(int msgId) => "<" + msgId.ToString().PadLeft(6, '0') + ">";
+        public static string MessageIDformat(long msgId) => "<" + msgId.ToString().PadLeft(6, '0') + ">";
 
         /// <summary>
         /// Creates Log and User file if the do not exist

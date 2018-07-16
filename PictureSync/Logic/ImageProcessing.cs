@@ -16,7 +16,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Extracts time and date when the picture was taken from the metadata
         /// </summary>
-        public static string Date_taken(Image image, MessageEventArgs e, int messageId)
+        public static string Date_taken(Image image, MessageEventArgs e, long messageId)
         {
             try
             {

@@ -8,6 +8,7 @@ using Telegram.Bot.Args;
 using static PictureSync.Logic.Config;
 using static PictureSync.Logic.Server;
 using static PictureSync.Logic.Userlist;
+using static PictureSync.Logic.TelegramBot;
 
 namespace PictureSync.Logic
 {
@@ -26,21 +27,7 @@ namespace PictureSync.Logic
             else
                 CommonCommands(e, command);
         }
-
-        /// <summary>
-        /// Outputs the result to the log and the user
-        /// </summary>
-        /// <param name="e">Message Args</param>
-        /// <param name="log">What to write to the log</param>
-        /// <param name="user">What to tell the user</param>
-        private static void OutputResult(MessageEventArgs e, string log = "", string user = "")
-        {
-            if (log != "")
-                Trace.WriteLine(log);
-            if (user != "")
-                Bot.SendTextMessageAsync(e.Message.Chat.Id, user);
-        }
-
+        
         /// <summary>
         /// executes admin commands
         /// </summary>
@@ -113,7 +100,7 @@ namespace PictureSync.Logic
         /// </summary>
         private static void PartyCommand(MessageEventArgs e)
         {
-            Bot.SendTextMessageAsync(e.Message.Chat.Id, Resources.TelegramBot_AdminCommands_party);
+            OutputResult(e, "", Resources.TelegramBot_AdminCommands_party);
         }
 
         /// <summary>
@@ -297,6 +284,24 @@ namespace PictureSync.Logic
                 b.AppendLine(line);
 
             OutputResult(e, "", b.ToString());
+        }
+
+        /// <summary>
+        /// Selfauthentication of a new user via the password
+        /// </summary>
+        public static void Auth(MessageEventArgs e)
+        {
+            var hasher = new Hasher();
+            if (hasher.Check(e.Message.Text.Remove(0, 6), new HashedPassword(Hash, Salt)))
+            {
+                AddUser(e.Message.Chat.Username);
+                SortUsers();
+                OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_auth_successful_log, Resources.TelegramBot_Bot_OnMessage_auth_successful);
+            }
+            else
+            {
+                OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_auth_not_successful_log, Resources.TelegramBot_Bot_OnMessage_auth_not_successful);
+            }
         }
     }
 }
