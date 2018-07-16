@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using HashLibrary;
@@ -17,7 +16,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// Parses Commands sent via a user
         /// </summary>
-        /// <param name="e"></param>
         public static void ParseCommands(MessageEventArgs e)
         {
             var temp = e.Message.Text.Split(' ');
@@ -46,8 +44,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// executes admin commands
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="command"></param>
         private static void AdminCommands(MessageEventArgs e, string command)
         {
             // ADMIN AREA
@@ -86,8 +82,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// executes normal commands
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="command"></param>
         private static void CommonCommands(MessageEventArgs e, string command)
         {
             // NORMAL AREA

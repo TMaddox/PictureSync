@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -7,7 +6,6 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using PictureSync.Properties;
 using Telegram.Bot.Args;
 
@@ -18,10 +16,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// Extracts time and date when the picture was taken from the metadata
         /// </summary>
-        /// <param name="image"></param>
-        /// <param name="e"></param>
-        /// <param name="messageId"></param>
-        /// <returns></returns>
         public static string Date_taken(Image image, MessageEventArgs e, int messageId)
         {
             try
@@ -47,12 +41,12 @@ namespace PictureSync.Logic
         /// <returns>The resized image.</returns>
         public static Bitmap ResizeImg(Image image, int width, int height)
         {
-            var destRect = new Rectangle(0, 0, width, height);
-            var destImage = new Bitmap(width, height);
+            var finalRect = new Rectangle(0, 0, width, height);
+            var finalImage = new Bitmap(width, height);
 
-            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+            finalImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
-            using (var graphics = Graphics.FromImage(destImage))
+            using (var graphics = Graphics.FromImage(finalImage))
             {
                 graphics.CompositingMode = CompositingMode.SourceCopy;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
@@ -63,18 +57,17 @@ namespace PictureSync.Logic
                 using (var wrapMode = new ImageAttributes())
                 {
                     wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                    graphics.DrawImage(image, finalRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
                 }
             }
 
-            return destImage;
+            return finalImage;
         }
 
         /// <summary>
         /// Gets the encoder of a image format
         /// </summary>
         /// <param name="format">image format</param>
-        /// <returns></returns>
         public static ImageCodecInfo GetEncoder(ImageFormat format)
         {
             var codecs = ImageCodecInfo.GetImageDecoders();
