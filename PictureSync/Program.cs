@@ -98,16 +98,6 @@ namespace PictureSync
             Create_files();
             SortUsers();
 
-            // Create global telebot
-            try
-            {
-                Telebot = new TelegramBot();
-            }
-            catch (Exception)
-            {
-                Create_Config(_basedir);
-            }
-
             // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
             InitiateTracer();
 

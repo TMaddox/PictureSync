@@ -292,4 +292,10 @@
   <data name="Program_Start_Press_Any_Key" xml:space="preserve">
     <value>Beliebige Taste drücken um zu starten.</value>
   </data>
+  <data name="TelegramBot_AdminCommands_amountactivity_cleared_log" xml:space="preserve">
+    <value>löschte amountactivity</value>
+  </data>
+  <data name="TelegramBot_AdminCommands_timeactivity_cleared_log" xml:space="preserve">
+    <value>löschte timeactivity</value>
+  </data>
 </root>

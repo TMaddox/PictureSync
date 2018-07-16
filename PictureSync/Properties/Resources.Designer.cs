@@ -197,6 +197,15 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cleared amountactivity.
+        /// </summary>
+        internal static string TelegramBot_AdminCommands_amountactivity_cleared_log {
+            get {
+                return ResourceManager.GetString("TelegramBot_AdminCommands_amountactivity_cleared_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to accessed log.
         /// </summary>
         internal static string TelegramBot_AdminCommands_log_accessed {
@@ -211,6 +220,15 @@ namespace PictureSync.Properties {
         internal static string TelegramBot_AdminCommands_party {
             get {
                 return ResourceManager.GetString("TelegramBot_AdminCommands_party", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cleared timeactivity.
+        /// </summary>
+        internal static string TelegramBot_AdminCommands_timeactivity_cleared_log {
+            get {
+                return ResourceManager.GetString("TelegramBot_AdminCommands_timeactivity_cleared_log", resourceCulture);
             }
         }
         
