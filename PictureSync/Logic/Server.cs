@@ -5,11 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using HashLibrary;
 using System.Windows.Forms;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Security.Principal;
-using Telegram.Bot.Args;
 using static PictureSync.Logic.Config;
 
 namespace PictureSync.Logic
@@ -22,7 +18,7 @@ namespace PictureSync.Logic
         public static void InitiateTracer()
         {
             Trace.Listeners.Clear();
-            var twtl = new TextWriterTraceListener(Config.PathLog)
+            var twtl = new TextWriterTraceListener(PathLog)
             {
                 Name = "TextLogger",
                 TraceOutputOptions = TraceOptions.ThreadId | TraceOptions.DateTime
@@ -36,15 +32,13 @@ namespace PictureSync.Logic
         /// <summary>
         /// Creates a timestampstring for the log
         /// </summary>
-        public static string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " +
-                                       DateTime.Now.ToString("HH:mm:ss.fff",
-                                           System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
+        public static string NowLog => "[" + DateTime.Today.ToString("yyyy.MM.dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff", System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]";
 
         /// <summary>
         /// retuns the log
         /// </summary>
         /// <param name="maxCount">maximum amount of returned lines</param>
-        /// <returns></returns>
+        /// <returns> a list of the log containg the last 100 lines</returns>
         public static List<string> GetLogList(int maxCount)
         {
             var final = new List<string>();
@@ -66,8 +60,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Creates a msgID string
         /// </summary>
-        /// <param name="msgId">unique msgID ot the MEssage</param>
-        /// <returns></returns>
+        /// <param name="msgId">unique msgID ot the Message</param>
         public static string MessageIDformat(int msgId) => "<" + msgId.ToString().PadLeft(6, '0') + ">";
 
         /// <summary>
@@ -75,10 +68,10 @@ namespace PictureSync.Logic
         /// </summary>
         public static void Create_files()
         {
-            if (!File.Exists(Config.PathLog))
-                using (File.AppendText(Config.PathLog));
-            if (!File.Exists(Config.PathUsers))
-                using (File.AppendText(Config.PathUsers));
+            if (!File.Exists(PathLog))
+                using (File.AppendText(PathLog)) { }
+            if (!File.Exists(PathUsers))
+                using (File.AppendText(PathUsers)) { }
         }
 
         /// <summary>
@@ -113,7 +106,7 @@ namespace PictureSync.Logic
         /// Creates a new config file
         /// </summary>
         /// <param name="path">path  for the new config file</param>
-        public static void Create_Config(string path)
+        private static void Create_Config(string path)
         {
             File.Delete(path + "config.dat");
             using (var sw = File.AppendText(path + "config.dat"))
@@ -186,10 +179,10 @@ namespace PictureSync.Logic
         /// </summary>
         public static void SortUsers()
         {
-            var file = File.ReadAllLines(Config.PathUsers);
+            var file = File.ReadAllLines(PathUsers);
             var result = file.ToList();
             result.Sort();
-            File.WriteAllLines(Config.PathUsers, result);
+            File.WriteAllLines(PathUsers, result);
         }
 
         /// <summary>
@@ -211,11 +204,10 @@ namespace PictureSync.Logic
             if (IsAdministrator()) return;
 
             // Restart program and run as admin
-            var exeName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+            var exeName = Process.GetCurrentProcess().MainModule.FileName;
             var startInfo = new ProcessStartInfo(exeName) {Verb = "runas"};
-            System.Diagnostics.Process.Start(startInfo);
+            Process.Start(startInfo);
             Environment.Exit(0);
-            return;
         }
     }
 }
