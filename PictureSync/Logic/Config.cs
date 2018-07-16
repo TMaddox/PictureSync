@@ -1,9 +1,8 @@
-﻿using System;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 
 namespace PictureSync.Logic
 {
-    static class Config
+    internal static class Config
     {
         /// <summary>
         /// Telegram bot token, is obtained from Botfather
@@ -18,7 +17,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Root path of config files
         /// </summary>
-        public static string PathRoot { get; set; }
+        public static string PathRoot { private get; set; }
 
         /// <summary>
         /// Path where photos will be stored
