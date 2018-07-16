@@ -14,14 +14,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Returns a List of strings with users
         /// </summary>
-        private static List<string> Users
-        {
-            get
-            {
-                _users = File.ReadAllLines(PathUsers).ToList();
-                return _users;
-            }
-        }
+        private static List<string> Users => File.ReadAllLines(PathUsers).ToList();
 
         /// <summary>
         /// Returns n of Uers
@@ -59,8 +52,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// Checks if images shall be comressed for user
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
         public static bool HasCompression(string username)
         {
             foreach (var user in Users)
@@ -75,9 +66,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// Sets compression (yes|no) for user, returns true if state was changed
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="compress"></param>
-        /// <returns></returns>
         public static bool SetCompression(string username, bool compress)
         {
             var statechanged = false;
@@ -85,13 +73,12 @@ namespace PictureSync.Logic
             foreach (var user in Users)
             {
                 var userdata = user.Split(',');
-                if (userdata[0] == username)
-                {
-                    if (userdata[1] != Convert.ToString(Convert.ToInt32(compress)))
-                        statechanged = true;
-                    userdata[1] = Convert.ToInt32(compress).ToString();
-                    WriteUserdata(userdata);
-                }
+                if (userdata[0] != username) continue;
+
+                if (userdata[1] != Convert.ToString(Convert.ToInt32(compress)))
+                    statechanged = true;
+                userdata[1] = Convert.ToInt32(compress).ToString();
+                WriteUserdata(userdata);
             }
             return statechanged;
         }
@@ -99,7 +86,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// Checks if user is admin
         /// </summary>
-        /// <param name="username"></param>
         /// <returns>if user has admin privileges</returns>
         public static bool HasAdminPrivilege(string username)
         {
@@ -115,8 +101,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// Sets admin privileges (yes|no) for user, returns true if state was changed
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="adminprivilege"></param>
         /// <returns>if admin state was changed</returns>
         public static bool SetAdminPrivilege(string username, bool adminprivilege)
         {
@@ -125,13 +109,12 @@ namespace PictureSync.Logic
             foreach (var user in Users)
             {
                 var userdata = user.Split(',');
-                if (userdata[0] == username)
-                {
-                    if (userdata[2] != Convert.ToString(Convert.ToInt32(adminprivilege)))
-                        statechanged = true;
-                    userdata[2] = Convert.ToInt32(adminprivilege).ToString();
-                    WriteUserdata(userdata);
-                }
+                if (userdata[0] != username) continue;
+
+                if (userdata[2] != Convert.ToString(Convert.ToInt32(adminprivilege)))
+                    statechanged = true;
+                userdata[2] = Convert.ToInt32(adminprivilege).ToString();
+                WriteUserdata(userdata);
             }
             return statechanged;
         }
@@ -139,8 +122,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// Returns the amount of pictures sent in a given date range
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
         private static int GetPictureAmount(string username)
         {
             foreach (var user in Users)
@@ -155,7 +136,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// Adds +1 for picturecount for user
         /// </summary>
-        /// <param name="username"></param>
         public static void AddPictureAmount(string username)
         {
             foreach (var user in Users)
@@ -185,8 +165,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// Gets latest activity per user
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
         private static DateTime GetLatestActivity(string username)
         {
             foreach (var user in Users)
@@ -201,18 +179,15 @@ namespace PictureSync.Logic
         /// <summary>
         /// sets latest acitvity per user
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="date"></param>
         public static void SetLatestActivity(string username, DateTime date)
         {
             foreach (var user in Users)
             {
                 var userdata = user.Split(',');
-                if (userdata[0] == username)
-                {
-                    userdata[4] = date.ToString("yyyy-MM-dd"); 
-                    WriteUserdata(userdata);
-                }
+                if (userdata[0] != username) continue;
+
+                userdata[4] = date.ToString("yyyy-MM-dd"); 
+                WriteUserdata(userdata);
             }
         }
 
@@ -232,8 +207,6 @@ namespace PictureSync.Logic
         /// <summary>
         /// check if user is authorized to interact with the bot
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
         public static bool HasAuth(string username)
         {
             foreach (var user in Users)
@@ -248,25 +221,23 @@ namespace PictureSync.Logic
         /// <summary>
         /// Refreshes user.dat
         /// </summary>
-        /// <param name="userdata"></param>
         private static void WriteUserdata(string[] userdata)
         {
             var temp = File.ReadAllLines(PathUsers);
             for (var i = 0; i < temp.Length; i++)
             {
                 var line = temp[i].Split(',');
-                if (line[0] == userdata[0])
-                {
-                    var b = new StringBuilder();
-                    foreach (var property in userdata)
-                    {
-                        b.Append(property);
-                        b.Append(',');
-                    }
-                    b.Remove(b.Length - 1, 1);
+                if (line[0] != userdata[0]) continue;
 
-                    temp[i] = b.ToString();
+                var b = new StringBuilder();
+                foreach (var property in userdata)
+                {
+                    b.Append(property);
+                    b.Append(',');
                 }
+                b.Remove(b.Length - 1, 1);
+
+                temp[i] = b.ToString();
             }
             File.WriteAllLines(PathUsers,temp);
         }
