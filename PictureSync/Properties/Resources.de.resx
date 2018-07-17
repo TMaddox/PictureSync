@@ -298,4 +298,7 @@
   <data name="TelegramBot_AdminCommands_timeactivity_cleared_log" xml:space="preserve">
     <value>löschte timeactivity</value>
   </data>
+  <data name="Error_No_Config" xml:space="preserve">
+    <value>Error, keine konfiguration gefunden</value>
+  </data>
 </root>

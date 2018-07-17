@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using HashLibrary;
 using System.Windows.Forms;
 using System.Security.Principal;
+using PictureSync.Properties;
 using static PictureSync.Logic.Config;
+using static PictureSync.Logic.TelegramBot;
 
 namespace PictureSync.Logic
 {
@@ -66,7 +69,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Creates Log and User file if the do not exist
         /// </summary>
-        public static void Create_files()
+        public static void CreateFiles()
         {
             if (!File.Exists(PathLog))
                 using (File.AppendText(PathLog)) { }
@@ -78,10 +81,13 @@ namespace PictureSync.Logic
         /// Reades the Config file and saves it to Config.config
         /// </summary>
         /// <param name="path">Path of the config file</param>
-        public static void ReadConfig(string path)
+        /// <returns>true if successful</returns>
+        public static bool ReadConfig(string path)
         {
             try
             {
+                PathRoot = path;
+
                 //Read from file
                 var file = File.ReadAllLines(path + "config.dat");
                 var result = (from item in file let pFrom = item.IndexOf("[") + "[".Length let pTo = item.LastIndexOf("]") select item.Substring(pFrom, pTo - pFrom)).ToList();
@@ -93,58 +99,65 @@ namespace PictureSync.Logic
                 MaxLen = Convert.ToInt32(result.ElementAt(4));
                 EncodeQ = Convert.ToInt32(result.ElementAt(5));
                 Localization = result.ElementAt(6);
-                PathRoot = path;
+                return true;
             }
             catch (Exception)
             {
-                Create_Config(path);
+                return false;
             }
-            
         }
 
         /// <summary>
         /// Creates a new config file
         /// </summary>
         /// <param name="path">path  for the new config file</param>
-        private static void Create_Config(string path)
+        public static void CreateConfig(string path)
         {
-            File.Delete(path + "config.dat");
-            using (var sw = File.AppendText(path + "config.dat"))
+            if (IsService())
             {
-                Console.Write("Token: ");
-                var token = Console.ReadLine();
-                sw.WriteLine("Token = [" + token + "]");
-
-                Console.Write("Auth_key: ");
-                var authKey = Console.ReadLine();
-                var hasher = new Hasher();
-                var hashedPw = hasher.HashPassword(authKey);
-                sw.WriteLine("Hash = [" + hashedPw.Hash + "]");
-                sw.WriteLine("Salt = [" + hashedPw.Salt + "]");
-
-                Console.Write("Path for pictures: ");
-                var pathPictures = Console.ReadLine();
-                sw.WriteLine("path_pictures = [" + pathPictures + "]");
-
-                Console.Write("Maximal lenght of pictures: ");
-                var maxLen = Console.ReadLine();
-                sw.WriteLine("max_picture_lenght = [" + maxLen + "]");
-
-                Console.Write("Quality of encoding (1-100): ");
-                var encodingQ = Console.ReadLine();
-                sw.WriteLine("encoding_Quality = [" + encodingQ + "]");
-
-                Console.Write("Localisation (en|de): ");
-                var localisation = Console.ReadLine();
-                sw.WriteLine("localization = [" + localisation + "]");
+                OutputResult(NowLog + " " + Resources.Error_No_Config);
+                Program.Stop();
             }
-            Restart();
+            else
+            {
+                File.Delete(path);
+                using (var sw = File.AppendText(path))
+                {
+                    Console.Write("Token: ");
+                    var token = Console.ReadLine();
+                    sw.WriteLine("Token = [" + token + "]");
+
+                    Console.Write("Auth_key: ");
+                    var authKey = Console.ReadLine();
+                    var hasher = new Hasher();
+                    var hashedPw = hasher.HashPassword(authKey);
+                    sw.WriteLine("Hash = [" + hashedPw.Hash + "]");
+                    sw.WriteLine("Salt = [" + hashedPw.Salt + "]");
+
+                    Console.Write("Path for pictures: ");
+                    var pathPictures = Console.ReadLine();
+                    sw.WriteLine("path_pictures = [" + pathPictures + "]");
+
+                    Console.Write("Maximal lenght of pictures: ");
+                    var maxLen = Console.ReadLine();
+                    sw.WriteLine("max_picture_lenght = [" + maxLen + "]");
+
+                    Console.Write("Quality of encoding (1-100): ");
+                    var encodingQ = Console.ReadLine();
+                    sw.WriteLine("encoding_Quality = [" + encodingQ + "]");
+
+                    Console.Write("Localisation (en|de): ");
+                    var localisation = Console.ReadLine();
+                    sw.WriteLine("localization = [" + localisation + "]");
+                }
+                Restart();
+            }
         }
 
         /// <summary>
         /// Updates the config file from config class
         /// </summary>
-        public static void Update_Config()
+        public static void UpdateConfig()
         {
             File.Delete(PathConfig);
             using (var sw = File.AppendText(PathConfig))
@@ -208,6 +221,14 @@ namespace PictureSync.Logic
             var startInfo = new ProcessStartInfo(exeName) {Verb = "runas"};
             Process.Start(startInfo);
             Environment.Exit(0);
+        }
+
+        /// <summary>
+        /// Returns true if Application runs as a service
+        /// </summary>
+        public static bool IsService()
+        {
+            return !Environment.UserInteractive;
         }
     }
 }

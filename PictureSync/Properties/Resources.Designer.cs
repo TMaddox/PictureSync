@@ -70,6 +70,15 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error, no config found.
+        /// </summary>
+        internal static string Error_No_Config {
+            get {
+                return ResourceManager.GetString("Error_No_Config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon icon {

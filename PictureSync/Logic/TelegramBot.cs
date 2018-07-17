@@ -34,23 +34,23 @@ namespace PictureSync.Logic
                 var filename = SaveImage(e, Image.FromStream(file.FileStream), messageId);
 
                 // Log file saved
-                OutputResult(e, NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_picture_accepted_log + " " +
-                    e.Message.Chat.Username + " " + Resources.TelegramBot_picture_saved_as_log + " " + filename, 
-                    HasCompression(e.Message.Chat.Username)
-                    ? Resources.TelegramBot_picture_accepted
-                    : Resources.TelegramBot_picture_accepted_uncompressed);
+                OutputResult(NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_picture_accepted_log + " " +
+                             e.Message.Chat.Username + " " + Resources.TelegramBot_picture_saved_as_log + " " + filename, 
+                    e, HasCompression(e.Message.Chat.Username)
+                        ? Resources.TelegramBot_picture_accepted
+                        : Resources.TelegramBot_picture_accepted_uncompressed);
 
                 // Add +1 to picture counter, auto enable compression
                 AddPictureAmount(e.Message.Chat.Username);
                 if (SetCompression(e.Message.Chat.Username, true))
                 {
-                    OutputResult(e, NowLog + " " + Resources.TelegramBot_picture_compression_autoenable_log + " " + e.Message.Chat.Username, Resources.TelegramBot_picture_compression_autoenable);
+                    OutputResult(NowLog + " " + Resources.TelegramBot_picture_compression_autoenable_log + " " + e.Message.Chat.Username, e, Resources.TelegramBot_picture_compression_autoenable);
                 }
                 SetLatestActivity(e.Message.Chat.Username,DateTime.Today);
             }
             else
             {
-                OutputResult(e, NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_picture_wrong_filetype_log + " " + e.Message.Chat.Username, Resources.TelegramBot_picture_wrong_filetype);
+                OutputResult(NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_picture_wrong_filetype_log + " " + e.Message.Chat.Username, e, Resources.TelegramBot_picture_wrong_filetype);
             }
         }
 
@@ -168,7 +168,7 @@ namespace PictureSync.Logic
             }
             else
             {
-                OutputResult(e, "", Resources.TelegramBot_Bot_OnMessage_auth_no_username);
+                OutputResult("", e, Resources.TelegramBot_Bot_OnMessage_auth_no_username);
             }
         }
 
@@ -178,6 +178,7 @@ namespace PictureSync.Logic
         private static void ReceiveMessage(MessageEventArgs e)
         {
             var messageId = e.Message.MessageId;
+            var username = e.Message.Chat.Username;
 
             // Message Types
             switch (e.Message.Type)
@@ -188,10 +189,10 @@ namespace PictureSync.Logic
                     break;
                 case Telegram.Bot.Types.Enums.MessageType.PhotoMessage:
                     //Disabled because metadata is cut when sending a photo and we need capture date
-                    OutputResult(e, NowLog + " " + MessageIDformat(messageId) + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_deny_picture_log, Resources.TelegramBot_Bot_OnMessage_deny_picture);
+                    OutputResult(NowLog + " " + MessageIDformat(messageId) + username + " " + Resources.TelegramBot_Bot_OnMessage_deny_picture_log, e, Resources.TelegramBot_Bot_OnMessage_deny_picture);
                     break;
                 case Telegram.Bot.Types.Enums.MessageType.DocumentMessage:
-                    OutputResult(e, NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_Bot_OnMessage_document_incoming_log + " " + e.Message.Chat.Username, "");
+                    OutputResult(NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_Bot_OnMessage_document_incoming_log + " " + username, e, "");
                     Download_document(e, messageId);
                     break;
             }
@@ -221,10 +222,10 @@ namespace PictureSync.Logic
         /// <summary>
         /// Outputs the result to the log and the user
         /// </summary>
-        /// <param name="e">Message Args</param>
         /// <param name="log">What to write to the log</param>
+        /// <param name="e">Message Args</param>
         /// <param name="user">What to tell the user</param>
-        public static void OutputResult(MessageEventArgs e, string log = "", string user = "")
+        public static void OutputResult(string log = "", MessageEventArgs e = null, string user = "")
         {
             if (log != "")
                 Trace.WriteLine(log);

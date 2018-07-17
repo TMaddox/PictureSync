@@ -100,7 +100,7 @@ namespace PictureSync.Logic
         /// </summary>
         private static void PartyCommand(MessageEventArgs e)
         {
-            OutputResult(e, "", Resources.TelegramBot_AdminCommands_party);
+            OutputResult("", e, Resources.TelegramBot_AdminCommands_party);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace PictureSync.Logic
                 var hashedPw = hasher.HashPassword(strings[2]);
                 Hash = hashedPw.Hash;
                 Salt = hashedPw.Salt;
-                Update_Config();
+                UpdateConfig();
             }
         }
 
@@ -129,7 +129,7 @@ namespace PictureSync.Logic
             foreach (var line in logList)
                 b.AppendLine(line);
 
-            OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_log_accessed, b.ToString());
+            OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_log_accessed, e, b.ToString());
         }
 
         /// <summary>
@@ -143,16 +143,16 @@ namespace PictureSync.Logic
                 if (!AddUser(strings[1]))
                 {
                     // User already exists
-                    OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_add_user_already_exists_log + " " + strings[1], Resources.TelegramBot_AdminCommands_add_user_already_exists);
+                    OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_add_user_already_exists_log + " " + strings[1], e, Resources.TelegramBot_AdminCommands_add_user_already_exists);
                     return;
                 }
                 SortUsers();
 
-                OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_add_user_success_log + " " + strings[1], Resources.TelegramBot_AdminCommands_add_user_success);
+                OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_add_user_success_log + " " + strings[1], e, Resources.TelegramBot_AdminCommands_add_user_success);
             }
             else
             {
-                OutputResult(e, "", Resources.Error);
+                OutputResult("", e, Resources.Error);
             }
         }
 
@@ -162,7 +162,7 @@ namespace PictureSync.Logic
         private static void TimeActivityClearCommand(MessageEventArgs e)
         {
             ResetAllActivity();
-            OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_timeactivity_cleared_log, Resources.Success);
+            OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_timeactivity_cleared_log, e, Resources.Success);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace PictureSync.Logic
         private static void AmountActivityClearCommand(MessageEventArgs e)
         {
             ResetAllAmount();
-            OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_amountactivity_cleared_log, Resources.Success);
+            OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_amountactivity_cleared_log, e, Resources.Success);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace PictureSync.Logic
             for (var i = 0; i < UsersAmount; i++)
                 b.AppendLine(list[i, 0] + " - " + list[i, 1]);
 
-            OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed, b.ToString());
+            OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed, e, b.ToString());
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace PictureSync.Logic
             for (var i = 0; i < UsersAmount; i++)
                 b.AppendLine(list1[i, 0] + " - " + list1[i, 1]);
 
-            OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed, b.ToString());
+            OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed, e, b.ToString());
         }
         
         /// <summary>
@@ -205,7 +205,7 @@ namespace PictureSync.Logic
         /// </summary>
         private static void EmptyCommand(MessageEventArgs e)
         {
-            OutputResult(e, NowLog + " " + Resources.TelegramBot_CommonCommands_Note_log + " " + e.Message.Text, Resources.TelegramBot_CommonCommands_nocommand);
+            OutputResult(NowLog + " " + Resources.TelegramBot_CommonCommands_Note_log + " " + e.Message.Text, e, Resources.TelegramBot_CommonCommands_nocommand);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace PictureSync.Logic
         /// </summary>
         private static void StartCommand(MessageEventArgs e)
         {
-            OutputResult(e, Resources.TelegramBot_CommonCommands_start);
+            OutputResult(Resources.TelegramBot_CommonCommands_start, e);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace PictureSync.Logic
         {
             SetCompression(e.Message.Chat.Username, true);
 
-            OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_con_log, Resources.TelegramBot_CommonCommands_con);
+            OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_con_log, e, Resources.TelegramBot_CommonCommands_con);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace PictureSync.Logic
         {
             SetCompression(e.Message.Chat.Username, false);
 
-            OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_coff_log, Resources.TelegramBot_CommonCommands_coff);
+            OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_coff_log, e, Resources.TelegramBot_CommonCommands_coff);
         }
 
         /// <summary>
@@ -245,12 +245,12 @@ namespace PictureSync.Logic
             if (hasher.Check(e.Message.Text.Remove(0, 7), new HashedPassword(Hash, Salt)))
             {
                 SetAdminPrivilege(e.Message.Chat.Username, true);
-                OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_admin_successful_log, Resources.TelegramBot_CommonCommands_admin_successful);
+                OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_admin_successful_log, e, Resources.TelegramBot_CommonCommands_admin_successful);
             }
             else
             {
                 SetAdminPrivilege(e.Message.Chat.Username, false);
-                OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_admin_not_successful_log, Resources.TelegramBot_CommonCommands_admin_not_successful);
+                OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_CommonCommands_admin_not_successful_log, e, Resources.TelegramBot_CommonCommands_admin_not_successful);
             }
         }
 
@@ -283,7 +283,7 @@ namespace PictureSync.Logic
             foreach (var line in commandsList)
                 b.AppendLine(line);
 
-            OutputResult(e, "", b.ToString());
+            OutputResult("", e, b.ToString());
         }
 
         /// <summary>
@@ -296,11 +296,11 @@ namespace PictureSync.Logic
             {
                 AddUser(e.Message.Chat.Username);
                 SortUsers();
-                OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_auth_successful_log, Resources.TelegramBot_Bot_OnMessage_auth_successful);
+                OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_auth_successful_log, e, Resources.TelegramBot_Bot_OnMessage_auth_successful);
             }
             else
             {
-                OutputResult(e, NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_auth_not_successful_log, Resources.TelegramBot_Bot_OnMessage_auth_not_successful);
+                OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_auth_not_successful_log, e, Resources.TelegramBot_Bot_OnMessage_auth_not_successful);
             }
         }
     }

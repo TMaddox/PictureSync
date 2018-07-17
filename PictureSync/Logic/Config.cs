@@ -50,11 +50,6 @@ namespace PictureSync.Logic
         public static string Salt { get; set; }
 
         /// <summary>
-        /// Because download of Msg runs async, Messages need a unique id to track them in the log
-        /// </summary>
-        public static int MsgIncrement { get; set; }
-
-        /// <summary>
         /// Max lenght of a saved picture
         /// </summary>
         public static int MaxLen { get; set; }

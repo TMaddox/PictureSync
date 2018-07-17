@@ -19,9 +19,10 @@ namespace PictureSync
     public class Program
     {
         #region Nested class to support running as service
-        public const string ServiceName = "PictureSyncService";
 
-        public class Service : ServiceBase
+        private const string ServiceName = "PictureSyncService";
+
+        private class Service : ServiceBase
         {
             public Service()
             {
@@ -30,7 +31,7 @@ namespace PictureSync
 
             protected override void OnStart(string[] args)
             {
-                Program.Start(args, true);
+                Program.Start(args);
             }
 
             protected override void OnStop()
@@ -53,7 +54,7 @@ namespace PictureSync
 
         private static void Main(string[] args)
         {
-            if (!Environment.UserInteractive)
+            if (IsService())
             {
                 // running as service
                 using (var service = new Service())
@@ -76,33 +77,34 @@ namespace PictureSync
                 // on ctrl-c
                 Console.CancelKeyPress += UserClosedApp;
                 
-                Start(args, false);
+                Start(args);
             }
         }
 
         /// <summary>
         /// Starts the Bot
         /// </summary>
-        private static void Start(string[] args, bool runsAsService)
+        private static void Start(string[] args)
         {
-            Directory.CreateDirectory(GetApplicationPath() + @"\files\");
-            _basedir = GetApplicationPath() + @"\files\";
+            Directory.CreateDirectory(GetApplicationPath() + @"\PictureSync\");
+            _basedir = GetApplicationPath() + @"\PictureSync\";
+            
+            var configAvailable = ReadConfig(_basedir);
 
-            ReadConfig(_basedir);
+            // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
+            InitiateTracer();
+
+            if (!configAvailable)
+                CreateConfig(PathConfig);
 
             var culture = CultureInfo.CreateSpecificCulture(Localization);
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
 
             // Create files (log, Users)
-            Create_files();
+            CreateFiles();
             SortUsers();
-
-            // Initiate Logging, if a WriteLine shall be included in the log, use Tracer.Writeline instead of Console.Writeline
-            InitiateTracer();
-
-            //RestartAsAdmin();
-            //SelfInstaller.UninstallMe();
+            
             //Install the service
             var ctl = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == Program.ServiceName);
             if (ctl == null)
@@ -118,7 +120,7 @@ namespace PictureSync
             {
                 Trace.WriteLine(NowLog + " " + Resources.Program_Main_ServiceIsInstalled);
 
-                if (runsAsService)
+                if (IsService())
                 {
                     Start_bot();
                     Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_started_log);
@@ -139,7 +141,7 @@ namespace PictureSync
         /// <summary>
         /// Performs a smooth exit
         /// </summary>
-        private static void Stop()
+        public static void Stop()
         {
             Stop_bot();
             Trace.WriteLine(NowLog + " " + Resources.Program_Main_Bot_stopped_log);
