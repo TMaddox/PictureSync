@@ -230,5 +230,32 @@ namespace PictureSync.Logic
         {
             return !Environment.UserInteractive;
         }
+
+        /// <summary>
+        /// Deletes all pictures of a specific user which were recorded before specified date
+        /// </summary>
+        private static void DeletePicturesOfUser(string user, DateTime date)
+        {
+            var files = Directory.GetFiles(Path.Combine(PathPhotos, user)).ToList();
+            foreach (var file in files)
+            {
+                var filename = Path.GetFileNameWithoutExtension(file).Substring(0, 19);
+                var filedate = DateTime.Parse(Path.GetFileNameWithoutExtension(filename));
+                if (filedate < date)
+                {
+                    File.Delete(file);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deletes all pictures which were recorded before specified date
+        /// </summary>
+        public static void DeletePicturesAll(DateTime date)
+        {
+            var userDirs = Directory.GetDirectories(PathPhotos).ToList();
+            foreach (var user in userDirs)
+                DeletePicturesOfUser(user, date);
+        }
     }
 }

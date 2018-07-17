@@ -25,8 +25,8 @@ namespace PictureSync.Logic
         /// </summary>
         private static long GetFileSizeOfUser(string user)
         {
-            var dir = Directory.GetFiles(Path.Combine(PathPhotos, user)).ToList();
-            return dir.Aggregate<string, long>(0, (size, file) => size + GetFileSize(file));
+            var files = Directory.GetFiles(Path.Combine(PathPhotos, user)).ToList();
+            return files.Aggregate<string, long>(0, (size, file) => size + GetFileSize(file));
         }
 
         /// <summary>
@@ -34,8 +34,8 @@ namespace PictureSync.Logic
         /// </summary>
         private static long GetFileSizeTotal()
         {
-            var dir = Directory.GetFiles(PathPhotos).ToList();
-            return dir.Aggregate<string, long>(0, (size, user) => size + GetFileSizeOfUser(user));
+            var userDirs = Directory.GetDirectories(PathPhotos).ToList();
+            return userDirs.Aggregate<string, long>(0, (size, user) => size + GetFileSizeOfUser(user));
         }
     }
 }

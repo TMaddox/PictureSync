@@ -9,8 +9,6 @@ namespace PictureSync.Logic
 {
     internal static class Userlist
     {
-        private static List<string> _users = new List<string>();
-
         /// <summary>
         /// Returns a List of strings with users
         /// </summary>
