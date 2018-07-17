@@ -22,7 +22,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Download a document from telegram Server
         /// </summary>
-        private static async Task Download_document(MessageEventArgs e, long messageId)
+        private static async Task DownloadDocument(MessageEventArgs e, long messageId)
         {
             // Create dir for username if not exists
             Directory.CreateDirectory(PathPhotos + e.Message.Chat.Username);
@@ -30,15 +30,19 @@ namespace PictureSync.Logic
             if (e.Message.Document.MimeType == "image/png" || e.Message.Document.MimeType == "image/jpeg")
             {
                 // Get and save file
-                var file = await Bot.GetFileAsync(e.Message.Document.FileId);
-                var filename = SaveImage(e, Image.FromStream(file.FileStream), messageId);
+                //var file = await Bot.GetInfoAndDownloadFileAsync(e.Message.Document.FileId);
+                //TODO
+                var fileInfo = await Bot.GetFileAsync(e.Message.Document.FileId);
+                var file = await Bot.DownloadFileAsync(fileInfo.FilePath);
+
+                var filename = SaveImage(e, Image.FromStream(file), messageId);
 
                 // Log file saved
                 OutputResult(NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_picture_accepted_log + " " +
-                             e.Message.Chat.Username + " " + Resources.TelegramBot_picture_saved_as_log + " " + filename, 
-                    e, HasCompression(e.Message.Chat.Username)
-                        ? Resources.TelegramBot_picture_accepted
-                        : Resources.TelegramBot_picture_accepted_uncompressed);
+                            e.Message.Chat.Username + " " + Resources.TelegramBot_picture_saved_as_log + " " + filename, e, 
+                            HasCompression(e.Message.Chat.Username)
+                            ? Resources.TelegramBot_picture_accepted
+                            : Resources.TelegramBot_picture_accepted_uncompressed);
 
                 // Add +1 to picture counter, auto enable compression
                 AddPictureAmount(e.Message.Chat.Username);
@@ -162,7 +166,7 @@ namespace PictureSync.Logic
             {
                 ReceiveMessage(e);
             }
-            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.TextMessage && e.Message.Chat.Username != null && e.Message.Text.StartsWith("/auth "))
+            else if (e.Message.Type == Telegram.Bot.Types.Enums.MessageType.Text && e.Message.Chat.Username != null && e.Message.Text.StartsWith("/auth "))
             {
                 Auth(e);
             }
@@ -183,17 +187,20 @@ namespace PictureSync.Logic
             // Message Types
             switch (e.Message.Type)
             {
-                case Telegram.Bot.Types.Enums.MessageType.TextMessage:
+                case Telegram.Bot.Types.Enums.MessageType.Text:
                     // Textmessage
                     ParseCommands(e);
                     break;
-                case Telegram.Bot.Types.Enums.MessageType.PhotoMessage:
+                case Telegram.Bot.Types.Enums.MessageType.Photo:
                     //Disabled because metadata is cut when sending a photo and we need capture date
                     OutputResult(NowLog + " " + MessageIDformat(messageId) + username + " " + Resources.TelegramBot_Bot_OnMessage_deny_picture_log, e, Resources.TelegramBot_Bot_OnMessage_deny_picture);
                     break;
-                case Telegram.Bot.Types.Enums.MessageType.DocumentMessage:
+                case Telegram.Bot.Types.Enums.MessageType.Document:
                     OutputResult(NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_Bot_OnMessage_document_incoming_log + " " + username, e, "");
-                    Download_document(e, messageId);
+                    DownloadDocument(e, messageId);
+                    break;
+                default:
+                    Console.WriteLine("test");
                     break;
             }
         }

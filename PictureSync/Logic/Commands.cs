@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using HashLibrary;
 using PictureSync.Properties;
@@ -55,7 +55,7 @@ namespace PictureSync.Logic
                     LogCommand(e);
                     break;
                 case "/pwedit":
-                    //PwEditCommand(e);
+                    PwEditCommand(e);
                     break;
                 case "/party":
                     PartyCommand(e);
@@ -108,14 +108,21 @@ namespace PictureSync.Logic
         /// </summary>
         private static void PwEditCommand(MessageEventArgs e)
         {
-            var strings = e.Message.Text.Split(' ');
-            var hasher = new Hasher();
-            if (hasher.Check(strings[1], new HashedPassword(Hash, Salt)))
+            try
             {
-                var hashedPw = hasher.HashPassword(strings[2]);
-                Hash = hashedPw.Hash;
-                Salt = hashedPw.Salt;
-                UpdateConfig();
+                var strings = e.Message.Text.Split(' ');
+                var hasher = new Hasher();
+                if (hasher.Check(strings[1], new HashedPassword(Hash, Salt)))
+                {
+                    var hashedPw = hasher.HashPassword(strings[2]);
+                    Hash = hashedPw.Hash;
+                    Salt = hashedPw.Salt;
+                    UpdateConfig();
+                }
+            }
+            catch (Exception)
+            {
+                OutputResult("", e, Resources.Error);
             }
         }
 
@@ -213,7 +220,7 @@ namespace PictureSync.Logic
         /// </summary>
         private static void StartCommand(MessageEventArgs e)
         {
-            OutputResult(Resources.TelegramBot_CommonCommands_start, e);
+            OutputResult("", e, Resources.TelegramBot_CommonCommands_start);
         }
 
         /// <summary>
