@@ -77,6 +77,7 @@
     <Compile Include="Logic\Config.cs" />
     <Compile Include="Logic\ImageProcessing.cs" />
     <Compile Include="Logic\Server.cs" />
+    <Compile Include="Logic\Statistics.cs" />
     <Compile Include="Logic\TelegramBot.cs" />
     <Compile Include="Logic\Userlist.cs" />
     <Compile Include="Program.cs" />

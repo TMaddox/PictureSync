@@ -30,8 +30,6 @@ namespace PictureSync.Logic
             if (e.Message.Document.MimeType == "image/png" || e.Message.Document.MimeType == "image/jpeg")
             {
                 // Get and save file
-                //var file = await Bot.GetInfoAndDownloadFileAsync(e.Message.Document.FileId);
-                //TODO
                 var fileInfo = await Bot.GetFileAsync(e.Message.Document.FileId);
                 var file = await Bot.DownloadFileAsync(fileInfo.FilePath);
 
