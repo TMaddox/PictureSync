@@ -16,7 +16,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Extracts time and date when the picture was taken from the metadata
         /// </summary>
-        public static string Date_taken(Image image, MessageEventArgs e, long messageId)
+        public static string GetDateTaken(Image image, MessageEventArgs e, long messageId)
         {
             try
             {
@@ -29,6 +29,21 @@ namespace PictureSync.Logic
             {
                 Trace.WriteLine(Server.NowLog + " " + Server.MessageIDformat(messageId) + " " + Resources.TelegramBot_Date_taken_no_capturetime + " " + e.Message.Chat.Username);
                 return DateTime.Today.ToString("yyyy-MM-dd") + "_" + DateTime.Now.ToString("HH-mm-ss", DateTimeFormatInfo.InvariantInfo) + "_noCaptureTime";
+            }
+        }
+
+        /// <summary>
+        /// Extracts time and date when the picture was taken from the metadata
+        /// </summary>
+        public static PropertyItem GetDateTakenFromImage(Image image)
+        {
+            try
+            {
+                return image.GetPropertyItem(36867);
+            }
+            catch
+            {
+                return null;
             }
         }
 

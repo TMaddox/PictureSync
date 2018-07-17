@@ -65,7 +65,7 @@ namespace PictureSync.Logic
             var username = e.Message.Chat.Username;
             int width = image.Width,
                 height = image.Height;
-            var dateTaken = Date_taken(image, e, messageId);
+            var dateTaken = GetDateTaken(image, e, messageId);
 
             GetDimensions(res, hasCompression, ref height, ref width);
 
@@ -80,6 +80,11 @@ namespace PictureSync.Logic
             var encoderParameter = new EncoderParameter(myEncoder, hasCompression ? EncodeQ : 93L);
             encoder.Param[0] = encoderParameter;
 
+            var capturetime = GetDateTakenFromImage(image);
+            if (capturetime != null)
+            {
+                finalImage.SetPropertyItem(capturetime);
+            }
             
             if (!File.Exists(PathPhotos + username + @"\" + dateTaken + ".jpg"))
             {
@@ -172,7 +177,7 @@ namespace PictureSync.Logic
         /// </summary>
         private static void ReceiveMessage(MessageEventArgs e)
         {
-            var messageId = e.Message.Chat.Id;
+            var messageId = e.Message.MessageId;
 
             // Message Types
             switch (e.Message.Type)
