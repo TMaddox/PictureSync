@@ -78,7 +78,7 @@ namespace PictureSync.Logic
         }
 
         /// <summary>
-        /// Reades the Config file and saves it to Config.config
+        /// Reades the Config file and saves it to the Config class
         /// </summary>
         /// <param name="path">Path of the config file</param>
         /// <returns>true if successful</returns>

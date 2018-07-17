@@ -43,12 +43,12 @@ namespace PictureSync.Logic
                             : Resources.TelegramBot_picture_accepted_uncompressed);
 
                 // Add +1 to picture counter, auto enable compression
-                AddPictureAmount(e.Message.Chat.Username);
+                AddPictureAmountOfUser(e.Message.Chat.Username);
                 if (SetCompression(e.Message.Chat.Username, true))
                 {
                     OutputResult(NowLog + " " + Resources.TelegramBot_picture_compression_autoenable_log + " " + e.Message.Chat.Username, e, Resources.TelegramBot_picture_compression_autoenable);
                 }
-                SetLatestActivity(e.Message.Chat.Username,DateTime.Today);
+                SetLatestActivityOfUser(e.Message.Chat.Username,DateTime.Today);
             }
             else
             {

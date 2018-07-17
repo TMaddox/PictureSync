@@ -257,7 +257,7 @@
     <value>/amountactivity_clear - Clears amount counters</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_log" xml:space="preserve">
-    <value>/log - Returns the last 100 lines of the log</value>
+    <value>/log - Returns the last 50 lines of the log</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_add_user" xml:space="preserve">
     <value>/add_user &lt;user&gt; - Adds a new user</value>

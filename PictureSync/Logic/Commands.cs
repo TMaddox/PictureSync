@@ -9,6 +9,7 @@ using static PictureSync.Logic.Config;
 using static PictureSync.Logic.Server;
 using static PictureSync.Logic.Userlist;
 using static PictureSync.Logic.TelegramBot;
+using static PictureSync.Logic.Statistics;
 
 namespace PictureSync.Logic
 {
@@ -59,6 +60,9 @@ namespace PictureSync.Logic
                     break;
                 case "/party":
                     PartyCommand(e);
+                    break;
+                case "/stats":
+                    StatisticsCommand(e);
                     break;
                 default:
                     //Admin can of course execute normal commands too
@@ -131,7 +135,7 @@ namespace PictureSync.Logic
         /// </summary>
         private static void LogCommand(MessageEventArgs e)
         {
-            var logList = GetLogList(100);
+            var logList = GetLogList(50);
             var b = new StringBuilder();
             foreach (var line in logList)
                 b.AppendLine(line);
@@ -187,7 +191,7 @@ namespace PictureSync.Logic
         private static void TimeActivityCommand(MessageEventArgs e)
         {
             var b = new StringBuilder();
-            var list = GetUseractivity_Time();
+            var list = GetUseractivityTime();
             for (var i = 0; i < UsersAmount; i++)
                 b.AppendLine(list[i, 0] + " - " + list[i, 1]);
 
@@ -200,7 +204,7 @@ namespace PictureSync.Logic
         private static void AmountActivityCommand(MessageEventArgs e)
         {
             var b = new StringBuilder();
-            var list1 = GetUseractivity_Amount();
+            var list1 = GetUseractivityAmount();
             for (var i = 0; i < UsersAmount; i++)
                 b.AppendLine(list1[i, 0] + " - " + list1[i, 1]);
 
@@ -273,7 +277,7 @@ namespace PictureSync.Logic
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_activity_amount);
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_activity_time);
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_add_user);
-                //commandsList.Add(Resources.TelegramBot_CommonCommands_help_change_pw);
+                commandsList.Add(Resources.TelegramBot_CommonCommands_help_change_pw);
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_activity);
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_amount);
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_log);
@@ -309,6 +313,25 @@ namespace PictureSync.Logic
             {
                 OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_Bot_OnMessage_auth_not_successful_log, e, Resources.TelegramBot_Bot_OnMessage_auth_not_successful);
             }
+        }
+
+        /// <summary>
+        /// Outputs statistics to the user
+        /// </summary>
+        /// <param name="e"></param>
+        private static void StatisticsCommand(MessageEventArgs e)
+        {
+            //TODO
+            var b = new StringBuilder();
+            b.AppendLine("Statistics:");
+            b.Append("Size: ");
+            b.AppendLine(HumaniserBytesToString(GetFileSizeTotal()));
+            b.Append("Img amount: ");
+            b.AppendLine(GetPictureAmountTotal().ToString());
+            b.Append("avg filesize: ");
+            b.AppendLine(HumaniserBytesToString(GetFileSizeTotal() / GetPictureAmountTotal()));
+
+            OutputResult("", e, b.ToString());
         }
     }
 }

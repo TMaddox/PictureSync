@@ -257,7 +257,7 @@
     <value>/amountactivity_clear - Setzt alle Zähler zurück</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_log" xml:space="preserve">
-    <value>/log - Zeigt die letzten 100 Zeilen des Logs an</value>
+    <value>/log - Zeigt die letzten 50 Zeilen des Logs an</value>
   </data>
   <data name="TelegramBot_CommonCommands_help_add_user" xml:space="preserve">
     <value>/add_user &lt;user&gt; - Fügt einen neuen Nutzer hinzu</value>

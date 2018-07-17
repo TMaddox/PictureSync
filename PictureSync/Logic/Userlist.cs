@@ -12,7 +12,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Returns a List of strings with users
         /// </summary>
-        private static List<string> Users => File.ReadAllLines(PathUsers).ToList();
+        public static List<string> Users => File.ReadAllLines(PathUsers).ToList();
 
         /// <summary>
         /// Returns n of Uers
@@ -36,7 +36,7 @@ namespace PictureSync.Logic
         /// Checks if a username exists already
         /// </summary>
         /// <returns>Returns true if username exists</returns>
-        public static bool CheckIfUserExists(string username)
+        private static bool CheckIfUserExists(string username)
         {
             foreach (var user in Users)
             {
@@ -60,7 +60,6 @@ namespace PictureSync.Logic
             }
             return false;
         }
-
         /// <summary>
         /// Sets compression (yes|no) for user, returns true if state was changed
         /// </summary>
@@ -95,7 +94,6 @@ namespace PictureSync.Logic
             }
             return false;
         }
-
         /// <summary>
         /// Sets admin privileges (yes|no) for user, returns true if state was changed
         /// </summary>
@@ -120,7 +118,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Returns the amount of pictures sent in a given date range
         /// </summary>
-        private static int GetPictureAmount(string username)
+        private static int GetPictureAmountOfUser(string username)
         {
             foreach (var user in Users)
             {
@@ -130,11 +128,10 @@ namespace PictureSync.Logic
             }
             return 0;
         }
-
         /// <summary>
         /// Adds +1 for picturecount for user
         /// </summary>
-        public static void AddPictureAmount(string username)
+        public static void AddPictureAmountOfUser(string username)
         {
             foreach (var user in Users)
             {
@@ -146,7 +143,6 @@ namespace PictureSync.Logic
                 }
             }
         }
-
         /// <summary>
         /// Resets all amounts of sent pictures for all users
         /// </summary>
@@ -163,7 +159,7 @@ namespace PictureSync.Logic
         /// <summary>
         /// Gets latest activity per user
         /// </summary>
-        private static DateTime GetLatestActivity(string username)
+        private static DateTime GetLatestActivityOfUser(string username)
         {
             foreach (var user in Users)
             {
@@ -173,11 +169,10 @@ namespace PictureSync.Logic
             }
             return DateTime.MinValue;
         }
-
         /// <summary>
         /// sets latest acitvity per user
         /// </summary>
-        public static void SetLatestActivity(string username, DateTime date)
+        public static void SetLatestActivityOfUser(string username, DateTime date)
         {
             foreach (var user in Users)
             {
@@ -188,7 +183,6 @@ namespace PictureSync.Logic
                 WriteUserdata(userdata);
             }
         }
-
         /// <summary>
         /// Resets All activities stored for users
         /// </summary>
@@ -244,7 +238,7 @@ namespace PictureSync.Logic
         /// Gets total sent pictures
         /// </summary>
         /// <returns>Array [username, picturecount]</returns>
-        public static string[,] GetUseractivity_Amount()
+        public static string[,] GetUseractivityAmount()
         {
             var temp = Users;
             var userName = new string[temp.Count];
@@ -255,7 +249,7 @@ namespace PictureSync.Logic
             {
                 var userdata = temp[i].Split(',');
                 userName[i] = userdata[0];
-                userActivity[i] = GetPictureAmount(userName[i]);
+                userActivity[i] = GetPictureAmountOfUser(userName[i]);
             }
 
             Array.Sort(userActivity,userName);
@@ -270,12 +264,11 @@ namespace PictureSync.Logic
 
             return final;
         }
-
         /// <summary>
         /// Gets date of latest activity (picture received)
         /// </summary>
         /// <returns>Array [username, date_lastpic]</returns>
-        public static string[,] GetUseractivity_Time()
+        public static string[,] GetUseractivityTime()
         {
             var temp = Users;
             var userName = new string[temp.Count];
@@ -286,7 +279,7 @@ namespace PictureSync.Logic
             {
                 var userdata = temp[i].Split(',');
                 userName[i] = userdata[0];
-                userActivity[i] = GetLatestActivity(userName[i]);
+                userActivity[i] = GetLatestActivityOfUser(userName[i]);
             }
 
             Array.Sort(userActivity, userName);
