@@ -548,6 +548,15 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /stats - Displays statistics.
+        /// </summary>
+        internal static string TelegramBot_CommonCommands_help_stats {
+            get {
+                return ResourceManager.GetString("TelegramBot_CommonCommands_help_stats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can´t parse command..
         /// </summary>
         internal static string TelegramBot_CommonCommands_nocommand {

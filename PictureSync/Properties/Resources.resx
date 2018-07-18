@@ -316,4 +316,7 @@
   <data name="Statistics" xml:space="preserve">
     <value>Statistics</value>
   </data>
+  <data name="TelegramBot_CommonCommands_help_stats" xml:space="preserve">
+    <value>/stats - Displays statistics</value>
+  </data>
 </root>

@@ -281,6 +281,7 @@ namespace PictureSync.Logic
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_activity);
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_amount);
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_log);
+                commandsList.Add(Resources.TelegramBot_CommonCommands_help_stats);
             }
             commandsList.Add(Resources.TelegramBot_CommonCommands_help_coff);
             commandsList.Add(Resources.TelegramBot_CommonCommands_help_con);
@@ -321,7 +322,6 @@ namespace PictureSync.Logic
         /// <param name="e"></param>
         private static void StatisticsCommand(MessageEventArgs e)
         {
-            //TODO make this multilingual
             var b = new StringBuilder();
             b.AppendLine(Resources.Statistics + ":");
             b.AppendLine("------");
@@ -335,7 +335,7 @@ namespace PictureSync.Logic
             b.Append(Resources.Image_Received + ": ");
             b.AppendLine(GetPictureAmountTotal().ToString());
 
-            OutputResult("", e, b.ToString());
+            OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed, e, b.ToString());
         }
     }
 }
