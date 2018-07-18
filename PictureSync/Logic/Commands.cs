@@ -321,15 +321,19 @@ namespace PictureSync.Logic
         /// <param name="e"></param>
         private static void StatisticsCommand(MessageEventArgs e)
         {
-            //TODO
+            //TODO make this multilingual
             var b = new StringBuilder();
-            b.AppendLine("Statistics:");
-            b.Append("Size: ");
+            b.AppendLine(Resources.Statistics + ":");
+            b.AppendLine("------");
+            b.Append(Resources.Size + ": ");
             b.AppendLine(HumaniserBytesToString(GetFileSizeTotal()));
-            b.Append("Img amount: ");
+            b.Append(Resources.Image_stored + ": ");
+            b.AppendLine(GetPictureAmountDirTotal().ToString());
+            b.Append(Resources.average_filesize + ": ");
+            b.AppendLine(HumaniserBytesToString(GetFileSizeTotal() / GetPictureAmountDirTotal()));
+            b.AppendLine("------");
+            b.Append(Resources.Image_Received + ": ");
             b.AppendLine(GetPictureAmountTotal().ToString());
-            b.Append("avg filesize: ");
-            b.AppendLine(HumaniserBytesToString(GetFileSizeTotal() / GetPictureAmountTotal()));
 
             OutputResult("", e, b.ToString());
         }

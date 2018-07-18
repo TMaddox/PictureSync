@@ -301,4 +301,19 @@
   <data name="Error_No_Config" xml:space="preserve">
     <value>Error, keine konfiguration gefunden</value>
   </data>
+  <data name="average_filesize" xml:space="preserve">
+    <value>Mittlere Größe</value>
+  </data>
+  <data name="Image_Received" xml:space="preserve">
+    <value>Bild empfangen</value>
+  </data>
+  <data name="Image_stored" xml:space="preserve">
+    <value>Bild gespeichert</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Größe</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistik</value>
+  </data>
 </root>

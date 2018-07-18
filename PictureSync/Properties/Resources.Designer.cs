@@ -61,6 +61,15 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Avg filesize.
+        /// </summary>
+        internal static string average_filesize {
+            get {
+                return ResourceManager.GetString("average_filesize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string Error {
@@ -85,6 +94,24 @@ namespace PictureSync.Properties {
             get {
                 object obj = ResourceManager.GetObject("icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Img received.
+        /// </summary>
+        internal static string Image_Received {
+            get {
+                return ResourceManager.GetString("Image_Received", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Img stored.
+        /// </summary>
+        internal static string Image_stored {
+            get {
+                return ResourceManager.GetString("Image_stored", resourceCulture);
             }
         }
         
@@ -148,6 +175,24 @@ namespace PictureSync.Properties {
         internal static string Program_Start_Press_Any_Key {
             get {
                 return ResourceManager.GetString("Program_Start_Press_Any_Key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        internal static string Size {
+            get {
+                return ResourceManager.GetString("Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        internal static string Statistics {
+            get {
+                return ResourceManager.GetString("Statistics", resourceCulture);
             }
         }
         

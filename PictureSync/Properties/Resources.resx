@@ -301,4 +301,19 @@
   <data name="Error_No_Config" xml:space="preserve">
     <value>Error, no config found</value>
   </data>
+  <data name="average_filesize" xml:space="preserve">
+    <value>Avg filesize</value>
+  </data>
+  <data name="Image_Received" xml:space="preserve">
+    <value>Img received</value>
+  </data>
+  <data name="Image_stored" xml:space="preserve">
+    <value>Img stored</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
 </root>

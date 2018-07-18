@@ -116,9 +116,9 @@ namespace PictureSync.Logic
         }
 
         /// <summary>
-        /// Returns the amount of pictures sent in a given date range
+        /// Returns the amount of pictures sent
         /// </summary>
-        private static int GetPictureAmountOfUser(string username)
+        public static int GetPictureAmountOfUser(string username)
         {
             foreach (var user in Users)
             {

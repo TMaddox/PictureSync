@@ -52,17 +52,47 @@ namespace PictureSync.Logic
         }
 
         /// <summary>
+        /// Returns total Amount of stored Pictures of a user
+        /// </summary>
+        private static long GetPictureAmountDirOfUser(string user)
+        {
+            try
+            {
+                return Directory.GetFiles(Path.Combine(PathPhotos, user)).ToList().LongCount();
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+        /// <summary>
+        /// Returns total Amount of received Pictures, which are stored in a Directory
+        /// </summary>
+        public static long GetPictureAmountDirTotal()
+        {
+            try
+            {
+                return Directory.GetDirectories(PathPhotos).ToList().Sum(user => GetPictureAmountDirOfUser(user));
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
         /// Returns total Amount of received Pictures
         /// </summary>
         public static long GetPictureAmountTotal()
         {
-            long amount = 0;
-            foreach (var user in Users)
+            try
             {
-                var userdata = user.Split(',');
-                amount += Convert.ToInt32(userdata[3]);
+                return Users.Sum(GetPictureAmountOfUser);
             }
-            return amount;
+            catch (Exception)
+            {
+                return 0;
+            }
         }
 
         /// <summary>
