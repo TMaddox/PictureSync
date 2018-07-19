@@ -61,6 +61,9 @@ namespace PictureSync.Logic
                 case "/party":
                     PartyCommand(e);
                     break;
+                case "/pic_delete":
+                    PicDeleteCommand(e);
+                    break;
                 case "/stats":
                     StatisticsCommand(e);
                     break;
@@ -336,6 +339,13 @@ namespace PictureSync.Logic
             b.AppendLine(GetPictureAmountTotal().ToString());
 
             OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed, e, b.ToString());
+        }
+
+        private static void PicDeleteCommand(MessageEventArgs e)
+        {
+            //TODO
+            var deletePreThis = DateTime.Now;
+            //DeletePicturesAll(deletePreThis);
         }
     }
 }
