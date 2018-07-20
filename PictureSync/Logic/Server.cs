@@ -10,6 +10,7 @@ using System.Security.Principal;
 using PictureSync.Properties;
 using static PictureSync.Logic.Config;
 using static PictureSync.Logic.TelegramBot;
+using static PictureSync.Logic.ImageProcessing;
 
 namespace PictureSync.Logic
 {
@@ -239,8 +240,9 @@ namespace PictureSync.Logic
             var files = Directory.GetFiles(Path.Combine(PathPhotos, user)).ToList();
             foreach (var file in files)
             {
-                var filename = Path.GetFileNameWithoutExtension(file).Substring(0, 19);
-                var filedate = DateTime.Parse(Path.GetFileNameWithoutExtension(filename));
+                var filedate = GetDateTakenFromImage(file) != null
+                    ? GetDateTakenFromImage(file)
+                    : DateTime.Now;
                 if (filedate < date)
                 {
                     File.Delete(file);

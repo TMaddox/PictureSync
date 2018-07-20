@@ -70,6 +70,15 @@ namespace PictureSync.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to deleted.
+        /// </summary>
+        internal static string Deleted {
+            get {
+                return ResourceManager.GetString("Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string Error {
@@ -112,6 +121,15 @@ namespace PictureSync.Properties {
         internal static string Image_stored {
             get {
                 return ResourceManager.GetString("Image_stored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to photos.
+        /// </summary>
+        internal static string Photos {
+            get {
+                return ResourceManager.GetString("Photos", resourceCulture);
             }
         }
         
@@ -544,6 +562,15 @@ namespace PictureSync.Properties {
         internal static string TelegramBot_CommonCommands_help_log {
             get {
                 return ResourceManager.GetString("TelegramBot_CommonCommands_help_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /pic_delete - deletes photos older than 6 months.
+        /// </summary>
+        internal static string TelegramBot_CommonCommands_help_pic_delete {
+            get {
+                return ResourceManager.GetString("TelegramBot_CommonCommands_help_pic_delete", resourceCulture);
             }
         }
         

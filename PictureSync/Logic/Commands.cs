@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms.VisualStyles;
 using HashLibrary;
 using PictureSync.Properties;
+using Telegram.Bot;
 using Telegram.Bot.Args;
-
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 using static PictureSync.Logic.Config;
 using static PictureSync.Logic.Server;
 using static PictureSync.Logic.Userlist;
@@ -285,6 +289,7 @@ namespace PictureSync.Logic
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_clear_amount);
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_log);
                 commandsList.Add(Resources.TelegramBot_CommonCommands_help_stats);
+                commandsList.Add(Resources.TelegramBot_CommonCommands_help_pic_delete);
             }
             commandsList.Add(Resources.TelegramBot_CommonCommands_help_coff);
             commandsList.Add(Resources.TelegramBot_CommonCommands_help_con);
@@ -341,11 +346,16 @@ namespace PictureSync.Logic
             OutputResult(NowLog + " " + e.Message.Chat.Username + " " + Resources.TelegramBot_AdminCommands_activity_accessed, e, b.ToString());
         }
 
+        /// <summary>
+        /// Deletes all files older than six months
+        /// </summary>
+        /// <param name="e"></param>
         private static void PicDeleteCommand(MessageEventArgs e)
         {
-            //TODO
-            var deletePreThis = DateTime.Now;
-            //DeletePicturesAll(deletePreThis);
+            var deadlineDate = DateTime.Now.AddMonths(-6);
+            var deleteDialog = Resources.Deleted + $": {GetPictureAmountDirTotal(deadlineDate)} " + Resources.Photos + $" / {HumaniserBytesToString(GetFileSizeTotal(deadlineDate))}";
+            OutputResult(NowLog + " " + e.Message.Chat.Username + ": " + deleteDialog, e, deleteDialog);
+            DeletePicturesAll(deadlineDate);
         }
     }
 }

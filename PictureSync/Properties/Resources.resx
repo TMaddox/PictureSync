@@ -319,4 +319,13 @@
   <data name="TelegramBot_CommonCommands_help_stats" xml:space="preserve">
     <value>/stats - Displays statistics</value>
   </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>deleted</value>
+  </data>
+  <data name="Photos" xml:space="preserve">
+    <value>photos</value>
+  </data>
+  <data name="TelegramBot_CommonCommands_help_pic_delete" xml:space="preserve">
+    <value>/pic_delete - deletes photos older than 6 months</value>
+  </data>
 </root>

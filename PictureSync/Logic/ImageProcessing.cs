@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -11,6 +12,8 @@ using System.Text.RegularExpressions;
 using PictureSync.Properties;
 using Telegram.Bot.Args;
 
+using static PictureSync.Logic.Config;
+
 namespace PictureSync.Logic
 {
     internal static class ImageProcessing
@@ -22,8 +25,8 @@ namespace PictureSync.Logic
         {
             try
             {
-                var originalDateString = GetDateTakenFromImage(image).ToString("yyyy-MM-dd_HH-mm-ss");
-                return originalDateString.Replace(":", "-").Replace(".", "-").Replace(" ", "_");
+                var originalDateString = GetDateTakenFromImage(image)?.ToString("yyyy-MM-dd_HH-mm-ss"); 
+                return originalDateString.Replace(":", "-").Replace(".", "-").Replace(" ", "_"); //originalDateString will be null if no capturedate and throws exception
             }
             catch
             {
@@ -36,24 +39,56 @@ namespace PictureSync.Logic
         /// <summary>
         /// Extracts time and date when the picture was taken from the metadata
         /// </summary>
-        private static DateTime GetDateTakenFromImage(string path)
+        public static DateTime? GetDateTakenFromImage(string path)
         {
             using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             using (var myImage = Image.FromStream(fs, false, false))
             {
-                var propItem = myImage.GetPropertyItem(36867);
-                var dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                return DateTime.Parse(dateTaken);
+                try
+                {
+                    var propItem = myImage.GetPropertyItem(36867);
+                    var dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                    if (dateTaken == null) {throw new Exception();}
+                    return DateTime.Parse(dateTaken);
+                }
+                catch (ArgumentException)
+                {
+                    return GetDateTakenFromFileName(path);
+                }
             }
         }
         /// <summary>
         /// Extracts time and date when the picture was taken from the metadata
         /// </summary>
-        private static DateTime GetDateTakenFromImage(Image image)
+        public static DateTime? GetDateTakenFromImage(Image image)
         {
-            var propItem = image.GetPropertyItem(36867);
-            var dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-            return DateTime.Parse(dateTaken);
+            try
+            {
+                var propItem = image.GetPropertyItem(36867);
+                var dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                return DateTime.Parse(dateTaken);
+            }
+            catch (ArgumentException)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Extracts time and date when the picture was taken from the filename, format: yyyy-MM-dd_HH-mm-ss
+        /// </summary>
+        private static DateTime? GetDateTakenFromFileName(string path)
+        {
+            try
+            {
+                var fileName = Path.GetFileName(path);
+                var date = fileName.Substring(0, 19);
+                return DateTime.ParseExact(date, "yyyy-MM-dd_HH-mm-ss", CultureInfo.InvariantCulture);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
