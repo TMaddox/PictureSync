@@ -118,7 +118,7 @@ namespace PictureSync.Logic
         {
             try
             {
-                return Users.Sum(GetPictureAmountOfUser);
+                return Usernames.Sum(GetPictureAmountOfUser);
             }
             catch (Exception)
             {

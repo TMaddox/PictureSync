@@ -13,6 +13,10 @@ namespace PictureSync.Logic
         /// Returns a List of strings with users
         /// </summary>
         public static List<string> Users => File.ReadAllLines(PathUsers).ToList();
+        /// <summary>
+        /// REturns a List of strings with usernames
+        /// </summary>
+        public static List<string> Usernames => File.ReadAllLines(PathUsers).ToList().Select(user => user.Split(',')[0]).ToList();
 
         /// <summary>
         /// Returns n of Uers
