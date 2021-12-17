@@ -338,7 +338,14 @@ namespace PictureSync.Logic
             b.Append(Resources.Image_stored + ": ");
             b.AppendLine(GetPictureAmountDirTotal().ToString());
             b.Append(Resources.average_filesize + ": ");
-            b.AppendLine(HumaniserBytesToString(GetFileSizeTotal() / GetPictureAmountDirTotal()));
+            if (GetPictureAmountDirTotal() != 0)
+            {
+                b.AppendLine(HumaniserBytesToString(GetFileSizeTotal() / GetPictureAmountDirTotal()));
+            }
+            else
+            {
+                b.AppendLine(HumaniserBytesToString(0));
+            }
             b.AppendLine("------");
             b.Append(Resources.Image_Received + ": ");
             b.AppendLine(GetPictureAmountTotal().ToString());
