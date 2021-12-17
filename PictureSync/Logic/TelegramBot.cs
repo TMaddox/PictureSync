@@ -31,9 +31,15 @@ namespace PictureSync.Logic
             {
                 // Get and save file
                 var fileInfo = await Bot.GetFileAsync(e.Message.Document.FileId);
-                var file = await Bot.DownloadFileAsync(fileInfo.FilePath);
-
-                var filename = SaveImage(e, Image.FromStream(file), messageId);
+                string filename = "";
+                using (var fileStream = new MemoryStream())
+                {
+                    await Bot.DownloadFileAsync(
+                        filePath: fileInfo.FilePath,
+                        destination: fileStream
+                    );
+                    filename = SaveImage(e, Image.FromStream(fileStream), messageId);
+                }
 
                 // Log file saved
                 OutputResult(NowLog + " " + MessageIDformat(messageId) + " " + Resources.TelegramBot_picture_accepted_log + " " +
